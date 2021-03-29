@@ -1,0 +1,34 @@
+build_dir: 19-synopsys-pt-timing-signoff
+build_id: '19'
+commands:
+- pt_shell -file pt.tcl
+- mkdir -p outputs && cd outputs
+- ln -sf ../design.sdf design.sdf
+edges_i:
+  adk:
+  - f: adk
+    step: 3-skywater-130nm
+  design.pt.sdc:
+  - f: design.pt.sdc
+    step: 16-cadence-innovus-signoff
+  design.spef.gz:
+  - f: design.spef.gz
+    step: 16-cadence-innovus-signoff
+  design.vcs.v:
+  - f: design.vcs.v
+    step: 16-cadence-innovus-signoff
+edges_o:
+  design.sdf:
+  - f: design.sdf
+    step: 21-gl-sim
+inputs:
+- adk
+- design.vcs.v
+- design.pt.sdc
+- design.spef.gz
+name: synopsys-pt-timing-signoff
+outputs:
+- design.sdf
+parameters:
+  design_name: Example
+source: /home/users/krzanich/mflowgen/steps/synopsys-pt-timing-signoff

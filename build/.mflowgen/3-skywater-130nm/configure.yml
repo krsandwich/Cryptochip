@@ -1,0 +1,54 @@
+build_dir: 3-skywater-130nm
+build_id: '3'
+commands:
+- mkdir -p outputs && cd outputs
+- ln -sf ../view-standard adk
+edges_i: {}
+edges_o:
+  adk:
+  - f: adk
+    step: 7-synopsys-dc-synthesis
+  - f: adk
+    step: 4-testbench
+  - f: adk
+    step: 8-cadence-innovus-flowsetup
+  - f: adk
+    step: 9-cadence-innovus-init
+  - f: adk
+    step: 10-cadence-innovus-power
+  - f: adk
+    step: 11-cadence-innovus-place
+  - f: adk
+    step: 12-cadence-innovus-cts
+  - f: adk
+    step: 13-cadence-innovus-postcts_hold
+  - f: adk
+    step: 14-cadence-innovus-route
+  - f: adk
+    step: 15-cadence-innovus-postroute
+  - f: adk
+    step: 16-cadence-innovus-signoff
+  - f: adk
+    step: 17-mentor-calibre-gdsmerge
+  - f: adk
+    step: 22-open-magic-drc
+  - f: adk
+    step: 18-open-magic-def2spice
+  - f: adk
+    step: 23-open-netgen-lvs
+  - f: adk
+    step: 19-synopsys-pt-timing-signoff
+  - f: adk
+    step: 20-synopsys-ptpx-rtl
+  - f: adk
+    step: 25-synopsys-ptpx-gl
+  - f: adk
+    step: 21-gl-sim
+name: skywater-130nm
+outputs:
+- adk
+parameters:
+  adk: skywater-130nm-adk
+  adk_view: view-standard
+sandbox: true
+source: /afs/ir.stanford.edu/class/ee272/skywater-130nm-adk
