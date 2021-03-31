@@ -1,0 +1,33 @@
+build_dir: 25-synopsys-ptpx-gl
+build_id: '25'
+commands:
+- mkdir -p reports logs
+- pt_shell -f ptpx.tcl | tee logs/pt.log
+edges_i:
+  adk:
+  - f: adk
+    step: 3-skywater-130nm
+  design.pt.sdc:
+  - f: design.pt.sdc
+    step: 16-cadence-innovus-signoff
+  design.spef.gz:
+  - f: design.spef.gz
+    step: 16-cadence-innovus-signoff
+  design.vcs.v:
+  - f: design.vcs.v
+    step: 16-cadence-innovus-signoff
+  run.saif:
+  - f: run.saif
+    step: 24-gen-saif-gl
+edges_o: {}
+inputs:
+- adk
+- design.vcs.v
+- design.pt.sdc
+- design.spef.gz
+- run.saif
+name: synopsys-ptpx-gl
+parameters:
+  design_name: Example
+  strip_path: ExampleTb/Example_inst
+source: /home/users/krzanich/mflowgen/steps/synopsys-ptpx-gl

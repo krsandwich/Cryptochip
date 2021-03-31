@@ -1,0 +1,52 @@
+build_dir: 8-cadence-innovus-flowsetup
+build_id: '8'
+commands:
+- source ./run.sh
+edges_i:
+  adk:
+  - f: adk
+    step: 3-skywater-130nm
+  design.sdc:
+  - f: design.sdc
+    step: 7-synopsys-dc-synthesis
+  design.v:
+  - f: design.v
+    step: 7-synopsys-dc-synthesis
+edges_o:
+  innovus-foundation-flow:
+  - f: innovus-foundation-flow
+    step: 9-cadence-innovus-init
+  - f: innovus-foundation-flow
+    step: 10-cadence-innovus-power
+  - f: innovus-foundation-flow
+    step: 11-cadence-innovus-place
+  - f: innovus-foundation-flow
+    step: 12-cadence-innovus-cts
+  - f: innovus-foundation-flow
+    step: 13-cadence-innovus-postcts_hold
+  - f: innovus-foundation-flow
+    step: 14-cadence-innovus-route
+  - f: innovus-foundation-flow
+    step: 15-cadence-innovus-postroute
+  - f: innovus-foundation-flow
+    step: 16-cadence-innovus-signoff
+inputs:
+- adk
+- design.v
+- design.sdc
+name: cadence-innovus-flowsetup
+outputs:
+- innovus-foundation-flow
+parameters:
+  design_name: Example
+  express_flow: false
+  nthreads: 16
+  skip_verify_connectivity: false
+postconditions:
+- assert File( 'outputs/innovus-foundation-flow' )
+preconditions:
+- assert Tool( 'innovus' )
+- assert File( 'inputs/adk' )
+- assert File( 'inputs/design.sdc' )
+- assert File( 'inputs/design.v' )
+source: /home/users/krzanich/mflowgen/steps/cadence-innovus-flowsetup

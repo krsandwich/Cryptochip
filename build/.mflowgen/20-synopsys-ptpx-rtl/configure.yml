@@ -1,0 +1,44 @@
+build_dir: 20-synopsys-ptpx-rtl
+build_id: '20'
+commands:
+- pt_shell -file pt_px.tcl
+- cp reports/*.pwr.rpt outputs/design.pwr.rpt
+- cp reports/*.pwr.hier.rpt outputs/design.pwr.hier.rpt
+- cp reports/*.sw.rpt outputs/design.sw.rpt
+edges_i:
+  adk:
+  - f: adk
+    step: 3-skywater-130nm
+  design.namemap:
+  - f: design.namemap
+    step: 7-synopsys-dc-synthesis
+  design.pt.sdc:
+  - f: design.pt.sdc
+    step: 16-cadence-innovus-signoff
+  design.spef.gz:
+  - f: design.spef.gz
+    step: 16-cadence-innovus-signoff
+  design.vcs.v:
+  - f: design.vcs.v
+    step: 16-cadence-innovus-signoff
+  run.saif:
+  - f: run.saif
+    step: 6-gen-saif-rtl
+edges_o: {}
+inputs:
+- adk
+- design.vcs.v
+- design.spef.gz
+- design.pt.sdc
+- run.saif
+- design.namemap
+name: synopsys-ptpx-rtl
+outputs:
+- design.pwr.rpt
+- design.pwr.hier.rpt
+- design.sw.rpt
+parameters:
+  clock_period: 20.0
+  design_name: Example
+  strip_path: ExampleTb/Example_inst
+source: /home/users/krzanich/EE272B/design/synopsys-ptpx-rtl

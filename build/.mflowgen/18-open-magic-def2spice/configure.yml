@@ -1,0 +1,32 @@
+build_dir: 18-open-magic-def2spice
+build_id: '18'
+commands:
+- cp inputs/adk/sky130A.magicrc .magicrc
+- cp inputs/adk/sky130A.tech sky130A.tech
+- cp inputs/adk/sky130A.tcl sky130A.tcl
+- cp inputs/adk/rtk-tech.lef rtk-tech-nolicon.lef
+- sed -i '/LAYER licon/,/END licon/d' rtk-tech-nolicon.lef
+- cp -L inputs/design.def.gz design.def.gz
+- gunzip design.def.gz
+- sed -i 's/\//____/g' design.def
+- magic -noconsole -dnull extract.tcl | tee def2spice.log
+edges_i:
+  adk:
+  - f: adk
+    step: 3-skywater-130nm
+  design.def.gz:
+  - f: design.def.gz
+    step: 16-cadence-innovus-signoff
+edges_o:
+  design_extracted.spice:
+  - f: design_extracted.spice
+    step: 23-open-netgen-lvs
+inputs:
+- adk
+- design.def.gz
+name: open-magic-def2spice
+outputs:
+- design_extracted.spice
+parameters:
+  design_name: Example
+source: /home/users/krzanich/EE272B/design/open-magic-def2spice
