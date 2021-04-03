@@ -2,8 +2,16 @@
 // AES Encrypt Module
 //  
 //-----------------------------------------------------------------------------
+`define WAIT_STATE 0
+`define INIT_STATE 1
+`define ENCRYPT_STATE 2
+`define FINAL_STATE 3
+`define SUBBYTES 0
+`define SHIFTROWS 1
+`define MIXCOLUMNS 2
+`define ADDROUNDKEY 
 
-`default_nettype none
+//`default_nettype none
 module AESEncrypt
 (
   input  wire [   0:0] clk,
