@@ -9,7 +9,7 @@
 `define SUBBYTES 0
 `define SHIFTROWS 1
 `define MIXCOLUMNS 2
-`define ADDROUNDKEY 
+`define ADDROUNDKEY 3
 
 //`default_nettype none
 module AESEncrypt
@@ -32,6 +32,9 @@ module AESEncrypt
   reg [ 127: 0] temp_data_out [13:0];
   reg [ 255:0] orig_key;  //must save original key
   reg [ 127:0] temp_key[1:0];
+  reg [1:0] state;
+  reg [ 3: 0] round;
+  reg encrypt_state [1:0]; // there are 4
 
   AddRoundKey AddRoundKey(.in(temp_data_in[0]),.key(temp_key[1]), .out(temp_data_out[0]));
   SubBytes SubBytes(.in(temp_data_in[1]), .out(temp_data_out[1]));
@@ -42,15 +45,12 @@ module AESEncrypt
   //---------
   // FSM
   //---------
-  reg state [1:0];
-  reg [ 3: 0] round;
-  reg encrypt_state [1:0]; // there are 4
   always_ff @(posedge clk) begin
     if (ready) begin
       temp_data_in [0] <= data_in;
       orig_key <= key;
     end
-    if (state == FINAL_STATE && encrypt_state == ADDROUNDKEY) begin 
+    if (state == `FINAL_STATE && encrypt_state == `ADDROUNDKEY) begin 
       data_final <= temp_data_out[0];
     end
   end
@@ -58,84 +58,84 @@ module AESEncrypt
 
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
-      state <= WAIT_STATE;
-      encrypt_state <= SUBBYTES;
+      state <= `WAIT_STATE;
+      encrypt_state <= `SUBBYTES;
       valid <= 0;
       round <= 0;
     end
     case (state)
-      WAIT_STATE: begin
+      `WAIT_STATE: begin
         valid <= 0;
         if (ready) begin 
-          state <= INIT_STATE;
+          state <= `INIT_STATE;
           temp_key[1] <= key[255:128];  
         end else begin 
-          state <= WAIT_STATE;
+          state <= `WAIT_STATE;
           temp_key[1] <= 128'd0;
         end
       end
-      INIT_STATE: begin
+      `INIT_STATE: begin
         valid <= 0;
         round <= 4'd1;
-        state <= ENCRYPT_STATE;
-        encrypt_state <= SUBBYTES;    
+        state <= `ENCRYPT_STATE;
+        encrypt_state <= `SUBBYTES;    
         temp_key[1] <= temp_key[0];
         temp_data_in[1] <= temp_data_out[0];       
       end
-      ENCRYPT_STATE: begin
+      `ENCRYPT_STATE: begin
         case (encrypt_state)
-          SUBBYTES: begin
-            encrypt_state <= SHIFTROWS;
+          `SUBBYTES: begin
+            encrypt_state <= `SHIFTROWS;
             temp_data_in[2] <= temp_data_out[1];
           end
-          SHIFTROWS: begin
-            encrypt_state <= MIXCOLUMNS;
+          `SHIFTROWS: begin
+            encrypt_state <= `MIXCOLUMNS;
             temp_data_in[3] <= temp_data_out[2];
           end
-          MIXCOLUMNS: begin
-            encrypt_state <= ADDROUNDKEY;
+          `MIXCOLUMNS: begin
+            encrypt_state <= `ADDROUNDKEY;
             temp_data_in[0] <= temp_data_out[3];
             temp_key[1] <= temp_key[0];
           end
-          ADDROUNDKEY: begin 
+          `ADDROUNDKEY: begin 
             temp_data_in[1] <= temp_data_out[0];
-            encrypt_state <= SUBBYTES;
+            encrypt_state <= `SUBBYTES;
             round <= round + 4'd1;
             if (round == 4'd13) begin //SHA256 has 14 total encrypt round 
-              state <= FINAL_STATE; 
+              state <= `FINAL_STATE; 
             end
             else begin
-              state <= ENCRYPT_STATE;
+              state <= `ENCRYPT_STATE;
             end
           end
         endcase
       end
-      FINAL_STATE: begin
+      `FINAL_STATE: begin
         case (encrypt_state)
-          SUBBYTES: begin
-            encrypt_state <= SHIFTROWS;
+          `SUBBYTES: begin
+            encrypt_state <= `SHIFTROWS;
             temp_data_in[2] <= temp_data_out[1];
           end
-          SHIFTROWS: begin
-            encrypt_state <= ADDROUNDKEY;
+          `SHIFTROWS: begin
+            encrypt_state <= `ADDROUNDKEY;
             temp_data_in[3] <= temp_data_out[2];
             temp_key[1] <= temp_key[0];
           end
-          ADDROUNDKEY: begin 
+          `ADDROUNDKEY: begin 
             temp_data_in[1] <= temp_data_out[0];
-            encrypt_state <= SUBBYTES;
+            encrypt_state <= `SUBBYTES;
             valid <= 1;
             if (ready) begin 
-              state <= INIT_STATE; 
+              state <= `INIT_STATE; 
             end
             else begin
-              state <= WAIT_STATE;
+              state <= `WAIT_STATE;
             end
           end
         endcase
       end
       default: begin
-        state <= WAIT_STATE;
+        state <= `WAIT_STATE;
       end
   end
 
