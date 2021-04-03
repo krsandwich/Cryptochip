@@ -13,7 +13,7 @@ module AESEncrypt
   input  wire [ 255:0] key,
 
   output wire [ 127:0] data_out,
-  output wire [   0:0] valid,
+  output wire [   0:0] valid
 );
 
   //---------
@@ -25,10 +25,10 @@ module AESEncrypt
   reg [ 255:0] orig_key;  //must save original key
   reg [ 127:0] temp_key[1:0];
 
-  AddRoundKey AddRoundKey(.in(temp_data_in[0],.key(temp_key[1]) .out(temp_data_out[0]));
-  SubBytes SubBytes(.in(temp_data_in[1], .out(temp_data_out[1]));
-  ShiftRows ShiftRows(.in(temp_data_in[2], .out(temp_data_out[2]));
-  MixColumns MixColumns(.in(temp_data_in[3], .out(temp_data_out[3]));
+  AddRoundKey AddRoundKey(.in(temp_data_in[0]),.key(temp_key[1]), .out(temp_data_out[0]));
+  SubBytes SubBytes(.in(temp_data_in[1]), .out(temp_data_out[1]));
+  ShiftRows ShiftRows(.in(temp_data_in[2]), .out(temp_data_out[2]));
+  MixColumns MixColumns(.in(temp_data_in[3]), .out(temp_data_out[3]));
   ExpandKey ExpandKey(.in(orig_key), .round(round), .out(temp_key[0]));
 
   //---------

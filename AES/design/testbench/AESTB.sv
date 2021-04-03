@@ -20,7 +20,7 @@ module ExampleTb;
   (
     .clk(clk),
     .rst_n(reset),
-    .ready(ready)
+    .ready(ready),
     .data_in(data_in),
     .key(256'd1),
     .data_out(data_out),
