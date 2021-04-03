@@ -4,7 +4,7 @@
 //-----------------------------------------------------------------------------
 
 `default_nettype none
-SubBytes
+module SubBytes
 (
   input  wire [  127:0] in,
   output  wire [  127:0] out

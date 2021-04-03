@@ -4,7 +4,7 @@
 //-----------------------------------------------------------------------------
 
 `default_nettype none
-ShiftRows
+module ShiftRows
 (
   input  wire [  127:0] in,
   output  wire [  127:0] out

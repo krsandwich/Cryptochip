@@ -4,7 +4,7 @@
 //-----------------------------------------------------------------------------
 
 `default_nettype none
-AddRoundKey
+module ddRoundKey
 (
   input  wire [  127:0] in,
   input  wire [  127:0] key,

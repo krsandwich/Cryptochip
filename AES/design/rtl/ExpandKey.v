@@ -5,7 +5,7 @@
 //-----------------------------------------------------------------------------
 
 `default_nettype none
-ExpandKey
+module ExpandKey
 (
   input  wire [  255:0] in,
   input  wire [    3:0] round,
