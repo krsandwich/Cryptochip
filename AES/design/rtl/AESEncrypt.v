@@ -137,6 +137,7 @@ module AESEncrypt
       default: begin
         state <= `WAIT_STATE;
       end
+    endcase
   end
 
 endmodule // mainUnit
