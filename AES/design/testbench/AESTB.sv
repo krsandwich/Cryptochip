@@ -4,52 +4,53 @@
 `define NUM_TEST_VECTORS 100
 
 module ExampleTb;
-  
-  localparam ADDR_WIDTH = $clog2(`NUM_TEST_VECTORS);
  
   reg clk;
   reg reset;
-  reg [ADDR_WIDTH - 1 : 0] a_b_addr_r;
-  reg [ADDR_WIDTH - 1 : 0] c_addr_r;
+  reg ready;
+  reg [127 : 0] data_in;
+  wire [127 : 0] data_out;
   wire final_out;
-  supply0 VSS;
-  supply1 VDD;
-
-  reg [16 + 16 + 16 - 1 : 0] test_vectors [`NUM_TEST_VECTORS - 1 : 0];
+  wire valid;
+  reg data_set;
 
   always #(`CLK_PERIOD/2) clk =~clk;
   
-  Example Example_inst
+  AESEncrypt AESEncrypt_inst
   (
     .clk(clk),
-    .msg(test_vectors[a_b_addr_r][31:0]),
-    .reset(reset),
-    .out(final_out)
-    `ifdef USE_POWER_PINS
-    ,
-    .VSS(VSS),
-    .VDD(VDD)
-    `endif
+    .rst_n(reset),
+    .ready(ready)
+    .data_in(data_in),
+    .key(256'd1),
+    .data_out(data_out),
+    .valid(valid)
   );
 
   initial begin
     clk <= 0;
-    reset <= 1;
-    a_b_addr_r <= 0;
-    c_addr_r <= 0;
-    #(10*`CLK_PERIOD) reset <= 0;
+    reset <= 0;
+    data_in <= 0;
+    ready <= 0;
+    data_set <=0;
+    //#(10*`CLK_PERIOD) reset <= 0;
+    #20 reset <= 0;
+    #20 reset <= 1;
+
   end
 
   always @ (posedge clk) begin
-    if (!reset) begin
-      a_b_addr_r <= # `ASSIGNMENT_DELAY (a_b_addr_r + 1); 
+    if (reset) begin
+      if(!data_set) begin
+        data_in <= # `ASSIGNMENT_DELAY (128'd1); 
+      end
       // Don't change the inputs right after the clock edge because that will cause problems in gate level simulation
     end
 
-    if (final_out) begin
-      $display("clock high");
-      c_addr_r <= c_addr_r + 1;
-      if (c_addr_r == `NUM_TEST_VECTORS - 1) $finish;
+    if (valid) begin
+      $display("valid set");
+      $display("Output = %d", data_out);
+      $finish;
     end
   end
 
