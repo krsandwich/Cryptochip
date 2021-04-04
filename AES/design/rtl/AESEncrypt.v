@@ -31,6 +31,7 @@ module AESEncrypt
   reg [ 127: 0] temp_data_in  [13:0];
   reg [ 127: 0] temp_data_out [13:0];
   reg [ 127: 0] data_final;
+  reg valid_final;
   reg [ 255:0] orig_key;  //must save original key
   reg [ 127:0] temp_key[1:0];
   reg [1:0] state;
@@ -56,89 +57,92 @@ module AESEncrypt
     end
   end
   assign data_out = data_final;
+  assign valid = valid_final;
 
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
       state <= `WAIT_STATE;
       encrypt_state <= `SUBBYTES;
-      valid <= 0;
+      valid_final <= 0;
       round <= 0;
     end
-    case (state)
-      `WAIT_STATE: begin
-        valid <= 0;
-        if (ready) begin 
-          state <= `INIT_STATE;
-          temp_key[1] <= key[255:128];  
-        end else begin 
-          state <= `WAIT_STATE;
-          temp_key[1] <= 128'd0;
+    else begin
+      case (state)
+        `WAIT_STATE: begin
+          valid_final <= 0;
+          if (ready) begin 
+            state <= `INIT_STATE;
+            temp_key[1] <= key[255:128];  
+          end else begin 
+            state <= `WAIT_STATE;
+            temp_key[1] <= 128'd0;
+          end
         end
-      end
-      `INIT_STATE: begin
-        valid <= 0;
-        round <= 4'd1;
-        state <= `ENCRYPT_STATE;
-        encrypt_state <= `SUBBYTES;    
-        temp_key[1] <= temp_key[0];
-        temp_data_in[1] <= temp_data_out[0];       
-      end
-      `ENCRYPT_STATE: begin
-        case (encrypt_state)
-          `SUBBYTES: begin
-            encrypt_state <= `SHIFTROWS;
-            temp_data_in[2] <= temp_data_out[1];
-          end
-          `SHIFTROWS: begin
-            encrypt_state <= `MIXCOLUMNS;
-            temp_data_in[3] <= temp_data_out[2];
-          end
-          `MIXCOLUMNS: begin
-            encrypt_state <= `ADDROUNDKEY;
-            temp_data_in[0] <= temp_data_out[3];
-            temp_key[1] <= temp_key[0];
-          end
-          `ADDROUNDKEY: begin 
-            temp_data_in[1] <= temp_data_out[0];
-            encrypt_state <= `SUBBYTES;
-            round <= round + 4'd1;
-            if (round == 4'd13) begin //SHA256 has 14 total encrypt round 
-              state <= `FINAL_STATE; 
+        `INIT_STATE: begin
+          valid_final <= 0;
+          round <= 4'd1;
+          state <= `ENCRYPT_STATE;
+          encrypt_state <= `SUBBYTES;    
+          temp_key[1] <= temp_key[0];
+          temp_data_in[1] <= temp_data_out[0];       
+        end
+        `ENCRYPT_STATE: begin
+          case (encrypt_state)
+            `SUBBYTES: begin
+              encrypt_state <= `SHIFTROWS;
+              temp_data_in[2] <= temp_data_out[1];
             end
-            else begin
-              state <= `ENCRYPT_STATE;
+            `SHIFTROWS: begin
+              encrypt_state <= `MIXCOLUMNS;
+              temp_data_in[3] <= temp_data_out[2];
             end
-          end
-        endcase
-      end
-      `FINAL_STATE: begin
-        case (encrypt_state)
-          `SUBBYTES: begin
-            encrypt_state <= `SHIFTROWS;
-            temp_data_in[2] <= temp_data_out[1];
-          end
-          `SHIFTROWS: begin
-            encrypt_state <= `ADDROUNDKEY;
-            temp_data_in[3] <= temp_data_out[2];
-            temp_key[1] <= temp_key[0];
-          end
-          `ADDROUNDKEY: begin 
-            temp_data_in[1] <= temp_data_out[0];
-            encrypt_state <= `SUBBYTES;
-            valid <= 1;
-            if (ready) begin 
-              state <= `INIT_STATE; 
+            `MIXCOLUMNS: begin
+              encrypt_state <= `ADDROUNDKEY;
+              temp_data_in[0] <= temp_data_out[3];
+              temp_key[1] <= temp_key[0];
             end
-            else begin
-              state <= `WAIT_STATE;
+            `ADDROUNDKEY: begin 
+              temp_data_in[1] <= temp_data_out[0];
+              encrypt_state <= `SUBBYTES;
+              round <= round + 4'd1;
+              if (round == 4'd13) begin //SHA256 has 14 total encrypt round 
+                state <= `FINAL_STATE; 
+              end
+              else begin
+                state <= `ENCRYPT_STATE;
+              end
             end
-          end
-        endcase
-      end
-      default: begin
-        state <= `WAIT_STATE;
-      end
-    endcase
+          endcase
+        end
+        `FINAL_STATE: begin
+          case (encrypt_state)
+            `SUBBYTES: begin
+              encrypt_state <= `SHIFTROWS;
+              temp_data_in[2] <= temp_data_out[1];
+            end
+            `SHIFTROWS: begin
+              encrypt_state <= `ADDROUNDKEY;
+              temp_data_in[3] <= temp_data_out[2];
+              temp_key[1] <= temp_key[0];
+            end
+            `ADDROUNDKEY: begin 
+              temp_data_in[1] <= temp_data_out[0];
+              encrypt_state <= `SUBBYTES;
+              valid_final <= 1;
+              if (ready) begin 
+                state <= `INIT_STATE; 
+              end
+              else begin
+                state <= `WAIT_STATE;
+              end
+            end
+          endcase
+        end
+        default: begin
+          state <= `WAIT_STATE;
+        end
+      endcase
+    end
   end
 
 endmodule // mainUnit
