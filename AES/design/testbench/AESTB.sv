@@ -3,7 +3,7 @@
 `define FINISH_TIME 2000000
 `define NUM_TEST_VECTORS 100
 
-module ExampleTb;
+module AESTb;
  
   reg clk;
   reg reset;
