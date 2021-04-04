@@ -4,4 +4,4 @@ outputs:
   - design.v
 
 commands:
-  - cat AES.v > outputs/design.v 
+  - cat AESEncrypt.v > outputs/design.v 
