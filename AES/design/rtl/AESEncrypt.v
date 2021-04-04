@@ -35,7 +35,7 @@ module AESEncrypt
   reg [ 127:0] temp_key[1:0];
   reg [1:0] state;
   reg [ 3: 0] round;
-  reg encrypt_state [1:0]; // there are 4
+  reg [1:0] encrypt_state; // there are 4
 
   AddRoundKey AddRoundKey(.in(temp_data_in[0]),.key(temp_key[1]), .out(temp_data_out[0]));
   SubBytes SubBytes(.in(temp_data_in[1]), .out(temp_data_out[1]));
