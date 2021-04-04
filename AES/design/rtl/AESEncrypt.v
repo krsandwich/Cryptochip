@@ -47,15 +47,15 @@ module AESEncrypt
   //---------
   // FSM
   //---------
-  always_ff @(posedge clk) begin
-    if (ready) begin
-      temp_data_in [0] <= data_in;
-      orig_key <= key;
-    end
-    if (state == `FINAL_STATE && encrypt_state == `ADDROUNDKEY) begin 
-      data_final <= temp_data_out[0];
-    end
-  end
+  // always_ff @(posedge clk) begin
+  //   if (ready) begin
+  //     temp_data_in [0] <= data_in;
+  //     orig_key <= key;
+  //   end
+  //   if (state == `FINAL_STATE && encrypt_state == `ADDROUNDKEY) begin 
+  //     data_final <= temp_data_out[0];
+  //   end
+  // end
   assign data_out = data_final;
   assign valid = valid_final;
 
@@ -72,7 +72,9 @@ module AESEncrypt
           valid_final <= 0;
           if (ready) begin 
             state <= `INIT_STATE;
-            temp_key[1] <= key[255:128];  
+            temp_key[1] <= key[255:128]; 
+            temp_data_in [0] <= data_in; 
+            orig_key <= key;
           end else begin 
             state <= `WAIT_STATE;
             temp_key[1] <= 128'd0;
@@ -129,6 +131,7 @@ module AESEncrypt
               temp_data_in[1] <= temp_data_out[0];
               encrypt_state <= `SUBBYTES;
               valid_final <= 1;
+              data_final <= temp_data_out[0];
               if (ready) begin 
                 state <= `INIT_STATE; 
               end
