@@ -57,7 +57,7 @@ module AESTb;
   initial begin
     $vcdplusfile("dump.vcd");
     $vcdplusmemon();
-    $vcdpluson(0, ExampleTb);
+    $vcdpluson(0, AESTb);
     #(`FINISH_TIME);
     $finish(2);
   end
