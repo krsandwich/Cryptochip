@@ -30,6 +30,7 @@ module AESEncrypt
   //---------
   reg [ 127: 0] temp_data_in  [13:0];
   reg [ 127: 0] temp_data_out [13:0];
+  reg [ 127: 0] data_final;
   reg [ 255:0] orig_key;  //must save original key
   reg [ 127:0] temp_key[1:0];
   reg [1:0] state;
