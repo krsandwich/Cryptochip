@@ -48,18 +48,19 @@ module ExpandKey
    //    rotstw = {new_sboxw[23 : 00], new_sboxw[31 : 24]};
    //    trw = rotstw ^ rconw;
    //    tw = new_sboxw;
-
+  reg [127:0] temp_out;
   always @(*) begin
     if (round == 4'd0) begin
-      out <= 128'd0;
+      temp_out <= 128'd0;
     end
     else if (round == 4'd1) begin
-      out <= 128'd1;
+      temp_out <= 128'd1;
     end
     else begin
-    	out <= 128'd2;
+    	temp_out <= 128'd2;
     end
   end
+  assign out = temp_out;
 	 //  always @(*) begin
   //   if (round == 4'd0) begin
   //     out <= in[255:128];
