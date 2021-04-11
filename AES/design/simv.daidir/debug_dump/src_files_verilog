@@ -1,0 +1,16 @@
+/home/users/krzanich/EE272B/AES/design/rtl/AESDecryptPipe.v
+/home/users/krzanich/EE272B/AES/design/rtl/AESEncryptPipe.v
+/home/users/krzanich/EE272B/AES/design/rtl/AddRoundKey.v
+/home/users/krzanich/EE272B/AES/design/rtl/DecryptRound.v
+/home/users/krzanich/EE272B/AES/design/rtl/EncryptRound.v
+/home/users/krzanich/EE272B/AES/design/rtl/ExpandKeyPipe.v
+/home/users/krzanich/EE272B/AES/design/rtl/InvMixColumns.v
+/home/users/krzanich/EE272B/AES/design/rtl/InvSBox.v
+/home/users/krzanich/EE272B/AES/design/rtl/InvShiftRows.v
+/home/users/krzanich/EE272B/AES/design/rtl/InvSubBytes.v
+/home/users/krzanich/EE272B/AES/design/rtl/MixColumns.v
+/home/users/krzanich/EE272B/AES/design/rtl/SBox.v
+/home/users/krzanich/EE272B/AES/design/rtl/ShiftRows.v
+/home/users/krzanich/EE272B/AES/design/rtl/SubBytes.v
+/home/users/krzanich/EE272B/AES/design/rtl/SubWord.v
+/home/users/krzanich/EE272B/AES/design/testbench/AESPipeTb.sv

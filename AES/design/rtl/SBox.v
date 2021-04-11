@@ -4,7 +4,7 @@
 //-----------------------------------------------------------------------------
 
 `default_nettype none
-module S_Box
+module SBox
 (
   input  wire [   7:0] in,
   input  wire [   7:0] out

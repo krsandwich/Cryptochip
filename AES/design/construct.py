@@ -27,7 +27,7 @@ def construct():
     'adk'            : adk_name,
     'adk_view'       : adk_view,
     'topographical'  : True,
-    'testbench_name' : 'ExampleTb',
+    'testbench_name' : 'AESTb',
     'strip_path'     : 'ExampleTb/Example_inst',
     'saif_instance'  : 'ExampleTb/Example_inst'
   }
@@ -79,8 +79,8 @@ def construct():
   # Need to use clone if you want to instantiate the same node more than once
   # in your graph but configure it differently, for example, RTL simulation and
   # gate-level simulation use the same VCS node
-  
-  vcs_sim         = Step( 'synopsys-vcs-sim',              default=True )
+
+  vcs_sim         = Step( this_dir + '/synopsys-vcs-sim'                )
   rtl_sim         = vcs_sim.clone()
   gl_sim          = vcs_sim.clone()
   rtl_sim.set_name( 'rtl-sim' )
@@ -168,7 +168,7 @@ def construct():
 
   g.connect_by_name( rtl,             rtl_sim         ) # design.v
   g.connect_by_name( testbench,       rtl_sim         ) # testbench.sv
-  g.connect( rtl_sim.o( 'design.vpd' ), gen_saif_rtl.i( 'run.vcd' ) ) 
+  g.connect( rtl_sim.o( 'design.vpd' ), gen_saif_rtl.i( 'run.vcd' ) ) # TODO: FIX
   # FIXME: VCS sim node generates a VCD file but gives it a VPD extension
   g.connect_by_name( rtl,             dc              )
   g.connect_by_name( constraints,     dc              )
@@ -219,7 +219,7 @@ def construct():
   g.connect( testbench.o( 'design.args.gls'  ), gl_sim.i( 'design.args'      ) )
   g.connect( testbench.o( 'test_vectors.txt' ), gl_sim.i( 'test_vectors.txt' ) )
 
-  g.connect( gl_sim.o( 'design.vpd' ), gen_saif_gl.i( 'run.vcd' ) ) 
+  g.connect( gl_sim.o( 'design.vpd' ), gen_saif_gl.i( 'run.vcd' ) ) # TODO: FIX
   # FIXME: VCS sim node generates a VCD file but gives it a VPD extension
 
 

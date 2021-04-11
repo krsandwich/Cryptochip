@@ -1,0 +1,191 @@
+0 
+43
++itf+/cad/synopsys/vcs/Q-2020.03-SP2/linux64/lib/vcsdp_lite.tab
++vcsd1
++vpi
+-Mamsrun=
+-Masflags=
+-Mcc=gcc
+-Mcfl= -pipe -fPIC -O -I/cad/synopsys/vcs/Q-2020.03-SP2/include
+-Mcplusplus=g++
+-Mcrt0=
+-Mcrtn=
+-Mcsrc=
+-Mexternalobj=
+-Mldflags= -rdynamic
+-Mobjects= /cad/synopsys/vcs/Q-2020.03-SP2/linux64/lib/libvirsim.so /cad/synopsys/vcs/Q-2020.03-SP2/linux64/lib/liberrorinf.so /cad/synopsys/vcs/Q-2020.03-SP2/linux64/lib/libsnpsmalloc.so /cad/synopsys/vcs/Q-2020.03-SP2/linux64/lib/libvfs.so
+-Mout=simv
+-Msaverestoreobj=/cad/synopsys/vcs/Q-2020.03-SP2/linux64/lib/vcs_save_restore_new.o
+-Msyslibs=-ldl
+-Mvcsaceobjs=
+-Mxcflags= -pipe -fPIC -I/cad/synopsys/vcs/Q-2020.03-SP2/include
+-Mxllcflags=
+-debug_access+pp
+-full64
+-gen_obj
+-picarchive
+-sverilog
+-timescale=1ns/1ps
+/cad/synopsys/vcs/Q-2020.03-SP2/linux64/bin/vcs1
+testbench/AESPipeTb.sv
+rtl/AESEncryptPipe.v
+rtl/EncryptRound.v
+rtl/AddRoundKey.v
+rtl/ExpandKeyPipe.v
+rtl/MixColumns.v
+rtl/SBox.v
+rtl/ShiftRows.v
+rtl/SubBytes.v
+rtl/SubWord.v
+rtl/AESDecryptPipe.v
+rtl/DecryptRound.v
+rtl/InvMixColumns.v
+rtl/InvSBox.v
+rtl/InvShiftRows.v
+rtl/InvSubBytes.v
+119
+port=5902
+host=caddy01.stanford.edu
+_LMFILES__modshare=/cad/modules/modulefiles/tools/xcelium/latest:5:/cad/modules/modulefiles/tools/pts/latest:5:/cad/modules/modulefiles/tools/netgen/latest:5:/cad/modules/modulefiles/tools/genus/latest:5:/cad/modules/modulefiles/tools/innovus/latest:5:/cad/modules/modulefiles/tools/calibre/latest:5:/cad/modules/modulefiles/tools/vcs/latest:5:/cad/modules/modulefiles/tools/prime/Q-2019.12-SP2:5:/cad/modules/modulefiles/tools/dc_shell/latest:5:/cad/modules/modulefiles/tools/lc/latest:5:/cad/modules/modulefiles/tools/magic/latest:5:/cad/modules/modulefiles/tools/base/rsg:5
+_LMFILES_=/cad/modules/modulefiles/tools/base/rsg:/cad/modules/modulefiles/tools/vcs/latest:/cad/modules/modulefiles/tools/lc/latest:/cad/modules/modulefiles/tools/dc_shell/latest:/cad/modules/modulefiles/tools/xcelium/latest:/cad/modules/modulefiles/tools/genus/latest:/cad/modules/modulefiles/tools/innovus/latest:/cad/modules/modulefiles/tools/calibre/latest:/cad/modules/modulefiles/tools/pts/latest:/cad/modules/modulefiles/tools/prime/Q-2019.12-SP2:/cad/modules/modulefiles/tools/magic/latest:/cad/modules/modulefiles/tools/netgen/latest
+XDG_SESSION_ID=c22
+XDG_RUNTIME_DIR=/run/user/315754
+XDG_DATA_DIRS=/home/users/krzanich/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share
+XDG_CURRENT_DESKTOP=MATE
+WEBSOCKIFY_CMD=/usr/bin/websockify
+VTE_VERSION=5204
+VRST_HOME=/cad/cadence/XCELIUMMAIN_20.09.007_lnx86
+VMR_MODE_FLAG=64
+VIRTUAL_ENV=/home/users/krzanich/venv
+VCS_TARGET_ARCH=linux64
+VCS_MX_HOME_INTERNAL=1
+VCS_MODE_FLAG=64
+VCS_HOME=/cad/synopsys/vcs/Q-2020.03-SP2
+VCS_DEPTH=0
+VCS_CC=gcc
+VCS_ARG_ADDED_FOR_TMP=1
+VCS_ARCH=linux64
+UNAME=/bin/uname
+TOOL_HOME=/cad/synopsys/vcs/Q-2020.03-SP2/linux64
+SYNOPSYS_PTS=/cad/synopsys/prime/Q-2019.12-SP2
+SYNOPSYS_LICENSE=27000@cadlic0.stanford.edu
+SYNOPSYS_LC_ROOT=/cad/synopsys/lc/M-2017.06-SP3
+SYNOPSYS=/cad/synopsys/syn/L-2016.03-SP5-5
+SSH_ASKPASS=/usr/libexec/openssh/gnome-ssh-askpass
+SPRINGSOFT_LICENSE=5219@cadlic0.stanford.edu
+SLURM_WORKING_CLUSTER=caddy:172.24.94.99:6817:9216:109
+SLURM_TOPOLOGY_ADDR_PATTERN=node
+SLURM_TOPOLOGY_ADDR=caddy01
+SLURM_TASK_PID=3867
+SLURM_TASKS_PER_NODE=1
+SLURM_SUBMIT_HOST=ondemand.farmshare.sunet
+SLURM_SUBMIT_DIR=/var/www/ood/apps/sys/dashboard
+SLURM_PROCID=0
+SLURM_PRIO_PROCESS=0
+SLURM_NODE_ALIASES=(null)
+SLURM_NODELIST=caddy01
+SLURM_NODEID=0
+SLURM_NNODES=1
+SLURM_MEM_PER_NODE=96517
+SLURM_LOCALID=0
+SLURM_JOB_USER=krzanich
+SLURM_JOB_UID=315754
+SLURM_JOB_QOS=normal
+SLURM_JOB_PARTITION=normal
+SLURM_JOB_NUM_NODES=1
+SLURM_JOB_NODELIST=caddy01
+SLURM_JOB_NAME=sys/dashboard/sys/bc_desktop/caddyshack
+SLURM_JOB_ID=338
+SLURM_JOB_GID=37
+SLURM_JOB_CPUS_PER_NODE=1
+SLURM_JOB_ACCOUNT=none
+SLURM_JOBID=338
+SLURM_GTIDS=0
+SLURM_GET_USER_ENV=1
+SLURM_EXPORT_ENV=NONE
+SLURM_CPUS_ON_NODE=1
+SLURM_CONF=/etc/slurm/slurm.conf
+SLURM_CLUSTER_NAME=caddy
+SLURMD_NODENAME=caddy01
+SESSION_MANAGER=local/unix:@/tmp/.ICE-unix/3998,unix/unix:/tmp/.ICE-unix/3998
+SCRNAME=vcs
+SCRIPT_NAME=vcs
+QT_PLUGIN_PATH=/usr/lib64/kde4/plugins:/usr/lib/kde4/plugins
+QT_GRAPHICSSYSTEM_CHECKED=1
+QTLIB=/usr/lib64/qt-3.3/lib
+QTINC=/usr/lib64/qt-3.3/include
+QTDIR=/usr/lib64/qt-3.3
+PDKPATH=/afs/ir.stanford.edu/class/ee272/PDKS/sky130A
+PATH_modshare=/cad/cadence/XCELIUMMAIN_20.09.007_lnx86/tools/bin:5:/cad/cadence/XCELIUMMAIN_20.09.007_lnx86/bin:5:/cad/synopsys/prime/Q-2019.12-SP2/amd64/syn/bin/:5:/usr/bin:1:/cad/mentor/2019.11/Catapult_Synthesis_10.4b-841621/Mgc_home/bin:1:/cad/mentor/2013.2/ixl_cal_2013.2_18.13/bin:5:/cad/cadence/INNOVUS20.13.000.lnx86/bin:5:/home/users/krzanich/.local/bin:1:/cad/synopsys/syn/L-2016.03-SP5-5/amd64/syn/bin/:5:/usr/local/bin:1:/cad/cadence/GENUS_20.10.000_lnx86/tools/synth/bin:5:/cad/synopsys/lc/M-2017.06-SP3/bin/:5:/cad/synopsys/vcs/Q-2020.03-SP2/bin:5:/cad/synopsys/pts/M-2017.06-SP3/bin:5:/cad/magic/8.3/bin:5:/bin:1:/home/users/krzanich/venv/bin:999999999:/cad/synopsys/pts/M-2017.06-SP3/amd64/syn/bin/:5:/cad/netgen/1.5/bin:5:/cad/cadence/XCELIUMMAIN_20.09.007_lnx86/tools/cdsgcc/gcc/bin:5:/home/users/krzanich/bin:1:/afs/ir.stanford.edu/class/cs140/x86_64/bin:1:/opt/TurboVNC/bin:1:/cad/common/Linux/x86_64/bin:5:/usr/sbin:1:/cad/synopsys/prime/Q-2019.12-SP2/bin:5:/usr/local/sbin:1:/usr/lib64/qt-3.3/bin:1:/cad/cadence/GENUS_20.10.000_lnx86/bin:5:/cad/cadence/GENUS_20.10.000_lnx86/tools/bin:5:/cad/synopsys/vcs/Q-2020.03-SP2/gui/dve/bin:5
+OVA_UUM=0
+OA_HOME=/cad/cadence/INNOVUS20.13.000.lnx86/share/oa
+NETGEN_ROOT=/cad/netgen/1.5
+MODULES_REL=2.6.32
+MODULES_OS=Linux
+MODULES_MACH=x86_64
+MODULESHOME=/cad/modules/tcl
+MODULEPATH_modshare=/home/users/krzanich/.modules:5:/cad/modules/modulefiles/tools:5:/usr/share/Modules/modulefiles:1:/etc/modulefiles:1
+MODULEPATH=/home/users/krzanich/.modules:/cad/modules/modulefiles/tools:/usr/share/Modules/modulefiles:/etc/modulefiles
+MGLS_LICENSE_FILE=1717@cadlic0.stanford.edu
+MGC_HOME=/cad/mentor/2013.2/ixl_cal_2013.2_18.13
+MFLOWGEN_PATH=/afs/ir.stanford.edu/class/ee272/
+MATE_DESKTOP_SESSION_ID=this-is-deprecated
+MANPATH_modshare=/cad/synopsys/lc/M-2017.06-SP3/doc/lc/man:5:/cad/synopsys/prime/Q-2019.12-SP2/doc/pt/man:5:/cad/synopsys/pts/M-2017.06-SP3/doc/pt/man:5:/cad/synopsys/syn/L-2016.03-SP5-5/doc/snps_tcl/man:5:/cad/synopsys/syn/L-2016.03-SP5-5/doc/syn/man:5:/cad/synopsys/vcs/Q-2020.03-SP2/doc/man:5:/cad/synopsys/prime/Q-2019.12-SP2/doc/snps_tcl/man:5:/cad/synopsys/pts/M-2017.06-SP3/doc/snps_tcl/man:5:/cad/synopsys/syn/L-2016.03-SP5-5/doc/snps_gui/man:5:/cad/synopsys/lc/M-2017.06-SP3/doc/snps_tcl/man:5:/cad/synopsys/lc/M-2017.06-SP3/doc/syn/man:5
+MAGIC_ROOT=/cad/magic/8.3
+LOADEDMODULES_modshare=:999999999:xcelium/latest:5:pts/latest:5:netgen/latest:5:genus/latest:5:innovus/latest:5:calibre/latest:5:vcs/latest:5:prime/Q-2019.12-SP2:5:dc_shell/latest:5:lc/latest:5:magic/latest:5:base/rsg:5
+LOADEDMODULES=:base/rsg:vcs/latest:lc/latest:dc_shell/latest:xcelium/latest:genus/latest:innovus/latest:calibre/latest:pts/latest:prime/Q-2019.12-SP2:magic/latest:netgen/latest
+LM_LICENSE_FILE_modshare=1717@cadlic0.stanford.edu:5
+LESSOPEN=||/usr/bin/lesspipe.sh %s
+LD_LIBRARY_PATH_modshare=/cad/mentor/2013.2/ixl_cal_2013.2_18.13/pkgs/icv_lib/lib64:999999999:/cad/cadence/INNOVUS20.13.000.lnx86/tools.lnx86/lib/64bit:1:/cad/common/Linux/x86_64/lib:5:/cad/cadence/INNOVUS20.13.000.lnx86/share/oa/lib/linux_rhel60_64/opt:5:/cad/mentor/2013.2/ixl_cal_2013.2_18.13/pkgs/umc_libs/lib/lnx32:999999999
+LC_ALL=C
+KDEDIRS=/usr
+IUSHOME=/cad/cadence/XCELIUMMAIN_20.09.007_lnx86
+HISTCONTROL=ignoreboth
+GUESTFISH_RESTORE=\e[0m
+GUESTFISH_PS1=\[\e[1;32m\]><fs>\[\e[0;31m\] 
+GUESTFISH_OUTPUT=\e[0m
+GUESTFISH_INIT=\e[1;34m
+GTK_OVERLAY_SCROLLING=0
+ENVIRONMENT=BATCH
+DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-2HdGRSAcZj,guid=d53e91fba7c5fb25a532e0f2605f8e08
+CVS_RSH=ssh
+COLORTERM=truecolor
+CDS_LIC_FILE=5280@cadlic0
+CDS_AUTO_64BIT=ALL
+CDK_DIR=/afs/ir.stanford.edu/class/ee271/lab_1/lib/ncsu-cdk-1.6.0.beta/
+CAD_COMMON=/cad/common/Linux/x86_64
+CADENCE_LICENSE=5280@cadlic0.stanford.edu
+BASH_FUNC_wait_until_port_used()=() {  local port="${1}";_ local time="${2:-30}";_ for ((i=1; i<=time*2; i++))_ do_ port_used "${port}";_ port_status=$?;_ if [ "$port_status" == "0" ]; then_ return 0;_ else_ if [ "$port_status" == "127" ]; then_ echo "commands to find port were either not found or inaccessible.";_ echo "command options are lsof, nc, bash's /dev/tcp, or python (or python3) with socket lib.";_ return 127;_ fi;_ fi;_ sleep 0.5;_ done;_ return 1_}
+BASH_FUNC_source_helpers()=() {  function random_number () _ { _ shuf -i ${1}-${2} -n 1_ };_ export -f random_number;_ function port_used_python () _ { _ python -c "import socket; socket.socket().connect(('$1',$2))" > /dev/null 2>&1_ };_ function port_used_python3 () _ { _ python3 -c "import socket; socket.socket().connect(('$1',$2))" > /dev/null 2>&1_ };_ function port_used_nc () _ { _ nc -w 2 "$1" "$2" < /dev/null > /dev/null 2>&1_ };_ function port_used_lsof () _ { _ lsof -i :"$2" > /dev/null 2>&1_ };_ function port_used_bash () _ { _ local bash_supported=$(strings /bin/bash 2>/dev/null | grep tcp);_ if [ "$bash_supported" == "/dev/tcp/*/*" ]; then_ ( : < /dev/tcp/$1/$2 ) > /dev/null 2>&1;_ else_ return 127;_ fi_ };_ function port_used () _ { _ local port="${1#*:}";_ local host=$((expr "${1}" : '\(.*\):' || echo "localhost") | awk 'END{print $NF}');_ local port_strategies=(port_used_nc port_used_lsof port_used_bash port_used_python port_used_python3);_ for strategy in ${port_strategies[@]};_ do_ $strategy $host $port;_ status=$?;_ if [[ "$status" == "0" ]] || [[ "$status" == "1" ]]; then_ return $status;_ fi;_ done;_ return 127_ };_ export -f port_used;_ function find_port () _ { _ local host="${1:-localhost}";_ local port=$(random_number "${2:-2000}" "${3:-65535}");_ while port_used "${host}:${port}"; do_ port=$(random_number "${2:-2000}" "${3:-65535}");_ done;_ echo "${port}"_ };_ export -f find_port;_ function wait_until_port_used () _ { _ local port="${1}";_ local time="${2:-30}";_ for ((i=1; i<=time*2; i++))_ do_ port_used "${port}";_ port_status=$?;_ if [ "$port_status" == "0" ]; then_ return 0;_ else_ if [ "$port_status" == "127" ]; then_ echo "commands to find port were either not found or inaccessible.";_ echo "command options are lsof, nc, bash's /dev/tcp, or python (or python3) with socket lib.";_ return 127;_ fi;_ fi;_ sleep 0.5;_ done;_ return 1_ };_ export -f wait_until_port_used;_ function create_passwd () _ { _ tr -cd 'a-zA-Z0-9' < /dev/urandom 2> /dev/null | head -c${1:-8}_ };_ export -f create_passwd_}
+BASH_FUNC_random_number()=() {  shuf -i ${1}-${2} -n 1_}
+BASH_FUNC_port_used()=() {  local port="${1#*:}";_ local host=$((expr "${1}" : '\(.*\):' || echo "localhost") | awk 'END{print $NF}');_ local port_strategies=(port_used_nc port_used_lsof port_used_bash port_used_python port_used_python3);_ for strategy in ${port_strategies[@]};_ do_ $strategy $host $port;_ status=$?;_ if [[ "$status" == "0" ]] || [[ "$status" == "1" ]]; then_ return $status;_ fi;_ done;_ return 127_}
+BASH_FUNC_module()=() {  eval `$TCLSH /cad/modules/tcl/modulecmd.tcl sh $*`_}
+BASH_FUNC_find_port()=() {  local host="${1:-localhost}";_ local port=$(random_number "${2:-2000}" "${3:-65535}");_ while port_used "${host}:${port}"; do_ port=$(random_number "${2:-2000}" "${3:-65535}");_ done;_ echo "${port}"_}
+BASH_FUNC_create_passwd()=() {  tr -cd 'a-zA-Z0-9' < /dev/urandom 2> /dev/null | head -c${1:-8}_}
+AMSHOME=/cad/cadence/XCELIUMMAIN_20.09.007_lnx86
+0
+17
+1617930734 rtl/InvSubBytes.v
+1617850287 rtl/InvShiftRows.v
+1617930718 rtl/InvSBox.v
+1617930834 rtl/InvMixColumns.v
+1617848968 rtl/DecryptRound.v
+1617848598 rtl/AESDecryptPipe.v
+1617930708 rtl/SubWord.v
+1617930684 rtl/SubBytes.v
+1617555867 rtl/ShiftRows.v
+1617930672 rtl/SBox.v
+1617493387 rtl/MixColumns.v
+1617834865 rtl/ExpandKeyPipe.v
+1617498734 rtl/AddRoundKey.v
+1617848658 rtl/EncryptRound.v
+1617848668 rtl/AESEncryptPipe.v
+1617931866 testbench/AESPipeTb.sv
+1599016237 /cad/synopsys/vcs/Q-2020.03-SP2/linux64/lib/vcsdp_lite.tab
+4
+1599016945 /cad/synopsys/vcs/Q-2020.03-SP2/linux64/lib/libvirsim.so
+1599016702 /cad/synopsys/vcs/Q-2020.03-SP2/linux64/lib/liberrorinf.so
+1599016660 /cad/synopsys/vcs/Q-2020.03-SP2/linux64/lib/libsnpsmalloc.so
+1599016699 /cad/synopsys/vcs/Q-2020.03-SP2/linux64/lib/libvfs.so
+1617931891 simv.daidir
+-1 partitionlib
