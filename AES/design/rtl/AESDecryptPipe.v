@@ -28,42 +28,57 @@ module AESDecryptPipe
   // INPUT OUTPUT 
   // - this is for storing input and output data 
   //---------
-  reg [ 127: 0] temp_data  [14:0];
-  reg [   0: 0] temp_valid [14:0];
+  reg [ 127: 0] temp_data  [15:0];
+  reg [   0: 0] temp_ready;
+  reg [   0: 0] valid_final;
   reg [ 127: 0] data_final;
-  reg valid_final;
-  reg [ 255:0] orig_key;  //must save original key
-  reg [ 255:0] next_key;  //must save next key 
-  reg [ 255:0] input_key;  //must save original key
-  reg [ 127:0] temp_key[1:0];
 
 
-  DecryptInitRound    Round0 (.clk(clk), .rst_n(rst_n), .data_in(data_in), 
-                       .ready(ready), .key(key[14]), .data_out(temp_data[0]), 
-                       .valid(temp_valid[0])); 
+  DecryptInitRound  Round0 (.data_in(temp_data[0]), .key(key[14]),
+                            .data_out(temp_data[1]));
 
   genvar i;
   generate
-      for (i=0; i<13; i+=1) begin : EncryptRounds 
-      DecryptRound  DecryptRound (
-                      .clk(clk), .rst_n(rst_n), .data_in(temp_data[i]), 
-                      .ready(temp_valid[i]), .key(key[13-i]), 
-                      .data_out(temp_data[i+1]), .valid(temp_valid[i+1])
-      );
-  end 
+    for (i=0; i<13; i+=1) begin : DecryptRounds 
+      DecryptRound  DecryptRound (.data_in(temp_data[i+1]), .key(key[13-i]),
+                                  .data_out(temp_data[i+2]));
+    end 
   endgenerate
 
-  DecryptFinalRound   Round14(.clk(clk), .rst_n(rst_n), .data_in(temp_data[13]), 
-                       .ready(temp_valid[13]), .key(key[0]), 
-                       .data_out(temp_data[14]), .valid(temp_valid[14]));
+  DecryptLastRound  Round14 (.data_in(temp_data[14]), .key(key[0]),
+                             .data_out(temp_data[15]));
 
 
 
   //---------
   // FSM
   //---------
-  assign data_out = temp_data[14];
-  assign valid = temp_valid[14];
+  assign data_out = data_final;
+  assign valid = valid_final;
+
+  always_ff @(posedge clk or negedge rst_n) begin
+    if (!rst_n) begin
+      data_final <= 0;
+      valid_final <= 0; 
+    end
+    else begin
+      if (ready) begin
+        temp_ready <= 1;
+        temp_data[0] <= data_in;
+      end else begin 
+        temp_ready <= 0;
+        temp_data[0] <= temp_data[0]; 
+      end
+
+      if(temp_ready) begin
+        data_final <= temp_data[15];
+        valid_final <= 1;
+      end else begin 
+        data_final <= data_final;
+        valid_final <= 0;
+      end
+    end
+  end
 
 
 endmodule // mainUnit

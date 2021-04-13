@@ -27,17 +27,17 @@
 -sverilog
 -timescale=1ns/1ps
 /cad/synopsys/vcs/Q-2020.03-SP2/linux64/bin/vcs1
-testbench/AESPipeTb.sv
-rtl/AESEncryptPipe.v
+testbench/AESTb.sv
+rtl/AESEncrypt.v
 rtl/EncryptRound.v
 rtl/AddRoundKey.v
-rtl/ExpandKeyPipe.v
+rtl/ExpandKey.v
 rtl/MixColumns.v
 rtl/SBox.v
 rtl/ShiftRows.v
 rtl/SubBytes.v
 rtl/SubWord.v
-rtl/AESDecryptPipe.v
+rtl/AESDecrypt.v
 rtl/DecryptRound.v
 rtl/InvMixColumns.v
 rtl/InvSBox.v
@@ -46,7 +46,7 @@ rtl/InvSubBytes.v
 119
 port=5902
 host=caddy01.stanford.edu
-_LMFILES__modshare=/cad/modules/modulefiles/tools/xcelium/latest:5:/cad/modules/modulefiles/tools/pts/latest:5:/cad/modules/modulefiles/tools/netgen/latest:5:/cad/modules/modulefiles/tools/genus/latest:5:/cad/modules/modulefiles/tools/innovus/latest:5:/cad/modules/modulefiles/tools/calibre/latest:5:/cad/modules/modulefiles/tools/vcs/latest:5:/cad/modules/modulefiles/tools/prime/Q-2019.12-SP2:5:/cad/modules/modulefiles/tools/dc_shell/latest:5:/cad/modules/modulefiles/tools/lc/latest:5:/cad/modules/modulefiles/tools/magic/latest:5:/cad/modules/modulefiles/tools/base/rsg:5
+_LMFILES__modshare=/cad/modules/modulefiles/tools/xcelium/latest:6:/cad/modules/modulefiles/tools/pts/latest:6:/cad/modules/modulefiles/tools/netgen/latest:6:/cad/modules/modulefiles/tools/genus/latest:6:/cad/modules/modulefiles/tools/innovus/latest:6:/cad/modules/modulefiles/tools/calibre/latest:6:/cad/modules/modulefiles/tools/vcs/latest:6:/cad/modules/modulefiles/tools/prime/Q-2019.12-SP2:6:/cad/modules/modulefiles/tools/dc_shell/latest:6:/cad/modules/modulefiles/tools/lc/latest:6:/cad/modules/modulefiles/tools/magic/latest:6:/cad/modules/modulefiles/tools/base/rsg:6
 _LMFILES_=/cad/modules/modulefiles/tools/base/rsg:/cad/modules/modulefiles/tools/vcs/latest:/cad/modules/modulefiles/tools/lc/latest:/cad/modules/modulefiles/tools/dc_shell/latest:/cad/modules/modulefiles/tools/xcelium/latest:/cad/modules/modulefiles/tools/genus/latest:/cad/modules/modulefiles/tools/innovus/latest:/cad/modules/modulefiles/tools/calibre/latest:/cad/modules/modulefiles/tools/pts/latest:/cad/modules/modulefiles/tools/prime/Q-2019.12-SP2:/cad/modules/modulefiles/tools/magic/latest:/cad/modules/modulefiles/tools/netgen/latest
 XDG_SESSION_ID=c22
 XDG_RUNTIME_DIR=/run/user/315754
@@ -116,7 +116,7 @@ QTLIB=/usr/lib64/qt-3.3/lib
 QTINC=/usr/lib64/qt-3.3/include
 QTDIR=/usr/lib64/qt-3.3
 PDKPATH=/afs/ir.stanford.edu/class/ee272/PDKS/sky130A
-PATH_modshare=/cad/cadence/XCELIUMMAIN_20.09.007_lnx86/tools/bin:5:/cad/cadence/XCELIUMMAIN_20.09.007_lnx86/bin:5:/cad/synopsys/prime/Q-2019.12-SP2/amd64/syn/bin/:5:/usr/bin:1:/cad/mentor/2019.11/Catapult_Synthesis_10.4b-841621/Mgc_home/bin:1:/cad/mentor/2013.2/ixl_cal_2013.2_18.13/bin:5:/cad/cadence/INNOVUS20.13.000.lnx86/bin:5:/home/users/krzanich/.local/bin:1:/cad/synopsys/syn/L-2016.03-SP5-5/amd64/syn/bin/:5:/usr/local/bin:1:/cad/cadence/GENUS_20.10.000_lnx86/tools/synth/bin:5:/cad/synopsys/lc/M-2017.06-SP3/bin/:5:/cad/synopsys/vcs/Q-2020.03-SP2/bin:5:/cad/synopsys/pts/M-2017.06-SP3/bin:5:/cad/magic/8.3/bin:5:/bin:1:/home/users/krzanich/venv/bin:999999999:/cad/synopsys/pts/M-2017.06-SP3/amd64/syn/bin/:5:/cad/netgen/1.5/bin:5:/cad/cadence/XCELIUMMAIN_20.09.007_lnx86/tools/cdsgcc/gcc/bin:5:/home/users/krzanich/bin:1:/afs/ir.stanford.edu/class/cs140/x86_64/bin:1:/opt/TurboVNC/bin:1:/cad/common/Linux/x86_64/bin:5:/usr/sbin:1:/cad/synopsys/prime/Q-2019.12-SP2/bin:5:/usr/local/sbin:1:/usr/lib64/qt-3.3/bin:1:/cad/cadence/GENUS_20.10.000_lnx86/bin:5:/cad/cadence/GENUS_20.10.000_lnx86/tools/bin:5:/cad/synopsys/vcs/Q-2020.03-SP2/gui/dve/bin:5
+PATH_modshare=/cad/cadence/XCELIUMMAIN_20.09.007_lnx86/tools/bin:6:/cad/cadence/XCELIUMMAIN_20.09.007_lnx86/bin:6:/cad/synopsys/prime/Q-2019.12-SP2/amd64/syn/bin/:6:/usr/bin:1:/cad/mentor/2019.11/Catapult_Synthesis_10.4b-841621/Mgc_home/bin:1:/cad/mentor/2013.2/ixl_cal_2013.2_18.13/bin:6:/cad/cadence/INNOVUS20.13.000.lnx86/bin:6:/home/users/krzanich/.local/bin:1:/cad/synopsys/syn/L-2016.03-SP5-5/amd64/syn/bin/:6:/usr/local/bin:1:/cad/cadence/GENUS_20.10.000_lnx86/tools/synth/bin:6:/cad/synopsys/lc/M-2017.06-SP3/bin/:6:/cad/synopsys/vcs/Q-2020.03-SP2/bin:6:/cad/synopsys/pts/M-2017.06-SP3/bin:6:/cad/magic/8.3/bin:6:/bin:1:/home/users/krzanich/venv/bin:999999999:/cad/synopsys/pts/M-2017.06-SP3/amd64/syn/bin/:6:/cad/netgen/1.5/bin:6:/cad/cadence/XCELIUMMAIN_20.09.007_lnx86/tools/cdsgcc/gcc/bin:6:/home/users/krzanich/bin:1:/afs/ir.stanford.edu/class/cs140/x86_64/bin:1:/opt/TurboVNC/bin:1:/cad/common/Linux/x86_64/bin:6:/usr/sbin:1:/cad/synopsys/prime/Q-2019.12-SP2/bin:6:/usr/local/sbin:1:/usr/lib64/qt-3.3/bin:1:/cad/cadence/GENUS_20.10.000_lnx86/bin:6:/cad/cadence/GENUS_20.10.000_lnx86/tools/bin:6:/cad/synopsys/vcs/Q-2020.03-SP2/gui/dve/bin:6
 OVA_UUM=0
 OA_HOME=/cad/cadence/INNOVUS20.13.000.lnx86/share/oa
 NETGEN_ROOT=/cad/netgen/1.5
@@ -124,19 +124,19 @@ MODULES_REL=2.6.32
 MODULES_OS=Linux
 MODULES_MACH=x86_64
 MODULESHOME=/cad/modules/tcl
-MODULEPATH_modshare=/home/users/krzanich/.modules:5:/cad/modules/modulefiles/tools:5:/usr/share/Modules/modulefiles:1:/etc/modulefiles:1
+MODULEPATH_modshare=/home/users/krzanich/.modules:6:/cad/modules/modulefiles/tools:6:/usr/share/Modules/modulefiles:1:/etc/modulefiles:1
 MODULEPATH=/home/users/krzanich/.modules:/cad/modules/modulefiles/tools:/usr/share/Modules/modulefiles:/etc/modulefiles
 MGLS_LICENSE_FILE=1717@cadlic0.stanford.edu
 MGC_HOME=/cad/mentor/2013.2/ixl_cal_2013.2_18.13
 MFLOWGEN_PATH=/afs/ir.stanford.edu/class/ee272/
 MATE_DESKTOP_SESSION_ID=this-is-deprecated
-MANPATH_modshare=/cad/synopsys/lc/M-2017.06-SP3/doc/lc/man:5:/cad/synopsys/prime/Q-2019.12-SP2/doc/pt/man:5:/cad/synopsys/pts/M-2017.06-SP3/doc/pt/man:5:/cad/synopsys/syn/L-2016.03-SP5-5/doc/snps_tcl/man:5:/cad/synopsys/syn/L-2016.03-SP5-5/doc/syn/man:5:/cad/synopsys/vcs/Q-2020.03-SP2/doc/man:5:/cad/synopsys/prime/Q-2019.12-SP2/doc/snps_tcl/man:5:/cad/synopsys/pts/M-2017.06-SP3/doc/snps_tcl/man:5:/cad/synopsys/syn/L-2016.03-SP5-5/doc/snps_gui/man:5:/cad/synopsys/lc/M-2017.06-SP3/doc/snps_tcl/man:5:/cad/synopsys/lc/M-2017.06-SP3/doc/syn/man:5
+MANPATH_modshare=/cad/synopsys/lc/M-2017.06-SP3/doc/lc/man:6:/cad/synopsys/prime/Q-2019.12-SP2/doc/pt/man:6:/cad/synopsys/pts/M-2017.06-SP3/doc/pt/man:6:/cad/synopsys/syn/L-2016.03-SP5-5/doc/snps_tcl/man:6:/cad/synopsys/syn/L-2016.03-SP5-5/doc/syn/man:6:/cad/synopsys/vcs/Q-2020.03-SP2/doc/man:6:/cad/synopsys/prime/Q-2019.12-SP2/doc/snps_tcl/man:6:/cad/synopsys/pts/M-2017.06-SP3/doc/snps_tcl/man:6:/cad/synopsys/syn/L-2016.03-SP5-5/doc/snps_gui/man:6:/cad/synopsys/lc/M-2017.06-SP3/doc/snps_tcl/man:6:/cad/synopsys/lc/M-2017.06-SP3/doc/syn/man:6
 MAGIC_ROOT=/cad/magic/8.3
-LOADEDMODULES_modshare=:999999999:xcelium/latest:5:pts/latest:5:netgen/latest:5:genus/latest:5:innovus/latest:5:calibre/latest:5:vcs/latest:5:prime/Q-2019.12-SP2:5:dc_shell/latest:5:lc/latest:5:magic/latest:5:base/rsg:5
+LOADEDMODULES_modshare=:999999999:xcelium/latest:6:pts/latest:6:netgen/latest:6:genus/latest:6:innovus/latest:6:calibre/latest:6:vcs/latest:6:prime/Q-2019.12-SP2:6:dc_shell/latest:6:lc/latest:6:magic/latest:6:base/rsg:6
 LOADEDMODULES=:base/rsg:vcs/latest:lc/latest:dc_shell/latest:xcelium/latest:genus/latest:innovus/latest:calibre/latest:pts/latest:prime/Q-2019.12-SP2:magic/latest:netgen/latest
-LM_LICENSE_FILE_modshare=1717@cadlic0.stanford.edu:5
+LM_LICENSE_FILE_modshare=1717@cadlic0.stanford.edu:6
 LESSOPEN=||/usr/bin/lesspipe.sh %s
-LD_LIBRARY_PATH_modshare=/cad/mentor/2013.2/ixl_cal_2013.2_18.13/pkgs/icv_lib/lib64:999999999:/cad/cadence/INNOVUS20.13.000.lnx86/tools.lnx86/lib/64bit:1:/cad/common/Linux/x86_64/lib:5:/cad/cadence/INNOVUS20.13.000.lnx86/share/oa/lib/linux_rhel60_64/opt:5:/cad/mentor/2013.2/ixl_cal_2013.2_18.13/pkgs/umc_libs/lib/lnx32:999999999
+LD_LIBRARY_PATH_modshare=/cad/mentor/2013.2/ixl_cal_2013.2_18.13/pkgs/icv_lib/lib64:999999999:/cad/cadence/INNOVUS20.13.000.lnx86/tools.lnx86/lib/64bit:1:/cad/common/Linux/x86_64/lib:6:/cad/cadence/INNOVUS20.13.000.lnx86/share/oa/lib/linux_rhel60_64/opt:6:/cad/mentor/2013.2/ixl_cal_2013.2_18.13/pkgs/umc_libs/lib/lnx32:999999999
 LC_ALL=C
 KDEDIRS=/usr
 IUSHOME=/cad/cadence/XCELIUMMAIN_20.09.007_lnx86
@@ -168,24 +168,24 @@ AMSHOME=/cad/cadence/XCELIUMMAIN_20.09.007_lnx86
 1617930734 rtl/InvSubBytes.v
 1617850287 rtl/InvShiftRows.v
 1617930718 rtl/InvSBox.v
-1617930834 rtl/InvMixColumns.v
-1617848968 rtl/DecryptRound.v
-1617848598 rtl/AESDecryptPipe.v
+1618092461 rtl/InvMixColumns.v
+1618291861 rtl/DecryptRound.v
+1618291477 rtl/AESDecrypt.v
 1617930708 rtl/SubWord.v
 1617930684 rtl/SubBytes.v
 1617555867 rtl/ShiftRows.v
 1617930672 rtl/SBox.v
 1617493387 rtl/MixColumns.v
-1617834865 rtl/ExpandKeyPipe.v
+1618290600 rtl/ExpandKey.v
 1617498734 rtl/AddRoundKey.v
-1617848658 rtl/EncryptRound.v
-1617848668 rtl/AESEncryptPipe.v
-1617931866 testbench/AESPipeTb.sv
+1618291699 rtl/EncryptRound.v
+1618287103 rtl/AESEncrypt.v
+1618293556 testbench/AESTb.sv
 1599016237 /cad/synopsys/vcs/Q-2020.03-SP2/linux64/lib/vcsdp_lite.tab
 4
 1599016945 /cad/synopsys/vcs/Q-2020.03-SP2/linux64/lib/libvirsim.so
 1599016702 /cad/synopsys/vcs/Q-2020.03-SP2/linux64/lib/liberrorinf.so
 1599016660 /cad/synopsys/vcs/Q-2020.03-SP2/linux64/lib/libsnpsmalloc.so
 1599016699 /cad/synopsys/vcs/Q-2020.03-SP2/linux64/lib/libvfs.so
-1617931891 simv.daidir
+1618293575 simv.daidir
 -1 partitionlib

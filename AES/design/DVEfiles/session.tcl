@@ -1,13 +1,13 @@
 # Begin_DVE_Session_Save_Info
 # DVE full session
-# Saved on Fri Apr 9 10:47:47 2021
+# Saved on Mon Apr 12 22:59:22 2021
 # Designs open: 1
 #   V1: /home/users/krzanich/EE272B/AES/design/dump.vcd
 # Toplevel windows open: 1
 # 	TopLevel.1
-#   Source.1: AESPipeTb
+#   Source.1: AESTb
 #   Group count = 1
-#   Group Group1 signal count = 5
+#   Group Group1 signal count = 11
 # End_DVE_Session_Save_Info
 
 # DVE version: Q-2020.03-SP2_Full64
@@ -66,7 +66,7 @@ if {![gui_exist_window -window TopLevel.1]} {
 } else { 
     set TopLevel.1 TopLevel.1
 }
-gui_show_window -window ${TopLevel.1} -show_state normal -rect {{11 67} {1161 657}}
+gui_show_window -window ${TopLevel.1} -show_state normal -rect {{57 80} {1195 658}}
 
 # ToolBar settings
 gui_set_toolbar_attributes -toolbar {TimeOperations} -dock_state top
@@ -107,23 +107,23 @@ gui_hide_toolbar -toolbar {Testbench}
 # End ToolBar settings
 
 # Docked window settings
-set HSPane.1 [gui_create_window -type HSPane -parent ${TopLevel.1} -dock_state left -dock_on_new_line true -dock_extent 161]
+set HSPane.1 [gui_create_window -type HSPane -parent ${TopLevel.1} -dock_state left -dock_on_new_line true -dock_extent 198]
 catch { set Hier.1 [gui_share_window -id ${HSPane.1} -type Hier] }
-gui_set_window_pref_key -window ${HSPane.1} -key dock_width -value_type integer -value 161
+gui_set_window_pref_key -window ${HSPane.1} -key dock_width -value_type integer -value 198
 gui_set_window_pref_key -window ${HSPane.1} -key dock_height -value_type integer -value -1
 gui_set_window_pref_key -window ${HSPane.1} -key dock_offset -value_type integer -value 0
-gui_update_layout -id ${HSPane.1} {{left 0} {top 0} {width 160} {height 327} {dock_state left} {dock_on_new_line true} {child_hier_colhier 140} {child_hier_coltype 100} {child_hier_colpd 0} {child_hier_col1 0} {child_hier_col2 1} {child_hier_col3 -1}}
-set DLPane.1 [gui_create_window -type DLPane -parent ${TopLevel.1} -dock_state left -dock_on_new_line true -dock_extent 313]
+gui_update_layout -id ${HSPane.1} {{left 0} {top 0} {width 197} {height 327} {dock_state left} {dock_on_new_line true} {child_hier_colhier 140} {child_hier_coltype 100} {child_hier_colpd 0} {child_hier_col1 0} {child_hier_col2 1} {child_hier_col3 -1}}
+set DLPane.1 [gui_create_window -type DLPane -parent ${TopLevel.1} -dock_state left -dock_on_new_line true -dock_extent 301]
 catch { set Data.1 [gui_share_window -id ${DLPane.1} -type Data] }
-gui_set_window_pref_key -window ${DLPane.1} -key dock_width -value_type integer -value 313
+gui_set_window_pref_key -window ${DLPane.1} -key dock_width -value_type integer -value 301
 gui_set_window_pref_key -window ${DLPane.1} -key dock_height -value_type integer -value 327
 gui_set_window_pref_key -window ${DLPane.1} -key dock_offset -value_type integer -value 0
-gui_update_layout -id ${DLPane.1} {{left 0} {top 0} {width 312} {height 327} {dock_state left} {dock_on_new_line true} {child_data_colvariable 161} {child_data_colvalue 100} {child_data_coltype 63} {child_data_col1 0} {child_data_col2 1} {child_data_col3 2}}
-set Console.1 [gui_create_window -type Console -parent ${TopLevel.1} -dock_state bottom -dock_on_new_line true -dock_extent 165]
-gui_set_window_pref_key -window ${Console.1} -key dock_width -value_type integer -value 1151
-gui_set_window_pref_key -window ${Console.1} -key dock_height -value_type integer -value 165
+gui_update_layout -id ${DLPane.1} {{left 0} {top 0} {width 300} {height 327} {dock_state left} {dock_on_new_line true} {child_data_colvariable 161} {child_data_colvalue 100} {child_data_coltype 63} {child_data_col1 0} {child_data_col2 1} {child_data_col3 2}}
+set Console.1 [gui_create_window -type Console -parent ${TopLevel.1} -dock_state bottom -dock_on_new_line true -dock_extent 153]
+gui_set_window_pref_key -window ${Console.1} -key dock_width -value_type integer -value 1139
+gui_set_window_pref_key -window ${Console.1} -key dock_height -value_type integer -value 153
 gui_set_window_pref_key -window ${Console.1} -key dock_offset -value_type integer -value 0
-gui_update_layout -id ${Console.1} {{left 0} {top 0} {width 1150} {height 164} {dock_state bottom} {dock_on_new_line true}}
+gui_update_layout -id ${Console.1} {{left 0} {top 0} {width 1138} {height 152} {dock_state bottom} {dock_on_new_line true}}
 #### Start - Readjusting docked view's offset / size
 set dockAreaList { top left right bottom }
 foreach dockArea $dockAreaList {
@@ -185,14 +185,15 @@ gui_set_time_units 1ps
 # Global: Signal Compare
 
 # Global: Signal Groups
-gui_load_child_values {AESPipeTb.AESDecrypt_inst}
+gui_load_child_values {AESTb.AESEncrypt_inst}
+gui_load_child_values {AESTb.AESDecrypt_inst}
 
 
 set _session_group_1 Group1
 gui_sg_create "$_session_group_1"
 set Group1 "$_session_group_1"
 
-gui_sg_addsignal -group "$_session_group_1" { AESPipeTb.AESDecrypt_inst.ready AESPipeTb.AESDecrypt_inst.data_in AESPipeTb.AESDecrypt_inst.data_out AESPipeTb.AESDecrypt_inst.valid AESPipeTb.AESDecrypt_inst.clk }
+gui_sg_addsignal -group "$_session_group_1" { AESTb.AESEncrypt_inst.clk AESTb.AESEncrypt_inst.rst_n AESTb.AESEncrypt_inst.ready AESTb.AESEncrypt_inst.data_in AESTb.AESEncrypt_inst.key AESTb.AESEncrypt_inst.data_out AESTb.AESEncrypt_inst.valid AESTb.AESDecrypt_inst.ready AESTb.AESDecrypt_inst.data_in AESTb.AESDecrypt_inst.data_out AESTb.AESDecrypt_inst.valid }
 
 # Global: Highlighting
 
@@ -202,7 +203,7 @@ gui_change_stack_mode -mode list
 # Post database loading setting...
 
 # Restore C1 time
-gui_set_time -C1_only 610000
+gui_set_time -C1_only 378889
 
 
 
@@ -227,17 +228,17 @@ gui_list_set_filter -id ${Hier.1} -list { {Package 1} {All 0} {Process 1} {VirtP
 gui_list_set_filter -id ${Hier.1} -text {*}
 gui_hier_list_init -id ${Hier.1}
 gui_change_design -id ${Hier.1} -design V1
-catch {gui_list_expand -id ${Hier.1} AESPipeTb}
-catch {gui_list_select -id ${Hier.1} {AESPipeTb.AESDecrypt_inst}}
+catch {gui_list_expand -id ${Hier.1} AESTb}
+catch {gui_list_select -id ${Hier.1} {AESTb.AESDecrypt_inst}}
 gui_view_scroll -id ${Hier.1} -vertical -set 0
 gui_view_scroll -id ${Hier.1} -horizontal -set 0
 
 # Data 'Data.1'
 gui_list_set_filter -id ${Data.1} -list { {Buffer 1} {Input 1} {Others 1} {Linkage 1} {Output 1} {LowPower 1} {Parameter 1} {All 1} {Aggregate 1} {LibBaseMember 1} {Event 1} {Assertion 1} {Constant 1} {Interface 1} {BaseMembers 1} {Signal 1} {$unit 1} {Inout 1} {Variable 1} }
 gui_list_set_filter -id ${Data.1} -text {*}
-gui_list_show_data -id ${Data.1} {AESPipeTb.AESDecrypt_inst}
+gui_list_show_data -id ${Data.1} {AESTb.AESDecrypt_inst}
 gui_show_window -window ${Data.1}
-catch { gui_list_select -id ${Data.1} {AESPipeTb.AESDecrypt_inst.clk }}
+catch { gui_list_select -id ${Data.1} {AESTb.AESDecrypt_inst.ready AESTb.AESDecrypt_inst.data_in AESTb.AESDecrypt_inst.data_out AESTb.AESDecrypt_inst.valid }}
 gui_view_scroll -id ${Data.1} -vertical -set 0
 gui_view_scroll -id ${Data.1} -horizontal -set 0
 gui_view_scroll -id ${Hier.1} -vertical -set 0
@@ -246,7 +247,7 @@ gui_view_scroll -id ${Hier.1} -horizontal -set 0
 # Source 'Source.1'
 gui_src_value_annotate -id ${Source.1} -switch false
 gui_set_env TOGGLE::VALUEANNOTATE 0
-gui_open_source -id ${Source.1}  -replace -active AESPipeTb /home/users/krzanich/EE272B/AES/design/testbench/AESPipeTb.sv
+gui_open_source -id ${Source.1}  -replace -active AESTb /home/users/krzanich/EE272B/AES/design/testbench/AESTb.sv
 gui_view_scroll -id ${Source.1} -vertical -set 75
 gui_src_set_reusable -id ${Source.1}
 # Restore toplevel window zorder

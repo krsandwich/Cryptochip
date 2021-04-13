@@ -3,54 +3,72 @@
 // 
 // the first round 
 //-----------------------------------------------------------------------------
+`define WAIT_STATE 0
+`define GENERATE_STATE 1
 
 `default_nettype none
 module ExpandKey
 (
-  input  wire [  255:0] in,
-  input  wire [    3:0] round,
-  output wire [  127:0] out,
-  output wire [  255:0] next
+  input  wire [    0:0] clk,
+  input  wire [    0:0] rst_n,
+  input  wire [    0:0] ready,
+  input  wire [  255:0] key_in,
+
+  output wire [  127:0] key_out [14:0],
+  output wire [    0:0] valid
 );
 
-  reg [127:0] temp_out;
-  reg   [7:0] rcon;
-  reg [255:0] next_even; 
-  reg [255:0] next_odd;
-  reg [127:0] out_even;
-  reg [127:0] out_odd;
-  ExpandKeyEvenHelper ExpandKeyEvenHelper(.in(in),.rcon(rcon), .next(next_even), .out(out_even));
-  ExpandKeyOddHelper  ExpandKeyOddHelper (.in(in), .next(next_odd), .out(out_odd));
-  always @(*) begin 
-    case (round)
-      4'd2: begin
-        rcon = 8'h1;
+  wire [127:0] temp_key [14:0];
+  reg  [127:0] temp_out [14:0];
+  reg  [255:0] next_key [14:0]; 
+  reg  [  0:0] temp_ready;
+  reg  [  0:0] temp_valid;
+
+  assign key_out = temp_out;
+  assign valid = temp_valid; 
+
+  always_ff @(posedge clk or negedge rst_n) begin
+    if (!rst_n) begin
+      temp_out <= '{128'd0,128'd0,128'd0,128'd0,128'd0,128'd0,128'd0,128'd0,
+                    128'd0,128'd0,128'd0,128'd0,128'd0,128'd0,128'd0};
+      temp_valid <= 0;
+    end
+    else begin
+      if (ready) begin
+        temp_ready <= 1;
+        next_key[0] <= key_in;
+      end else begin 
+        temp_ready <= 0;
+        next_key[0] <= next_key[0];
       end
-      4'd4: begin
-        rcon = 8'h2;
+
+      if(temp_ready) begin
+        temp_out <= temp_key;
+        temp_valid <= 1;
+      end else begin 
+        temp_out <= temp_out;
+        temp_valid <= 0;
       end
-      4'd6: begin
-        rcon = 8'h4;
-      end
-      4'd8: begin
-        rcon = 8'h8;
-      end
-      4'd10: begin
-        rcon = 8'h10;
-      end
-      4'd12: begin
-        rcon = 8'h20;
-      end
-      4'd14: begin
-        rcon = 8'h40;
-      end
-      default: begin 
-        rcon = 8'hx; // we have an issue
-      end
-    endcase 
+    end
   end
-  assign out = round[0] ? out_odd : out_even;
-  assign next = round[0] ? next_odd : next_even;
+
+  assign temp_key[0] = next_key[0][255:128];
+  assign temp_key[1] = next_key[0][128:0]; 
+
+  ExpandKeyEvenHelper round2  (.in(next_key[0]), .rcon(8'h1), .next(next_key[1]), .out(temp_key[2]));
+  ExpandKeyOddHelper  round3  (.in(next_key[1]), .next(next_key[2]), .out(temp_key[3]));
+  ExpandKeyEvenHelper round4  (.in(next_key[2]), .rcon(8'h2), .next(next_key[3]), .out(temp_key[4]));
+  ExpandKeyOddHelper  round5  (.in(next_key[3]), .next(next_key[4]), .out(temp_key[5]));
+  ExpandKeyEvenHelper round6  (.in(next_key[4]), .rcon(8'h4), .next(next_key[5]), .out(temp_key[6]));
+  ExpandKeyOddHelper  round7  (.in(next_key[5]), .next(next_key[6]), .out(temp_key[7]));
+  ExpandKeyEvenHelper round8  (.in(next_key[6]), .rcon(8'h8), .next(next_key[7]), .out(temp_key[8]));
+  ExpandKeyOddHelper  round9  (.in(next_key[7]), .next(next_key[8]), .out(temp_key[9]));
+  ExpandKeyEvenHelper round10 (.in(next_key[8]), .rcon(8'h10), .next(next_key[9]), .out(temp_key[10]));
+  ExpandKeyOddHelper  round11 (.in(next_key[9]), .next(next_key[10]), .out(temp_key[11]));
+  ExpandKeyEvenHelper round12 (.in(next_key[10]), .rcon(8'h20), .next(next_key[11]), .out(temp_key[12]));
+  ExpandKeyOddHelper  round13 (.in(next_key[11]), .next(next_key[12]), .out(temp_key[13]));
+  ExpandKeyEvenHelper round14 (.in(next_key[12]), .rcon(8'h40), .next( ), .out(temp_key[14]));
+
 endmodule
 
 
@@ -117,4 +135,5 @@ module ExpandKeyOddHelper
 
   assign next = {k0b, k1b, k2b, k3b, k4b, k5b, k6b, k7b};
   assign out = {k4b, k5b, k6b, k7b};
+
 endmodule

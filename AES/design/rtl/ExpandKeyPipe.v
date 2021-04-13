@@ -19,6 +19,7 @@ module ExpandKey
 );
 
   reg [127:0] temp_key [14:0];
+  reg [127:0] key_out  [14:0];
   reg   [7:0] rcon;
   reg [255:0] temp_key_in; 
   reg [255:0] next_even; 
@@ -26,7 +27,8 @@ module ExpandKey
   reg [127:0] out_even;
   reg [127:0] out_odd;
   reg [  0:0] state; 
-  reg [  0:0] temp_valid;
+  reg [  0:0] valid_out;
+  reg [  0:0] temp_ready;
   reg [  3:0] round; 
 
   assign key_out = temp_key;
@@ -37,81 +39,44 @@ module ExpandKey
       temp_key <= '{128'd0,128'd0,128'd0,128'd0,128'd0,128'd0,128'd0,128'd0,
                     128'd0,128'd0,128'd0,128'd0,128'd0,128'd0,128'd0};
       temp_valid <= 0;
-      round <= 0;
-      state <= 0; 
     end
     else begin
-      case (state)
-        `WAIT_STATE: begin
-          if (ready) begin 
-            state <= `GENERATE_STATE;
-            temp_key[0] <= key_in[255:128];
-            temp_key[1] <= key_in[128:0];  
-            temp_key_in <= key_in; 
-            temp_valid <= 0; 
-            round <= 4'd2;
-          end else begin 
-            state <= `WAIT_STATE;
-          end
-        end
-        `GENERATE_STATE: begin   
-          if(round[0]) begin 
-            temp_key[round] <= out_odd;
-            temp_key_in <= next_odd; 
-          end else begin 
-            temp_key[round] <= out_even;
-            temp_key_in <= next_even; 
-          end
+      if (ready) begin
+        temp_ready <= 1;
+      end else begin 
+        temp_ready <= 0;
+      end
 
-          if (round == 4'd14) begin
-            state <= `WAIT_STATE;
-            temp_valid <= 1; 
-            round <= 0; 
-          end else begin 
-            state <= `GENERATE_STATE;
-            temp_valid <= 0;
-            round <= round + 1;
-          end
-        end
-        default: begin
-          state <= `WAIT_STATE;
-          temp_valid <= 0; 
-        end
-      endcase
+      if(temp_ready) begin
+        key_out <= temp_key;
+        valid_out <= 1;
+      end else begin 
+        key_out <= key_out;
+        valid_out <= 0;
+      end
     end
   end
-
-
-  ExpandKeyEvenHelper ExpandKeyEvenHelper(.in(temp_key_in),.rcon(rcon), .next(next_even), .out(out_even));
-  ExpandKeyOddHelper  ExpandKeyOddHelper (.in(temp_key_in), .next(next_odd), .out(out_odd));
-  always @(*) begin 
-    case (round)
-      4'd2: begin
-        rcon = 8'h1;
-      end
-      4'd4: begin
-        rcon = 8'h2;
-      end
-      4'd6: begin
-        rcon = 8'h4;
-      end
-      4'd8: begin
-        rcon = 8'h8;
-      end
-      4'd10: begin
-        rcon = 8'h10;
-      end
-      4'd12: begin
-        rcon = 8'h20;
-      end
-      4'd14: begin
-        rcon = 8'h40;
-      end
-      default: begin 
-        rcon = 8'hx; // we have an issue
-      end
-    endcase 
+  reg [255:0] next_key [14:0]; 
+  
+  always @(*) begin
+    temp_key[0] = key_in[255:128];
+    temp_key[1] = key_in[128:0]; 
   end
+
+  ExpandKeyEvenHelper round2  (.in(key_in),.rcon(8'h1), .next(next_key[0]), .out(temp_key[2]));
+  ExpandKeyOddHelper  round3  (.in(next_key[0]), .next(next_key[1]), .out(temp_key[3]));
+  ExpandKeyEvenHelper round4  (.in(next_key[1]),.rcon(8'h2), .next(next_key[2]), .out(temp_key[4]));
+  ExpandKeyOddHelper  round5  (.in(next_key[2]), .next(next_key[3]), .out(temp_key[5]));
+  ExpandKeyEvenHelper round6  (.in(next_key[3]),.rcon(8'h4), .next(next_key[4]), .out(temp_key[6]));
+  ExpandKeyOddHelper  round7  (.in(next_key[4]), .next(next_key[5]), .out(temp_key[7]));
+  ExpandKeyEvenHelper round8  (.in(next_key[5]),.rcon(8'h8), .next(next_key[6]), .out(temp_key[8]));
+  ExpandKeyOddHelper  round9  (.in(next_key[6]), .next(next_key[7]), .out(temp_key[9]));
+  ExpandKeyEvenHelper round10 (.in(next_key[7]),.rcon(8'h10), .next(next_key[8]), .out(temp_key[10]));
+  ExpandKeyOddHelper  round11 (.in(next_key[8]), .next(next_key[9]), .out(temp_key[11]));
+  ExpandKeyEvenHelper round12 (.in(next_key[9]),.rcon(8'h20), .next(next_key[10]), .out(temp_key[12]));
+  ExpandKeyOddHelper  round13 (.in(next_key[10]), .next(next_key[11]), .out(temp_key[13]));
+  ExpandKeyEvenHelper round14 (.in(next_key[11]),.rcon(8'h40), .next(next_key[12]), .out(temp_key[14]));
+
 endmodule
 
 

@@ -6,49 +6,17 @@
 `default_nettype none
 module DecryptRound
 (
-  input  wire [   0:0] clk,
-  input  wire [   0:0] rst_n,
   input  wire [ 127:0] data_in,
-  input  wire [   0:0] ready,
   input  wire [ 127:0] key,
-  output wire [ 127:0] data_out,
-  output wire [   0:0] valid
+  output wire [ 127:0] data_out
 );
 
-  //---------
-  // INPUT OUTPUT 
-  // - this is for storing input and output data 
-  //---------
-  reg [ 127: 0] temp_data  [4:0];
-  reg [ 127: 0] data_final;
-  reg valid_final;
+  reg [ 127: 0] temp_data  [3:0];
 
   InvShiftRows InvShiftRows(.in(data_in), .out(temp_data[1]));
   InvSubBytes InvSubBytes(.in(temp_data[1]), .out(temp_data[2]));
   AddRoundKey AddRoundKey(.in(temp_data[2]),.key(key), .out(temp_data[3]));
-  InvMixColumns InvMixColumns(.in(temp_data[3]), .out(temp_data[4]));
-
-  //---------
-  // FSM
-  //---------
-  assign data_out = data_final;
-  assign valid = valid_final;
-
-  always_ff @(posedge clk or negedge rst_n) begin
-    if (!rst_n) begin
-      data_final <= 0;
-      valid_final <= 0; 
-    end
-    else begin
-      if(ready) begin
-        data_final <= temp_data[4];
-        valid_final <= 1; 
-      end else begin 
-        valid_final <= 0; 
-        data_final <= data_final;
-      end
-    end
-  end
+  InvMixColumns InvMixColumns(.in(temp_data[3]), .out(data_out));
 
 endmodule // mainUnit
 `default_nettype wire
@@ -57,95 +25,31 @@ endmodule // mainUnit
 `default_nettype none
 module DecryptInitRound
 (
-  input  wire [   0:0] clk,
-  input  wire [   0:0] rst_n,
   input  wire [ 127:0] data_in,
-  input  wire [   0:0] ready,
   input  wire [ 127:0] key,
-  output wire [ 127:0] data_out,
-  output wire [   0:0] valid
+  output wire [ 127:0] data_out
 );
 
-  //---------
-  // INPUT OUTPUT 
-  // - this is for storing input and output data 
-  //---------
-  reg [ 127: 0] temp_data;
-  reg [ 127: 0] data_final;
-  reg valid_final;
+  AddRoundKey AddRoundKey(.in(data_in),.key(key), .out(data_out));
 
-  AddRoundKey AddRoundKey(.in(data_in),.key(key), .out(temp_data));
-
-  //---------
-  // FSM
-  //---------
-  assign data_out = data_final;
-  assign valid = valid_final;
-
-  always_ff @(posedge clk or negedge rst_n) begin
-    if (!rst_n) begin
-      data_final <= 0;
-      valid_final <= 0; 
-    end
-    else begin
-      if(ready) begin
-        data_final <= temp_data;
-        valid_final <= 1; 
-      end else begin 
-        valid_final <= 0; 
-        data_final <= data_final;
-      end
-    end
-  end
 
 endmodule // mainUnit
 `default_nettype wire
 
 `default_nettype none
-module DecryptFinalRound
+module DecryptLastRound
 (
-  input  wire [   0:0] clk,
-  input  wire [   0:0] rst_n,
   input  wire [ 127:0] data_in,
-  input  wire [   0:0] ready,
   input  wire [ 127:0] key,
-  output wire [ 127:0] data_out,
-  output wire [   0:0] valid
+  output wire [ 127:0] data_out
 );
 
-  //---------
-  // INPUT OUTPUT 
-  // - this is for storing input and output data 
-  //---------
-  reg [ 127: 0] temp_data  [4:0];
-  reg [ 127: 0] data_final;
-  reg valid_final;
+  reg [ 127: 0] temp_data  [2:0];
 
   InvShiftRows InvShiftRows(.in(data_in), .out(temp_data[1]));
   InvSubBytes InvSubBytes(.in(temp_data[1]), .out(temp_data[2]));
-  AddRoundKey AddRoundKey(.in(temp_data[2]), .key(key), .out(temp_data[3]));
+  AddRoundKey AddRoundKey(.in(temp_data[2]), .key(key), .out(data_out));
 
-  //---------
-  // FSM
-  //---------
-  assign data_out = data_final;
-  assign valid = valid_final;
-
-  always_ff @(posedge clk or negedge rst_n) begin
-    if (!rst_n) begin
-      data_final <= 0;
-      valid_final <= 0; 
-    end
-    else begin
-      if(ready) begin
-        data_final <= temp_data[3];
-        valid_final <= 1; 
-      end else begin 
-        valid_final <= 0; 
-        data_final <= data_final;
-      end
-    end
-  end
 
 endmodule // mainUnit
 `default_nettype wire

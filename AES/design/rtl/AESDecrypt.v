@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------
-// AES Encrypt Module
+// AES Decrypt Module
 //  
 //-----------------------------------------------------------------------------
 `define WAIT_STATE 0
@@ -12,13 +12,13 @@
 `define ADDROUNDKEY 3
 
 //`default_nettype none
-module AESEncrypt
+module AESDecrypt
 (
   input  wire [   0:0] clk,
   input  wire [   0:0] rst_n,
   input  wire [   0:0] ready,
   input  wire [ 127:0] data_in,
-  input  wire [ 255:0] key,
+  input  wire [ 127:0] key [14:0],
 
   output wire [ 127:0] data_out,
   output wire [   0:0] valid
@@ -28,23 +28,27 @@ module AESEncrypt
   // INPUT OUTPUT 
   // - this is for storing input and output data 
   //---------
-  reg [ 127: 0] temp_data_in  [13:0];
-  reg [ 127: 0] temp_data_out [13:0];
+  reg [ 127: 0] temp_data  [15:0];
+  reg [   0: 0] temp_ready;
+  reg [   0: 0] valid_final;
   reg [ 127: 0] data_final;
-  reg valid_final;
-  reg [ 255:0] orig_key;  //must save original key
-  reg [ 255:0] next_key;  //must save next key 
-  reg [ 255:0] input_key;  //must save original key
-  reg [ 127:0] temp_key[1:0];
-  reg [1:0] state;
-  reg [ 3: 0] round;
-  reg [1:0] encrypt_state; // there are 4
 
-  AddRoundKey AddRoundKey(.in(temp_data_in[0]),.key(temp_key[0]), .out(temp_data_out[0]));
-  SubBytes SubBytes(.in(temp_data_in[1]), .out(temp_data_out[1]));
-  ShiftRows ShiftRows(.in(temp_data_in[2]), .out(temp_data_out[2]));
-  MixColumns MixColumns(.in(temp_data_in[3]), .out(temp_data_out[3]));
-  ExpandKey ExpandKey(.in(input_key), .round(round), .next(next_key), .out(temp_key[1]));
+
+  DecryptInitRound  Round0 (.data_in(temp_data[0]), .key(key[14]),
+                            .data_out(temp_data[1]));
+
+  genvar i;
+  generate
+    for (i=0; i<13; i+=1) begin : DecryptRounds 
+      DecryptRound  DecryptRound (.data_in(temp_data[i+1]), .key(key[13-i]),
+                                  .data_out(temp_data[i+2]));
+    end 
+  endgenerate
+
+  DecryptLastRound  Round14 (.data_in(temp_data[14]), .key(key[0]),
+                             .data_out(temp_data[15]));
+
+
 
   //---------
   // FSM
@@ -54,107 +58,28 @@ module AESEncrypt
 
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
-      state <= `WAIT_STATE;
-      encrypt_state <= `SUBBYTES;
-      valid_final <= 0;
-      round <= 0;
       data_final <= 0;
+      valid_final <= 0; 
     end
     else begin
-      case (state)
-        `WAIT_STATE: begin
-          valid_final <= 0;
-          if (ready) begin 
-            state <= `INIT_STATE;
-            temp_key[0] <= key[255:128]; 
-            temp_data_in [0] <= data_in; 
-            orig_key <= key;
-          end else begin 
-            state <= `WAIT_STATE;
-            temp_key[0] <= 128'd0;
-          end
-        end
-        `INIT_STATE: begin
-          valid_final <= 0;
-          round <= 4'd1;
-          state <= `ENCRYPT_STATE;
-          encrypt_state <= `SUBBYTES;    
-          temp_data_in[1] <= temp_data_out[0];       
-        end
-        `ENCRYPT_STATE: begin
-          case (encrypt_state)
-            `SUBBYTES: begin
-              encrypt_state <= `SHIFTROWS;
-              temp_data_in[2] <= temp_data_out[1];
-            end
-            `SHIFTROWS: begin
-              encrypt_state <= `MIXCOLUMNS;
-              temp_data_in[3] <= temp_data_out[2];
-            end
-            `MIXCOLUMNS: begin
-              encrypt_state <= `ADDROUNDKEY;
-              temp_data_in[0] <= temp_data_out[3];
-              if (round == 1)begin 
-                temp_key[0] <= key[127:0];  
-              end else begin 
-                temp_key[0] <= temp_key[1];
-              end
-            end
-            `ADDROUNDKEY: begin 
-              temp_data_in[1] <= temp_data_out[0];
-              encrypt_state <= `SUBBYTES;
-              if (round == 1)begin 
-                input_key <= orig_key; 
-              end else begin 
-                input_key <= next_key;
-              end
-              round <= round + 4'd1;
-              if (round == 4'd13) begin //SHA256 has 14 total encrypt round 
-                state <= `FINAL_STATE; 
-              end
-              else begin
-                state <= `ENCRYPT_STATE;
-              end
-            end
-            default: begin
-              encrypt_state <= `SUBBYTES; 
-            end
-          endcase
-        end
-        `FINAL_STATE: begin
-          case (encrypt_state)
-            `SUBBYTES: begin
-              encrypt_state <= `SHIFTROWS;
-              temp_data_in[2] <= temp_data_out[1];
-            end
-            `SHIFTROWS: begin
-              encrypt_state <= `ADDROUNDKEY;
-              temp_data_in[0] <= temp_data_out[2];
-              temp_key[0] <= temp_key[1];
-            end
-            `ADDROUNDKEY: begin 
-              temp_data_in[1] <= temp_data_out[0];
-              encrypt_state <= `SUBBYTES;
-              valid_final <= 1;
-              data_final <= temp_data_out[0];
-              if (ready) begin 
-                state <= `INIT_STATE; 
-              end
-              else begin
-                state <= `WAIT_STATE;
-              end
-            end
-            default: begin
-              encrypt_state <= `SUBBYTES; 
-            end
-          endcase
-        end
-        default: begin
-          state <= `WAIT_STATE;
-        end
-      endcase
+      if (ready) begin
+        temp_ready <= 1;
+        temp_data[0] <= data_in;
+      end else begin 
+        temp_ready <= 0;
+        temp_data[0] <= temp_data[0]; 
+      end
+
+      if(temp_ready) begin
+        data_final <= temp_data[15];
+        valid_final <= 1;
+      end else begin 
+        data_final <= data_final;
+        valid_final <= 0;
+      end
     end
   end
+
 
 endmodule // mainUnit
 `default_nettype wire

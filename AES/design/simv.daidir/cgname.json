@@ -5,11 +5,11 @@
         "module",
         1
     ],
-    "AESPipeTb": [
-        "AESPipeTb",
-        "rfUId",
+    "AESTb": [
+        "AESTb",
+        "G73vC",
         "module",
-        5
+        16
     ],
     "EncryptRound": [
         "EncryptRound",
@@ -17,11 +17,17 @@
         "module",
         6
     ],
-    "EncryptInitRound": [
-        "EncryptInitRound",
-        "jD3P7",
+    "ExpandKeyEvenHelper": [
+        "ExpandKeyEvenHelper",
+        "DsNK9",
         "module",
-        4
+        17
+    ],
+    "ExpandKeyOddHelper": [
+        "ExpandKeyOddHelper",
+        "ExQpf",
+        "module",
+        18
     ],
     "ShiftRows": [
         "ShiftRows",
@@ -59,17 +65,17 @@
         "module",
         11
     ],
-    "inv_byte_mix_columns": [
-        "inv_byte_mix_columns",
-        "wbmSj",
+    "InvByteMixColumns": [
+        "InvByteMixColumns",
+        "U65gK",
         "module",
-        12
+        20
     ],
-    "inv_word_mix_columns": [
-        "inv_word_mix_columns",
-        "pgfG4",
+    "InvWordMixColumns": [
+        "InvWordMixColumns",
+        "JSt5H",
         "module",
-        13
+        21
     ],
     "InvShiftRows": [
         "InvShiftRows",
