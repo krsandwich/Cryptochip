@@ -54,8 +54,11 @@ module ring_osc_tb();
    lhca #(.WIDTH(32)) lhca(.clk(clk), .rst(rst), .source(clk_o), .state(state));
 
 
+   integer 	f;
 
        initial begin
+	  f = $fopen("output.txt");
+
 	  en_i = 0;
 
 	  rst = 1;
@@ -68,10 +71,10 @@ module ring_osc_tb();
 
 	  #20ns;
 
-          $monitor("@:%t rand number:%d", $time, state);
+          //$monitor("@:%t rand number:%d", $time, state);
+          $fmonitor(f, "%d", state);
 
-
-	  #1000ns;
+	  #200000ns;
 
 	  $finish();
 
