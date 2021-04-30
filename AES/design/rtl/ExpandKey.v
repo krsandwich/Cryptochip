@@ -3,7 +3,7 @@
 // 
 // the first round 
 //-----------------------------------------------------------------------------
-`define WAIT_STATE 0
+`define I 0
 `define GENERATE_STATE 1
 
 `default_nettype none
@@ -22,40 +22,42 @@ module ExpandKey
   reg  [127:0] temp_out [14:0];
   reg  [255:0] next_key [14:0]; 
   reg  [  0:0] temp_ready;
-  reg  [  0:0] temp_valid;
-
-  assign key_out = temp_out;
-  assign valid = temp_valid; 
+  reg  [  0:0] valid_final;
+  reg  [  0:0] state;
+  localparam WAIT = 1'b0, ENCRYPT = 1'b1;
+  //---------
+  // FSM
+  //---------
+  assign key_out = temp_key;
+  assign valid = valid_final;
 
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
       temp_out <= '{128'd0,128'd0,128'd0,128'd0,128'd0,128'd0,128'd0,128'd0,
                     128'd0,128'd0,128'd0,128'd0,128'd0,128'd0,128'd0};
-      temp_valid <= 0;
+      valid_final <= 0;
+      state <= WAIT;
     end
     else begin
-      if (ready) begin
-        temp_ready <= 1;
-        next_key[0] <= key_in;
-      end else begin 
-        temp_ready <= 0;
-        next_key[0] <= next_key[0];
-      end
-
-      if(temp_ready) begin
-        temp_out <= temp_key;
-        temp_valid <= 1;
-      end else begin 
-        temp_out <= temp_out;
-        temp_valid <= 0;
-      end
+      case(state)
+        WAIT: begin
+          if (ready) begin
+            state <= ENCRYPT;
+          end 
+          valid_final <= 0;
+        end
+        ENCRYPT: begin
+          valid_final <= 1;
+          state <= WAIT; 
+        end
+      endcase
     end
   end
 
-  assign temp_key[0] = next_key[0][255:128];
-  assign temp_key[1] = next_key[0][128:0]; 
+  assign temp_key[0] = key_in[255:128];
+  assign temp_key[1] = key_in[128:0]; 
 
-  ExpandKeyEvenHelper round2  (.in(next_key[0]), .rcon(8'h1), .next(next_key[1]), .out(temp_key[2]));
+  ExpandKeyEvenHelper round2  (.in(key_in), .rcon(8'h1), .next(next_key[1]), .out(temp_key[2]));
   ExpandKeyOddHelper  round3  (.in(next_key[1]), .next(next_key[2]), .out(temp_key[3]));
   ExpandKeyEvenHelper round4  (.in(next_key[2]), .rcon(8'h2), .next(next_key[3]), .out(temp_key[4]));
   ExpandKeyOddHelper  round5  (.in(next_key[3]), .next(next_key[4]), .out(temp_key[5]));

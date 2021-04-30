@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------------------
 //
-//	Mix Columns 
+//	Inv Mix Columns 
 //
 //	Description:
 //		This file includes all functions implemented in the mix_columns.v original file 

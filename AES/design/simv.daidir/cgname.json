@@ -11,6 +11,12 @@
         "module",
         16
     ],
+    "DecryptRound": [
+        "DecryptRound",
+        "L1LgV",
+        "module",
+        9
+    ],
     "EncryptRound": [
         "EncryptRound",
         "ghLpQ",
@@ -28,30 +34,6 @@
         "ExQpf",
         "module",
         18
-    ],
-    "ShiftRows": [
-        "ShiftRows",
-        "bBe2G",
-        "module",
-        7
-    ],
-    "SubBytes_0000": [
-        "SubBytes_0000",
-        "fGq1Z",
-        "module",
-        8
-    ],
-    "SubWord": [
-        "SubWord",
-        "FHYPu",
-        "module",
-        2
-    ],
-    "DecryptRound": [
-        "DecryptRound",
-        "L1LgV",
-        "module",
-        9
     ],
     "xtimes": [
         "xtimes",
@@ -88,6 +70,24 @@
         "WyqwV",
         "module",
         15
+    ],
+    "ShiftRows": [
+        "ShiftRows",
+        "bBe2G",
+        "module",
+        7
+    ],
+    "SubBytes_0000": [
+        "SubBytes_0000",
+        "fGq1Z",
+        "module",
+        8
+    ],
+    "SubWord": [
+        "SubWord",
+        "FHYPu",
+        "module",
+        2
     ],
     "...MASTER...": [
         "SIM",

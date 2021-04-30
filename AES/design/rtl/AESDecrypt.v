@@ -2,14 +2,14 @@
 // AES Decrypt Module
 //  
 //-----------------------------------------------------------------------------
-`define WAIT_STATE 0
-`define INIT_STATE 1
-`define ENCRYPT_STATE 2
-`define FINAL_STATE 3
-`define SUBBYTES 0
-`define SHIFTROWS 1
-`define MIXCOLUMNS 2
-`define ADDROUNDKEY 3
+// `define WAIT_STATE 0
+// `define INIT_STATE 1
+// `define ENCRYPT_STATE 2
+// `define FINAL_STATE 3
+// `define SUBBYTES 0
+// `define SHIFTROWS 1
+// `define MIXCOLUMNS 2
+// `define ADDROUNDKEY 3
 
 //`default_nettype none
 module AESDecrypt
@@ -32,9 +32,10 @@ module AESDecrypt
   reg [   0: 0] temp_ready;
   reg [   0: 0] valid_final;
   reg [ 127: 0] data_final;
+  reg [   0: 0] state;
+  localparam WAIT = 1'b0, ENCRYPT = 1'b1;
 
-
-  DecryptInitRound  Round0 (.data_in(temp_data[0]), .key(key[14]),
+  DecryptInitRound  Round0 (.data_in(data_in), .key(key[14]),
                             .data_out(temp_data[1]));
 
   genvar i;
@@ -60,23 +61,22 @@ module AESDecrypt
     if (!rst_n) begin
       data_final <= 0;
       valid_final <= 0; 
+      state <= WAIT;
     end
     else begin
-      if (ready) begin
-        temp_ready <= 1;
-        temp_data[0] <= data_in;
-      end else begin 
-        temp_ready <= 0;
-        temp_data[0] <= temp_data[0]; 
-      end
-
-      if(temp_ready) begin
-        data_final <= temp_data[15];
-        valid_final <= 1;
-      end else begin 
-        data_final <= data_final;
-        valid_final <= 0;
-      end
+      case(state)
+        WAIT: begin
+          if (ready) begin
+            state <= ENCRYPT;
+          end 
+          valid_final <= 0;
+        end
+        ENCRYPT: begin
+          data_final <= temp_data[15];
+          valid_final <= 1;
+          state <= WAIT; 
+        end
+      endcase
     end
   end
 
