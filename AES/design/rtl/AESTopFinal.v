@@ -150,8 +150,7 @@ module AESDecrypt
   input  wire [ 127:0] data_in,
   input  wire [ 127:0] key [14:0],
 
-  output wire [ 127:0] data_out,
-  output wire [   0:0] valid
+  output wire [ 127:0] data_out
 );
 
   //---------

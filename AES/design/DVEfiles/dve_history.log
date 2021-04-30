@@ -5,34 +5,34 @@ gui_create_pref_key -category {Globals} -key {load_detail_for_funcov} -value_typ
 gui_state_default_create -off -ini
 gui_set_state_value -category Globals -key recent_databases -value {{gui_open_db -file dump.vcd} {gui_open_db -file aes.vpd} {gui_open_db -file aes.vpd -design V1} {gui_open_db -file /tmp/kylee/chipyard/sims/vcs/output/chipyard.TestHarness.CryptoConfig/aes.vpd -design V1} {gui_open_db -file wave.vpd}}
 gui_set_state_value -category Globals -key recent_sessions -value {{gui_load_session -ignore_errors -file /tmp/kylee/chipyard/sims/vcs/output/chipyard.TestHarness.CryptoConfig/mysexysessionv2.tcl -ignore_errors} {gui_load_session -ignore_errors -file /tmp/kylee/chipyard/sims/vcs/output/chipyard.TestHarness.CryptoConfig/mysexysessionv2.tcl} {gui_load_session -ignore_errors -file /tmp/kylee/chipyard/sims/vcs/output/chipyard.TestHarness.CryptoConfig/mysexysession.tcl -ignore_errors} {gui_load_session -ignore_errors -file /home/users/krzanich/chipyard/sims/vcs/output/chipyard.TestHarness.CryptoConfig/mysexysessionv2.tcl -ignore_errors} {gui_load_session -ignore_errors -file /home/users/krzanich/chipyard/sims/vcs/output/chipyard.TestHarness.CryptoConfig/mysexysessionv2.tcl}}
-gui_set_state_value -category Layout -key child_console_size_x -value 1283
+gui_set_state_value -category Layout -key child_console_size_x -value 1281
 gui_set_state_value -category Layout -key child_console_size_y -value 105
 gui_set_state_value -category Layout -key child_data_coltype -value 91
 gui_set_state_value -category Layout -key child_data_colvalue -value 113
 gui_set_state_value -category Layout -key child_data_colvariable -value 300
-gui_set_state_value -category Layout -key child_data_size_x -value 498
-gui_set_state_value -category Layout -key child_data_size_y -value 450
+gui_set_state_value -category Layout -key child_data_size_x -value 496
+gui_set_state_value -category Layout -key child_data_size_y -value 448
 gui_set_state_value -category Layout -key child_driver_size_x -value 959
 gui_set_state_value -category Layout -key child_driver_size_y -value 179
 gui_set_state_value -category Layout -key child_hier_col3 -value {-1}
 gui_set_state_value -category Layout -key child_hier_colhier -value 268
 gui_set_state_value -category Layout -key child_hier_colpd -value 0
 gui_set_state_value -category Layout -key child_hier_coltype -value 15
-gui_set_state_value -category Layout -key child_hier_size_x -value 277
-gui_set_state_value -category Layout -key child_hier_size_y -value 450
+gui_set_state_value -category Layout -key child_hier_size_x -value 275
+gui_set_state_value -category Layout -key child_hier_size_y -value 448
 gui_set_state_value -category Layout -key child_source_docknewline -value false
 gui_set_state_value -category Layout -key child_source_pos_x -value {-2}
 gui_set_state_value -category Layout -key child_source_pos_y -value {-17}
-gui_set_state_value -category Layout -key child_source_size_x -value 511
-gui_set_state_value -category Layout -key child_source_size_y -value 446
-gui_set_state_value -category Layout -key child_wave_colname -value 189
-gui_set_state_value -category Layout -key child_wave_colvalue -value 189
-gui_set_state_value -category Layout -key child_wave_left -value 382
-gui_set_state_value -category Layout -key child_wave_right -value 930
-gui_set_state_value -category Layout -key main_pos_x -value 406
-gui_set_state_value -category Layout -key main_pos_y -value 92
-gui_set_state_value -category Layout -key main_size_x -value 1689
-gui_set_state_value -category Layout -key main_size_y -value 761
+gui_set_state_value -category Layout -key child_source_size_x -value 513
+gui_set_state_value -category Layout -key child_source_size_y -value 444
+gui_set_state_value -category Layout -key child_wave_colname -value 188
+gui_set_state_value -category Layout -key child_wave_colvalue -value 353
+gui_set_state_value -category Layout -key child_wave_left -value 545
+gui_set_state_value -category Layout -key child_wave_right -value 766
+gui_set_state_value -category Layout -key main_pos_x -value 69
+gui_set_state_value -category Layout -key main_pos_y -value 123
+gui_set_state_value -category Layout -key main_size_x -value 1350
+gui_set_state_value -category Layout -key main_size_y -value 790
 gui_set_state_value -category Layout -key stand_source_child_docknewline -value false
 gui_set_state_value -category Layout -key stand_source_child_pos_x -value {-2}
 gui_set_state_value -category Layout -key stand_source_child_pos_y -value {-17}
@@ -41,12 +41,12 @@ gui_set_state_value -category Layout -key stand_source_child_size_y -value 259
 gui_set_state_value -category Layout -key stand_wave_child_docknewline -value false
 gui_set_state_value -category Layout -key stand_wave_child_pos_x -value {-2}
 gui_set_state_value -category Layout -key stand_wave_child_pos_y -value {-17}
-gui_set_state_value -category Layout -key stand_wave_child_size_x -value 1322
-gui_set_state_value -category Layout -key stand_wave_child_size_y -value 658
+gui_set_state_value -category Layout -key stand_wave_child_size_x -value 1321
+gui_set_state_value -category Layout -key stand_wave_child_size_y -value 657
 gui_set_state_value -category Layout -key stand_wave_top_pos_x -value 1
-gui_set_state_value -category Layout -key stand_wave_top_pos_y -value 52
-gui_set_state_value -category Layout -key stand_wave_top_size_x -value 1318
-gui_set_state_value -category Layout -key stand_wave_top_size_y -value 828
+gui_set_state_value -category Layout -key stand_wave_top_pos_y -value 74
+gui_set_state_value -category Layout -key stand_wave_top_size_x -value 1317
+gui_set_state_value -category Layout -key stand_wave_top_size_y -value 849
 gui_set_state_value -category SaveSession -key single_view_name -value Wave.1
 gui_set_state_value -category SaveSession -key toplevel_window_name -value TopLevel.2
 gui_create_state_key -category FindDialog -key m_pMatchCase -value_type bool -value false
@@ -62,22 +62,12 @@ gui_state_default_create -off
 
 # Begin command logging
 gui_open_db -file dump.vcd
-gui_list_expand -id  Hier.1   AESTb
-gui_list_select -id Hier.1 -current_item_name AESTb.AESTop_inst -current_item_type Scope  -selected  { AESTb.AESTop_inst   }
-gui_list_select -id Data.1 -selected  { {AESTb.AESTop_inst.clk[0:0]}   }
-gui_list_select -id Data.1 -selected  { {AESTb.AESTop_inst.clk[0:0]}  {AESTb.AESTop_inst.rst[0:0]}  {AESTb.AESTop_inst.input_valid[0:0]}  {AESTb.AESTop_inst.output_ready[0:0]}  {AESTb.AESTop_inst.opcode[6:0]}  {AESTb.AESTop_inst.data_in[255:0]}  {AESTb.AESTop_inst.data_out[127:0]}  {AESTb.AESTop_inst.input_ready[0:0]}  {AESTb.AESTop_inst.output_valid[0:0]}   }
+gui_list_select -id Hier.1 -current_item_name ExpandKeyTb -current_item_type Scope  -selected  { ExpandKeyTb   }
+gui_list_select -id Data.1 -selected  { {ExpandKeyTb.key[255:0]}   }
+gui_list_select -id Data.1 -selected  { {ExpandKeyTb.key[255:0]}  {ExpandKeyTb.key_out[14:0][127:0]}   }
 gui_open_window Wave
-gui_list_add -id Wave.1 -from Data.1 { {AESTb.AESTop_inst.clk[0:0]} {AESTb.AESTop_inst.rst[0:0]} {AESTb.AESTop_inst.input_valid[0:0]} {AESTb.AESTop_inst.output_ready[0:0]} {AESTb.AESTop_inst.opcode[6:0]} {AESTb.AESTop_inst.data_in[255:0]} {AESTb.AESTop_inst.data_out[127:0]} {AESTb.AESTop_inst.input_ready[0:0]} {AESTb.AESTop_inst.output_valid[0:0]} } -insertionbar
+gui_list_add -id Wave.1 -from Data.1 { {ExpandKeyTb.key[255:0]} {ExpandKeyTb.key_out[14:0][127:0]} } -insertionbar
 gui_zoom -window Wave.1 -full
-gui_wv_zoom_timerange -id  Wave.1 40088 457670
-gui_marker_move -id  Wave.1 C1 110000
-gui_marker_move -id  Wave.1 C1 78928
-gui_marker_move -id  Wave.1 C1 91776
-gui_marker_move -id  Wave.1 C1 110000
-gui_marker_move -id  Wave.1 C1 90000
-gui_marker_move -id  Wave.1 C1 110000
-gui_marker_move -id  Wave.1 C1 145465
-gui_marker_move -id  Wave.1 C1 170000
-gui_wv_zoom_timerange -id  Wave.1 39923 424924
-gui_wv_zoom_timerange -id  Wave.1 39923 382248
+gui_marker_move -id  Wave.1 C1 1197272
+gui_list_expand -id  Wave.1   {ExpandKeyTb.key_out[14:0][127:0]}
 gui_close_window -window TopLevel.2

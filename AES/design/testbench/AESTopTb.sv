@@ -1,25 +1,26 @@
-`define CLK_PERIOD 50
+`define CLK_PERIOD 20
+`define NUM_TESTS 2
 `define ASSIGNMENT_DELAY 5
 `define FINISH_TIME 2000000
-`define NUM_TEST_VECTORS 100
 
-module AESTb;
+module AESTopTb;
  
   reg clk;
-  reg reset;
+  reg rst;
   reg output_ready , input_valid;
   wire input_ready , output_valid;
-  reg  [255 : 0] data_in;
+  wire  [255 : 0] data_in;
   wire [127 : 0] data_out;
+  reg [127 : 0]  saved_out;
   wire busy;
-  reg  [4:0] opcode; 
+  reg  [6:0] opcode; 
 
   always #(`CLK_PERIOD/2) clk =~clk;
   
   AESTop AESTop_inst
   (
     .clk(clk),
-    .rst_n(reset),
+    .rst(rst),
     .input_valid(input_valid),
     .output_ready(output_ready),
     .opcode(opcode),
@@ -30,67 +31,78 @@ module AESTb;
     .busy(busy)
   );
 
+    reg [127:0] encrypt_mem [`NUM_TESTS - 1:0];
+    reg [127:0] decrypt_mem [`NUM_TESTS - 1:0];
+    reg [255:0] key_mem [`NUM_TESTS - 1:0];
+    reg [$clog2(`NUM_TESTS) + 1:0] data_idx;
+    reg [$clog2(`NUM_TESTS):0] key_idx;
+    reg [$clog2(`NUM_TESTS):0] num_incorrect;
+    integer  f;
+    
+    initial begin
+        $readmemh("testbench/inputs.mem", encrypt_mem);
+    end
+
+    initial begin
+        $readmemh("testbench/key.mem", key_mem);
+    end
+
+  assign data_in = (opcode == 0) ? key_mem[key_idx] : ((opcode == 1) ? {encrypt_mem[data_idx], 128'd0} : {decrypt_mem[data_idx], 128'd0}); 
+
+  always_ff @(posedge clk, posedge rst) begin
+      if(rst) begin
+        output_ready <= 1; 
+        opcode = 0; 
+        data_idx <= 0;
+        key_idx <= 0;
+        input_valid <= 1'b0; 
+        num_incorrect <= 0;
+      end
+      else begin
+        input_valid <= 1'b1; 
+          if(output_valid && data_idx < `NUM_TESTS) begin
+            if(opcode == 0) begin
+              opcode <= 1; 
+              key_idx <= key_idx + 1;
+            end else if(opcode == 1) begin 
+              decrypt_mem[data_idx] <= data_out;
+              //$display("%h%h%h%h", data_out[127:96], data_out[95:64], data_out[63:32], data_out[31:0]); 
+              $fwrite(f,"%h%h%h%h\n", data_out[127:96], data_out[95:64], data_out[63:32], data_out[31:0]); 
+              opcode <= 2;  
+            end else if(opcode == 2) begin 
+              opcode <= 0;
+              if (encrypt_mem[data_idx] != data_out) begin
+                num_incorrect<= num_incorrect + 1;
+              end
+              data_idx <= data_idx + 1; 
+            end
+          end
+          if (data_idx == `NUM_TESTS) begin 
+            if (num_incorrect > 0) begin
+              $display("FAIL");
+            end else begin
+              $display("PASS");
+            end
+            data_idx <= data_idx + 1;
+          end
+      end
+  end
   initial begin
-    $display("starting");
+    f = $fopen("output.txt");
     clk <= 0;
-    reset <= 1;
-    data_in <= 0;
-    output_ready <= 1; 
-    #(`CLK_PERIOD) reset <= 0;
-    #(`CLK_PERIOD) reset <= 1;
-    if(!input_ready)
-      $display("INCORRECT: input ready");
-    input_valid <= 1;
-    opcode <= 5'd0;
-    data_in <= 256'd1;
-    #(`CLK_PERIOD) input_valid <= 0;
-    if(!busy)
-      $display("INCORRECT: busy");
-    #(`CLK_PERIOD)
-    #(`CLK_PERIOD)
-    $display("Output = %h", data_out);
-    input_valid <= 1;
-    opcode <= 5'd1;
-    data_in <= 256'd69;
-    #(`CLK_PERIOD)
-    input_valid <= 0;
-    $display("Output = %h", data_out);
-    #(`CLK_PERIOD)
-    $display("Output = %h", data_out);
+    rst <= 0;
+    #20 rst <= 1;
+    #20 rst <= 0; 
 
-    //#(`CLK_PERIOD) data_ready <= 0;
-
-    //#(`CLK_PERIOD) data_ready <= 1;
-    //data_in <= 128'h69; 
     #3000
     $finish;
   end
 
-  // always @ (posedge clk) begin
-  //   if (!reset) begin
-  //     if(!data_set) begin
-  //       $display("data set");
-  //       data_in <= # `ASSIGNMENT_DELAY (128'd1); 
-  //       data_set <= 1;
-  //       ready <= 1;
-  //     end else begin 
-  //       ready <= 0;
-  //       $finish;
-  //     end
-  //     // Don't change the inputs right after the clock edge because that will cause problems in gate level simulation
-  //   end
-
-  //   if (valid) begin
-  //     $display("valid set");
-  //     $display("Output = %d", data_out);
-  //     $finish;
-  //   end
-  // end
 
   initial begin
     $vcdplusfile("dump.vcd");
     $vcdplusmemon();
-    $vcdpluson(0, AESTb);
+    $vcdpluson(0, AESTopTb);
     #(`FINISH_TIME);
     #20000000;
     $finish(2);
