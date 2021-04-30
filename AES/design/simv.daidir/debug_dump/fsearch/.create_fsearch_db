@@ -5,5 +5,5 @@ PYTHONPATH=/cad/synopsys/vcs/Q-2020.03-SP2/linux64/lib/pylib27
 export PYTHONPATH
 LD_LIBRARY_PATH=/cad/synopsys/vcs/Q-2020.03-SP2/linux64/lib:/cad/synopsys/vcs/Q-2020.03-SP2/linux64/lib/pylib27
 export LD_LIBRARY_PATH
-/cad/synopsys/vcs/Q-2020.03-SP2/linux64/bin/vcsfind_create_index.exe  -z  "/home/users/krzanich/EE272B/AES/design/simv.daidir/debug_dump/fsearch/./idents_S1B8xt.xml.gz" "/home/users/krzanich/EE272B/AES/design/simv.daidir/debug_dump/fsearch/./idents_tapi.xml.gz" -o "/home/users/krzanich/EE272B/AES/design/simv.daidir/debug_dump/fsearch/fsearch.db_tmp"
+/cad/synopsys/vcs/Q-2020.03-SP2/linux64/bin/vcsfind_create_index.exe  -z  "/home/users/krzanich/EE272B/AES/design/simv.daidir/debug_dump/fsearch/./idents_J4EjBV.xml.gz" "/home/users/krzanich/EE272B/AES/design/simv.daidir/debug_dump/fsearch/./idents_tapi.xml.gz" -o "/home/users/krzanich/EE272B/AES/design/simv.daidir/debug_dump/fsearch/fsearch.db_tmp"
 \mv "/home/users/krzanich/EE272B/AES/design/simv.daidir/debug_dump/fsearch/fsearch.db_tmp" "/home/users/krzanich/EE272B/AES/design/simv.daidir/debug_dump/fsearch/fsearch.db"

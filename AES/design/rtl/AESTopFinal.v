@@ -64,12 +64,7 @@ module AESTop
       end else if (state == WAIT && input_valid)
         state <= RUN;
       else if (state == RUN) begin
-        if ((opcode == 7'd0) || 
-            (opcode == 7'd1) || 
-            (opcode == 7'd2))
-          state <= FINAL;
-        else 
-          state <= RUN;
+        state <= FINAL;
       end else if (state == FINAL)
         state <= WAIT;
    end
