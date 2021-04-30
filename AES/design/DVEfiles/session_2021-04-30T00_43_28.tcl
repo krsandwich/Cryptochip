@@ -1,13 +1,13 @@
 # Begin_DVE_Session_Save_Info
 # DVE full session
-# Saved on Fri Apr 30 01:09:19 2021
+# Saved on Thu Apr 29 23:41:21 2021
 # Designs open: 1
 #   V1: /home/users/krzanich/EE272B/AES/design/dump.vcd
 # Toplevel windows open: 1
 # 	TopLevel.2
-#   Wave.1: 9 signals
+#   Wave.1: 23 signals
 #   Group count = 1
-#   Group Group1 signal count = 9
+#   Group Group1 signal count = 23
 # End_DVE_Session_Save_Info
 
 # DVE version: Q-2020.03-SP2_Full64
@@ -66,7 +66,7 @@ if {![gui_exist_window -window TopLevel.2]} {
 } else { 
     set TopLevel.2 TopLevel.2
 }
-gui_show_window -window ${TopLevel.2} -show_state normal -rect {{1 52} {1318 828}}
+gui_show_window -window ${TopLevel.2} -show_state normal -rect {{1 30} {1319 807}}
 
 # ToolBar settings
 gui_set_toolbar_attributes -toolbar {TimeOperations} -dock_state top
@@ -114,7 +114,7 @@ gui_sync_global -id ${TopLevel.2} -option true
 # MDI window settings
 set Wave.1 [gui_create_window -type {Wave}  -parent ${TopLevel.2}]
 gui_show_window -window ${Wave.1} -show_state maximized
-gui_update_layout -id ${Wave.1} {{show_state maximized} {dock_state undocked} {dock_on_new_line false} {child_wave_left 509} {child_wave_right 803} {child_wave_colname 189} {child_wave_colvalue 316} {child_wave_col1 0} {child_wave_col2 1}}
+gui_update_layout -id ${Wave.1} {{show_state maximized} {dock_state undocked} {dock_on_new_line false} {child_wave_left 653} {child_wave_right 660} {child_wave_colname 189} {child_wave_colvalue 460} {child_wave_col1 0} {child_wave_col2 1}}
 
 # End MDI window settings
 
@@ -152,13 +152,14 @@ gui_set_time_units 1ps
 # Global: Signal Compare
 
 # Global: Signal Groups
+gui_load_child_values {AESTb.AESTop_inst}
 
 
 set _session_group_1 Group1
 gui_sg_create "$_session_group_1"
 set Group1 "$_session_group_1"
 
-gui_sg_addsignal -group "$_session_group_1" { AESTb.AESTop_inst.clk AESTb.AESTop_inst.rst AESTb.AESTop_inst.input_valid AESTb.AESTop_inst.output_ready AESTb.AESTop_inst.opcode AESTb.AESTop_inst.data_in AESTb.AESTop_inst.data_out AESTb.AESTop_inst.input_ready AESTb.AESTop_inst.output_valid }
+gui_sg_addsignal -group "$_session_group_1" { AESTb.AESTop_inst.clk AESTb.AESTop_inst.rst AESTb.AESTop_inst.input_valid AESTb.AESTop_inst.output_ready AESTb.AESTop_inst.opcode AESTb.AESTop_inst.data_in AESTb.AESTop_inst.data_out AESTb.AESTop_inst.input_ready AESTb.AESTop_inst.output_valid AESTb.AESTop_inst.busy AESTb.AESTop_inst.encrypt_ready AESTb.AESTop_inst.decrypt_ready AESTb.AESTop_inst.key_ready AESTb.AESTop_inst.encrypt_valid AESTb.AESTop_inst.decrypt_valid AESTb.AESTop_inst.key_valid AESTb.AESTop_inst.encrypt_in AESTb.AESTop_inst.decrypt_in AESTb.AESTop_inst.key_in AESTb.AESTop_inst.encrypt_out AESTb.AESTop_inst.decrypt_out AESTb.AESTop_inst.data_temp AESTb.AESTop_inst.key_out }
 
 # Global: Highlighting
 
@@ -168,7 +169,7 @@ gui_change_stack_mode -mode list
 # Post database loading setting...
 
 # Restore C1 time
-gui_set_time -C1_only 197767
+gui_set_time -C1_only 150000
 
 
 
@@ -196,8 +197,9 @@ gui_list_set_height -id Wave -height 25
 set origGroupCreationState [gui_list_create_group_when_add -wave]
 gui_list_create_group_when_add -wave -disable
 gui_marker_set_ref -id ${Wave.1}  C1
-gui_wv_zoom_timerange -id ${Wave.1} 63377 362318
+gui_wv_zoom_timerange -id ${Wave.1} 0 2135675
 gui_list_add_group -id ${Wave.1} -after {New Group} {Group1}
+gui_list_expand -id ${Wave.1} AESTb.AESTop_inst.key_out
 gui_seek_criteria -id ${Wave.1} {Any Edge}
 
 
@@ -215,7 +217,7 @@ gui_list_set_filter -id ${Wave.1} -list { {Buffer 1} {Input 1} {Others 1} {Linka
 gui_list_set_filter -id ${Wave.1} -text {*}
 gui_list_set_insertion_bar  -id ${Wave.1} -group Group1  -position in
 
-gui_marker_move -id ${Wave.1} {C1} 197767
+gui_marker_move -id ${Wave.1} {C1} 150000
 gui_view_scroll -id ${Wave.1} -vertical -set 0
 gui_show_grid -id ${Wave.1} -enable false
 # Restore toplevel window zorder

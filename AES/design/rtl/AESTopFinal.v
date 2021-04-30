@@ -27,36 +27,24 @@ module AESTop
   wire [  127:0] key_out [14:0];
 
 
-  AESEncryptPipe AESEncrypt_inst
+  AESEncrypt AESEncrypt_inst
     (
-      .clk(clk),
-      .rst(rst),
-      .ready(encrypt_ready),
       .data_in(encrypt_in),
       .key(key_out),
-      .data_out(encrypt_out),
-      .valid(encrypt_valid)
+      .data_out(encrypt_out)
     );
 
     AESDecrypt AESDecrypt_inst
     (
-      .clk(clk),
-      .rst(rst),
-      .ready(decrypt_ready),
       .data_in(decrypt_in),
       .key(key_out),
-      .data_out(decrypt_out),
-      .valid(decrypt_valid)
+      .data_out(decrypt_out)
     );
 
     ExpandKey ExpandKey_inst
     (
-      .clk(clk),
-      .rst(rst),
-      .ready(key_ready),
       .key_in(key_in),
-      .key_out(key_out),
-      .valid(key_valid)
+      .key_out(key_out)
     );
 
 
@@ -76,13 +64,13 @@ module AESTop
       end else if (state == WAIT && input_valid)
         state <= RUN;
       else if (state == RUN) begin
-        if ((opcode == 7'd0 && key_valid) || 
-            (opcode == 7'd1 && encrypt_valid)|| 
-            (opcode == 7'd2 && decrypt_valid))
+        if ((opcode == 7'd0) || 
+            (opcode == 7'd1) || 
+            (opcode == 7'd2))
           state <= FINAL;
         else 
           state <= RUN;
-      end else if (state == FINAL && output_ready)
+      end else if (state == FINAL)
         state <= WAIT;
    end
 
@@ -91,25 +79,19 @@ module AESTop
     if (state == WAIT && input_valid) begin
       if (opcode == 7'd0) begin
         key_in <= data_in;
-        key_ready <= input_valid; 
       end else if (opcode == 7'd1) begin
         encrypt_in <= data_in[255:128];
-        encrypt_ready <= input_valid; 
       end else if (opcode == 7'd2) begin
         decrypt_in <= data_in[255:128];
-        decrypt_ready <= input_valid;
       end 
     end else if (state == RUN) begin 
-      key_ready <= 1'b0;
-      encrypt_ready <= 1'b0;
-      decrypt_ready <= 1'b0; 
       if (rst)
         data_temp <= 128'd0;
-      else if (opcode == 7'd0 && key_valid)
+      else if (opcode == 7'd0)
         data_temp <= 128'd0;
-      else if (opcode == 7'd1 && encrypt_valid)
+      else if (opcode == 7'd1)
         data_temp <= encrypt_out;
-      else if (opcode == 7'd2 && decrypt_valid)
+      else if (opcode == 7'd2)
         data_temp <= decrypt_out;
     end
   end
@@ -122,16 +104,12 @@ endmodule // mainUnit
 
 
 //`default_nettype none
-module AESEncryptPipe
+module AESEncrypt
 (
-  input  wire [   0:0] clk,
-  input  wire [   0:0] rst,
-  input  wire [   0:0] ready,
   input  wire [ 127:0] data_in,
   input  wire [ 127:0] key [14:0],
 
-  output wire [ 127:0] data_out,
-  output wire [   0:0] valid
+  output wire [ 127:0] data_out
 );
 
   //---------
@@ -159,37 +137,8 @@ module AESEncryptPipe
   endgenerate
 
   EncryptLastRound  Round14 (.data_in(temp_data[14]), .key(key[14]),
-                             .data_out(temp_data[15]));
+                             .data_out(data_out));
 
-
-  //---------
-  // FSM
-  //---------
-  assign data_out = data_final;
-  assign valid = valid_final;
-
-  always_ff @(posedge clk or posedge rst) begin
-    if (rst) begin
-      data_final <= 128'd0;
-      valid_final <= 1'b0; 
-      state <= WAIT;
-    end
-    else begin
-      case(state)
-        WAIT: begin
-          if (ready) begin
-            state <= ENCRYPT;
-          end 
-          valid_final <= 1'b0;
-        end
-        ENCRYPT: begin
-          data_final <= temp_data[15];
-          valid_final <= 1'b1;
-          state <= WAIT; 
-        end
-      endcase
-    end
-  end
 
 
 endmodule // mainUnit
@@ -203,9 +152,6 @@ endmodule // mainUnit
 //`default_nettype none
 module AESDecrypt
 (
-  input  wire [   0:0] clk,
-  input  wire [   0:0] rst,
-  input  wire [   0:0] ready,
   input  wire [ 127:0] data_in,
   input  wire [ 127:0] key [14:0],
 
@@ -236,38 +182,9 @@ module AESDecrypt
   endgenerate
 
   DecryptLastRound  Round14 (.data_in(temp_data[14]), .key(key[0]),
-                             .data_out(temp_data[15]));
+                             .data_out(data_out));
 
 
-
-  //---------
-  // FSM
-  //---------
-  assign data_out = data_final;
-  assign valid = valid_final;
-
-  always_ff @(posedge clk or posedge rst) begin
-    if (rst) begin
-      data_final <= 128'd0;
-      valid_final <= 1'd0; 
-      state <= WAIT;
-    end
-    else begin
-      case(state)
-        WAIT: begin
-          if (ready) begin
-            state <= ENCRYPT;
-          end 
-          valid_final <= 1'd0;
-        end
-        ENCRYPT: begin
-          data_final <= temp_data[15];
-          valid_final <= 1'd1;
-          state <= WAIT; 
-        end
-      endcase
-    end
-  end
 
 
 endmodule // mainUnit
@@ -412,13 +329,8 @@ endmodule // final
 `default_nettype none
 module ExpandKey
 (
-  input  wire [    0:0] clk,
-  input  wire [    0:0] rst,
-  input  wire [    0:0] ready,
   input  wire [  255:0] key_in,
-
-  output wire [  127:0] key_out [14:0],
-  output wire [    0:0] valid
+  output wire [  127:0] key_out [14:0]
 );
 
   wire [127:0] temp_key [14:0];
@@ -431,48 +343,24 @@ module ExpandKey
   //---------
   // FSM
   //---------
-  assign key_out = temp_key;
-  assign valid = valid_final;
+  
 
-  always_ff @(posedge clk or posedge rst) begin
-    if (rst) begin
-      temp_out <= '{128'd0,128'd0,128'd0,128'd0,128'd0,128'd0,128'd0,128'd0,
-                    128'd0,128'd0,128'd0,128'd0,128'd0,128'd0,128'd0};
-      valid_final <= 1'd0;
-      state <= WAIT;
-    end
-    else begin
-      case(state)
-        WAIT: begin
-          if (ready) begin
-            state <= ENCRYPT;
-          end 
-          valid_final <= 1'd0;
-        end
-        ENCRYPT: begin
-          valid_final <= 1'd1;
-          state <= WAIT; 
-        end
-      endcase
-    end
-  end
+  assign key_out[0] = key_in[255:128];
+  assign key_out[1] = key_in[127:0]; 
 
-  assign temp_key[0] = key_in[255:128];
-  assign temp_key[1] = key_in[127:0]; 
-
-  ExpandKeyEvenHelper round2  (.in(key_in), .rcon(8'h1), .next(next_key[1]), .out(temp_key[2]));
-  ExpandKeyOddHelper  round3  (.in(next_key[1]), .next(next_key[2]), .out(temp_key[3]));
-  ExpandKeyEvenHelper round4  (.in(next_key[2]), .rcon(8'h2), .next(next_key[3]), .out(temp_key[4]));
-  ExpandKeyOddHelper  round5  (.in(next_key[3]), .next(next_key[4]), .out(temp_key[5]));
-  ExpandKeyEvenHelper round6  (.in(next_key[4]), .rcon(8'h4), .next(next_key[5]), .out(temp_key[6]));
-  ExpandKeyOddHelper  round7  (.in(next_key[5]), .next(next_key[6]), .out(temp_key[7]));
-  ExpandKeyEvenHelper round8  (.in(next_key[6]), .rcon(8'h8), .next(next_key[7]), .out(temp_key[8]));
-  ExpandKeyOddHelper  round9  (.in(next_key[7]), .next(next_key[8]), .out(temp_key[9]));
-  ExpandKeyEvenHelper round10 (.in(next_key[8]), .rcon(8'h10), .next(next_key[9]), .out(temp_key[10]));
-  ExpandKeyOddHelper  round11 (.in(next_key[9]), .next(next_key[10]), .out(temp_key[11]));
-  ExpandKeyEvenHelper round12 (.in(next_key[10]), .rcon(8'h20), .next(next_key[11]), .out(temp_key[12]));
-  ExpandKeyOddHelper  round13 (.in(next_key[11]), .next(next_key[12]), .out(temp_key[13]));
-  ExpandKeyEvenHelper round14 (.in(next_key[12]), .rcon(8'h40), .next( ), .out(temp_key[14]));
+  ExpandKeyEvenHelper round2  (.in(key_in), .rcon(8'h1), .next(next_key[1]), .out(key_out[2]));
+  ExpandKeyOddHelper  round3  (.in(next_key[1]), .next(next_key[2]), .out(key_out[3]));
+  ExpandKeyEvenHelper round4  (.in(next_key[2]), .rcon(8'h2), .next(next_key[3]), .out(key_out[4]));
+  ExpandKeyOddHelper  round5  (.in(next_key[3]), .next(next_key[4]), .out(key_out[5]));
+  ExpandKeyEvenHelper round6  (.in(next_key[4]), .rcon(8'h4), .next(next_key[5]), .out(key_out[6]));
+  ExpandKeyOddHelper  round7  (.in(next_key[5]), .next(next_key[6]), .out(key_out[7]));
+  ExpandKeyEvenHelper round8  (.in(next_key[6]), .rcon(8'h8), .next(next_key[7]), .out(key_out[8]));
+  ExpandKeyOddHelper  round9  (.in(next_key[7]), .next(next_key[8]), .out(key_out[9]));
+  ExpandKeyEvenHelper round10 (.in(next_key[8]), .rcon(8'h10), .next(next_key[9]), .out(key_out[10]));
+  ExpandKeyOddHelper  round11 (.in(next_key[9]), .next(next_key[10]), .out(key_out[11]));
+  ExpandKeyEvenHelper round12 (.in(next_key[10]), .rcon(8'h20), .next(next_key[11]), .out(key_out[12]));
+  ExpandKeyOddHelper  round13 (.in(next_key[11]), .next(next_key[12]), .out(key_out[13]));
+  ExpandKeyEvenHelper round14 (.in(next_key[12]), .rcon(8'h40), .next( ), .out(key_out[14]));
 
 endmodule
 
