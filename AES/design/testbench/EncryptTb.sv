@@ -3,7 +3,7 @@
 `define FINISH_TIME 2000000
 `define NUM_TEST_VECTORS 100
 
-module AESTb;
+module EncryptTb;
  
   reg clk;
   reg [127 : 0] data_in;
@@ -47,7 +47,7 @@ module AESTb;
   initial begin
     $vcdplusfile("dump.vcd");
     $vcdplusmemon();
-    $vcdpluson(0, AESTb);
+    $vcdpluson(0, EncryptTb);
     #(`FINISH_TIME);
     #20000000;
     $finish(2);

@@ -12,8 +12,11 @@ outputs:
   - design.args.gls
 
 commands:
-  - cp AESTb.sv outputs/testbench.sv
-  - python3 generate_test_vectors.py
-  - cp test_vectors.txt outputs/test_vectors.txt
+  - cp AESTopTb.sv outputs/testbench.sv
+  - cp inputs.mem outputs/inputs.mem
+  - cp key.mem outputs/key.mem
   - cp design.args outputs/design.args
   - cat design.args.gls inputs/adk/vcs_incdir.txt > outputs/design.args.gls
+
+
+

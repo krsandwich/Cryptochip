@@ -2,6 +2,8 @@ name: rtl
 
 outputs:
   - design.v
+  - design.vcs.v
 
-commands:
-  - cat AESEncrypt.v > outputs/design.v 
+commands: 
+  - cat AESTop.v > outputs/design.v
+  - cp outputs/design.v outputs/design.vcs.v

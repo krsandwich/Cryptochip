@@ -60,7 +60,6 @@ module AESTop
    always @(posedge clk or posedge rst) begin
       if (rst) begin
         state <= WAIT;
-        data_temp <= 128'd0;
       end else if (state == WAIT && input_valid)
         state <= RUN;
       else if (state == RUN) begin
@@ -437,11 +436,10 @@ endmodule
 //
 //---------------------------------------------------------------------------------------
 module xtimes (
-  in, out
+  input  wire [7:0] in,
+  output wire [7:0] out
 );
  
-input [7:0] in;
-output  [7:0] out;
  
 wire [3:0] xt;
 
@@ -457,11 +455,9 @@ assign out[0]   = in[7];
 endmodule
 
 module MUL3 (
-  in, out
+  input  wire [7:0] in,
+  output wire [7:0] out
 );
- 
-input [7:0] in;
-output  [7:0] out;
  
 wire [7:0] xt;
 
@@ -472,11 +468,10 @@ assign out = xt ^ in;
 endmodule
 
 module MULE (
-  in, out
+  input wire [7:0] in,
+  output wire [7:0] out
 );
  
-input [7:0] in;
-output  [7:0] out;
  
 wire [7:0] xt1, xt2, xt3;
 
@@ -489,11 +484,10 @@ assign out = xt3 ^ xt2 ^ xt1;
 endmodule
 
 module MULB (
-  in, out
+  input wire [7:0] in,
+  output wire [7:0] out
 );
  
-input [7:0] in;
-output  [7:0] out;
  
 wire [7:0] xt1, xt2, xt3;
 
@@ -506,11 +500,10 @@ assign out = xt3 ^ xt1 ^ in;
 endmodule
 
 module MULD (
-  in, out
+  input wire [7:0] in,
+  output wire [7:0] out
 );
  
-input [7:0] in;
-output  [7:0] out;
  
 wire [7:0] xt1, xt2, xt3;
 
@@ -523,11 +516,10 @@ assign out = xt3 ^ xt2 ^ in;
 endmodule
 
 module MUL9 (
-  in, out
+  input wire [7:0] in,
+  output wire [7:0] out
 );
  
-input [7:0] in;
-output  [7:0] out;
  
 wire [7:0] xt1, xt2, xt3;
 
@@ -540,11 +532,12 @@ assign out = xt3 ^ in;
 endmodule
 
 module InvByteMixColumns (
-  a, b, c, d, out
+  input wire [7:0] a,
+  input wire [7:0] b,
+  input wire [7:0] c,
+  input wire [7:0] d,
+  output wire [7:0] out
 );
- 
-input [7:0] a, b, c, d;
-output  [7:0] out;
  
 wire [7:0] mule, mulb, muld, mul9;
 
@@ -558,11 +551,9 @@ assign out = mule ^ mulb ^ muld ^ mul9;
 endmodule
 
 module InvWordMixColumns (
-  in, out
+  input wire [31:0] in,
+  output wire [31:0] out
 );
- 
-input [31:0]  in;
-output  [31:0]  out;
  
 wire [7:0] si0,si1,si2,si3;
 wire [7:0] so0,so1,so2,so3;
