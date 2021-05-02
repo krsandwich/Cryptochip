@@ -1,0 +1,3 @@
+[submodule "chipyard"]
+	path = chipyard
+	url = git@github.com:inSam/chipyard.git
