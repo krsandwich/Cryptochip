@@ -72,7 +72,6 @@ module AESTop
    always @(posedge clk or posedge rst) begin
       if (rst) begin
         state <= WAIT;
-        data_temp <= 128'd0;
       end else if (state == WAIT && input_valid)
         state <= RUN;
       else if (state == RUN) begin
@@ -82,7 +81,7 @@ module AESTop
           state <= FINAL;
         else 
           state <= RUN;
-      end else if (state == FINAL && output_ready)
+      end else if (state == FINAL)
         state <= WAIT;
    end
 
@@ -91,13 +90,13 @@ module AESTop
     if (state == WAIT && input_valid) begin
       if (opcode == 7'd0) begin
         key_in <= data_in;
-        key_ready <= input_valid; 
+        key_ready <= 1'd1; 
       end else if (opcode == 7'd1) begin
         encrypt_in <= data_in[255:128];
-        encrypt_ready <= input_valid; 
+        encrypt_ready <= 1'd1; 
       end else if (opcode == 7'd2) begin
         decrypt_in <= data_in[255:128];
-        decrypt_ready <= input_valid;
+        decrypt_ready <= 1'd1;
       end 
     end else if (state == RUN) begin 
       key_ready <= 1'b0;

@@ -1,13 +1,13 @@
 # Begin_DVE_Session_Save_Info
 # DVE full session
-# Saved on Sat May 1 14:05:58 2021
+# Saved on Sun May 2 15:40:11 2021
 # Designs open: 1
 #   V1: /tmp/kylee/EE272B/AES/design/dump.vcd
 # Toplevel windows open: 1
 # 	TopLevel.1
 #   Source.1: AESTopTb
 #   Group count = 1
-#   Group Group1 signal count = 8
+#   Group Group1 signal count = 10
 # End_DVE_Session_Save_Info
 
 # DVE version: Q-2020.03-SP2_Full64
@@ -66,7 +66,7 @@ if {![gui_exist_window -window TopLevel.1]} {
 } else { 
     set TopLevel.1 TopLevel.1
 }
-gui_show_window -window ${TopLevel.1} -show_state normal -rect {{111 113} {1384 772}}
+gui_show_window -window ${TopLevel.1} -show_state normal -rect {{5 27} {1065 756}}
 
 # ToolBar settings
 gui_set_toolbar_attributes -toolbar {TimeOperations} -dock_state top
@@ -107,23 +107,23 @@ gui_hide_toolbar -toolbar {Testbench}
 # End ToolBar settings
 
 # Docked window settings
-set HSPane.1 [gui_create_window -type HSPane -parent ${TopLevel.1} -dock_state left -dock_on_new_line true -dock_extent 268]
+set HSPane.1 [gui_create_window -type HSPane -parent ${TopLevel.1} -dock_state left -dock_on_new_line true -dock_extent 175]
 catch { set Hier.1 [gui_share_window -id ${HSPane.1} -type Hier] }
-gui_set_window_pref_key -window ${HSPane.1} -key dock_width -value_type integer -value 268
+gui_set_window_pref_key -window ${HSPane.1} -key dock_width -value_type integer -value 175
 gui_set_window_pref_key -window ${HSPane.1} -key dock_height -value_type integer -value -1
 gui_set_window_pref_key -window ${HSPane.1} -key dock_offset -value_type integer -value 0
-gui_update_layout -id ${HSPane.1} {{left 0} {top 0} {width 267} {height 440} {dock_state left} {dock_on_new_line true} {child_hier_colhier 268} {child_hier_coltype 15} {child_hier_colpd 0} {child_hier_col1 0} {child_hier_col2 1} {child_hier_col3 -1}}
-set DLPane.1 [gui_create_window -type DLPane -parent ${TopLevel.1} -dock_state left -dock_on_new_line true -dock_extent 489]
+gui_update_layout -id ${HSPane.1} {{left 0} {top 0} {width 174} {height 436} {dock_state left} {dock_on_new_line true} {child_hier_colhier 140} {child_hier_coltype 100} {child_hier_colpd 0} {child_hier_col1 0} {child_hier_col2 1} {child_hier_col3 -1}}
+set DLPane.1 [gui_create_window -type DLPane -parent ${TopLevel.1} -dock_state left -dock_on_new_line true -dock_extent 175]
 catch { set Data.1 [gui_share_window -id ${DLPane.1} -type Data] }
-gui_set_window_pref_key -window ${DLPane.1} -key dock_width -value_type integer -value 489
-gui_set_window_pref_key -window ${DLPane.1} -key dock_height -value_type integer -value 441
+gui_set_window_pref_key -window ${DLPane.1} -key dock_width -value_type integer -value 175
+gui_set_window_pref_key -window ${DLPane.1} -key dock_height -value_type integer -value 260
 gui_set_window_pref_key -window ${DLPane.1} -key dock_offset -value_type integer -value 0
-gui_update_layout -id ${DLPane.1} {{left 0} {top 0} {width 488} {height 440} {dock_state left} {dock_on_new_line true} {child_data_colvariable 300} {child_data_colvalue 113} {child_data_coltype 91} {child_data_col1 0} {child_data_col2 1} {child_data_col3 2}}
-set Console.1 [gui_create_window -type Console -parent ${TopLevel.1} -dock_state bottom -dock_on_new_line true -dock_extent 105]
-gui_set_window_pref_key -window ${Console.1} -key dock_width -value_type integer -value 1274
-gui_set_window_pref_key -window ${Console.1} -key dock_height -value_type integer -value 105
+gui_update_layout -id ${DLPane.1} {{left 0} {top 0} {width 174} {height 436} {dock_state left} {dock_on_new_line true} {child_data_colvariable 140} {child_data_colvalue 100} {child_data_coltype 40} {child_data_col1 0} {child_data_col2 1} {child_data_col3 2}}
+set Console.1 [gui_create_window -type Console -parent ${TopLevel.1} -dock_state bottom -dock_on_new_line true -dock_extent 180]
+gui_set_window_pref_key -window ${Console.1} -key dock_width -value_type integer -value 689
+gui_set_window_pref_key -window ${Console.1} -key dock_height -value_type integer -value 180
 gui_set_window_pref_key -window ${Console.1} -key dock_offset -value_type integer -value 0
-gui_update_layout -id ${Console.1} {{left 0} {top 0} {width 1273} {height 105} {dock_state bottom} {dock_on_new_line true}}
+gui_update_layout -id ${Console.1} {{left 0} {top 0} {width 1060} {height 179} {dock_state bottom} {dock_on_new_line true}}
 #### Start - Readjusting docked view's offset / size
 set dockAreaList { top left right bottom }
 foreach dockArea $dockAreaList {
@@ -185,14 +185,14 @@ gui_set_time_units 1ps
 # Global: Signal Compare
 
 # Global: Signal Groups
-gui_load_child_values {AESTopTb}
+gui_load_child_values {AESTopTb.AESTop_inst}
 
 
 set _session_group_1 Group1
 gui_sg_create "$_session_group_1"
 set Group1 "$_session_group_1"
 
-gui_sg_addsignal -group "$_session_group_1" { AESTopTb.clk AESTopTb.rst AESTopTb.output_ready AESTopTb.input_valid AESTopTb.input_ready AESTopTb.output_valid AESTopTb.data_in AESTopTb.data_out }
+gui_sg_addsignal -group "$_session_group_1" { AESTopTb.AESTop_inst.clk AESTopTb.AESTop_inst.rst AESTopTb.AESTop_inst.input_valid AESTopTb.AESTop_inst.output_ready AESTopTb.AESTop_inst.opcode AESTopTb.AESTop_inst.data_in AESTopTb.AESTop_inst.data_out AESTopTb.AESTop_inst.input_ready AESTopTb.AESTop_inst.output_valid AESTopTb.AESTop_inst.busy }
 
 # Global: Highlighting
 
@@ -202,7 +202,7 @@ gui_change_stack_mode -mode list
 # Post database loading setting...
 
 # Restore C1 time
-gui_set_time -C1_only 2182478
+gui_set_time -C1_only 1165741
 
 
 
@@ -227,16 +227,17 @@ gui_list_set_filter -id ${Hier.1} -list { {Package 1} {All 0} {Process 1} {VirtP
 gui_list_set_filter -id ${Hier.1} -text {*}
 gui_hier_list_init -id ${Hier.1}
 gui_change_design -id ${Hier.1} -design V1
-catch {gui_list_select -id ${Hier.1} {AESTopTb}}
+catch {gui_list_expand -id ${Hier.1} AESTopTb}
+catch {gui_list_select -id ${Hier.1} {AESTopTb.AESTop_inst}}
 gui_view_scroll -id ${Hier.1} -vertical -set 0
 gui_view_scroll -id ${Hier.1} -horizontal -set 0
 
 # Data 'Data.1'
 gui_list_set_filter -id ${Data.1} -list { {Buffer 1} {Input 1} {Others 1} {Linkage 1} {Output 1} {LowPower 1} {Parameter 1} {All 1} {Aggregate 1} {LibBaseMember 1} {Event 1} {Assertion 1} {Constant 1} {Interface 1} {BaseMembers 1} {Signal 1} {$unit 1} {Inout 1} {Variable 1} }
 gui_list_set_filter -id ${Data.1} -text {*}
-gui_list_show_data -id ${Data.1} {AESTopTb}
+gui_list_show_data -id ${Data.1} {AESTopTb.AESTop_inst}
 gui_show_window -window ${Data.1}
-catch { gui_list_select -id ${Data.1} {AESTopTb.clk AESTopTb.rst AESTopTb.output_ready AESTopTb.input_valid AESTopTb.input_ready AESTopTb.output_valid AESTopTb.data_in AESTopTb.data_out }}
+catch { gui_list_select -id ${Data.1} {AESTopTb.AESTop_inst.clk AESTopTb.AESTop_inst.rst AESTopTb.AESTop_inst.input_valid AESTopTb.AESTop_inst.output_ready AESTopTb.AESTop_inst.opcode AESTopTb.AESTop_inst.data_in AESTopTb.AESTop_inst.data_out AESTopTb.AESTop_inst.input_ready AESTopTb.AESTop_inst.output_valid AESTopTb.AESTop_inst.busy }}
 gui_view_scroll -id ${Data.1} -vertical -set 0
 gui_view_scroll -id ${Data.1} -horizontal -set 0
 gui_view_scroll -id ${Hier.1} -vertical -set 0

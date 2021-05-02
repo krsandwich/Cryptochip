@@ -29,16 +29,15 @@
 /cad/synopsys/vcs/Q-2020.03-SP2/linux64/bin/vcs1
 testbench/AESTopTb.sv
 rtl/AESTop.v
-73
+72
 _LMFILES__modshare=/cad/modules/modulefiles/tools/xcelium/latest:1:/cad/modules/modulefiles/tools/pts/latest:1:/cad/modules/modulefiles/tools/netgen/latest:1:/cad/modules/modulefiles/tools/genus/latest:1:/cad/modules/modulefiles/tools/innovus/latest:1:/cad/modules/modulefiles/tools/calibre/latest:1:/cad/modules/modulefiles/tools/vcs/latest:1:/cad/modules/modulefiles/tools/prime/Q-2019.12-SP2:1:/cad/modules/modulefiles/tools/dc_shell/latest:1:/cad/modules/modulefiles/tools/lc/latest:1:/cad/modules/modulefiles/tools/magic/latest:1:/cad/modules/modulefiles/tools/base/rsg:1
 _LMFILES_=/cad/modules/modulefiles/tools/base/rsg:/cad/modules/modulefiles/tools/vcs/latest:/cad/modules/modulefiles/tools/lc/latest:/cad/modules/modulefiles/tools/dc_shell/latest:/cad/modules/modulefiles/tools/xcelium/latest:/cad/modules/modulefiles/tools/genus/latest:/cad/modules/modulefiles/tools/innovus/latest:/cad/modules/modulefiles/tools/calibre/latest:/cad/modules/modulefiles/tools/pts/latest:/cad/modules/modulefiles/tools/prime/Q-2019.12-SP2:/cad/modules/modulefiles/tools/magic/latest:/cad/modules/modulefiles/tools/netgen/latest
 XILINX_BNN_ROOT=/home/users/krzanich/BNN-PYNQ/bnn/src/
-XDG_SESSION_ID=18259
+XDG_SESSION_ID=19105
 XDG_RUNTIME_DIR=/run/user/315754
 XDG_DATA_DIRS=/home/users/krzanich/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share
 VRST_HOME=/cad/cadence/XCELIUMMAIN_20.09.007_lnx86
 VMR_MODE_FLAG=64
-VIRTUAL_ENV=/home/users/krzanich/venv
 VCS_TARGET_ARCH=linux64
 VCS_MX_HOME_INTERNAL=1
 VCS_MODE_FLAG=64
@@ -53,9 +52,9 @@ SYNOPSYS_PTS=/cad/synopsys/prime/Q-2019.12-SP2
 SYNOPSYS_LICENSE=27000@cadlic0.stanford.edu
 SYNOPSYS_LC_ROOT=/cad/synopsys/lc/M-2017.06-SP3
 SYNOPSYS=/cad/synopsys/syn/L-2016.03-SP5-5
-SSH_TTY=/dev/pts/15
-SSH_CONNECTION=171.66.188.174 64326 172.24.94.115 22
-SSH_CLIENT=171.66.188.174 64326 22
+SSH_TTY=/dev/pts/16
+SSH_CONNECTION=171.66.17.133 64732 172.24.94.115 22
+SSH_CLIENT=171.66.17.133 64732 22
 SSH_ASKPASS=/usr/libexec/openssh/gnome-ssh-askpass
 SPRINGSOFT_LICENSE=5219@cadlic0.stanford.edu
 SCRNAME=vcs
@@ -87,7 +86,7 @@ LM_LICENSE_FILE_modshare=1717@cadlic0.stanford.edu:1
 LESSOPEN=||/usr/bin/lesspipe.sh %s
 LD_LIBRARY_PATH_modshare=/cad/cadence/INNOVUS20.13.000.lnx86/tools.lnx86/lib/64bit:1:/cad/common/Linux/x86_64/lib:1:/cad/synopsys/syn/L-2016.03-SP5-5/lib:999999999:/cad/cadence/INNOVUS20.13.000.lnx86/share/oa/lib/linux_rhel60_64/opt:1
 LC_ALL=C
-KRB5CCNAME=FILE:/tmp/krb5cc_315754_A6cnuf
+KRB5CCNAME=FILE:/tmp/krb5cc_315754_E8ktpj
 KDEDIRS=/usr
 IUSHOME=/cad/cadence/XCELIUMMAIN_20.09.007_lnx86
 HISTCONTROL=ignoreboth
@@ -105,7 +104,7 @@ BASH_FUNC_module()=() {  eval `$TCLSH /cad/modules/tcl/modulecmd.tcl sh $*`_}
 AMSHOME=/cad/cadence/XCELIUMMAIN_20.09.007_lnx86
 0
 3
-1619902439 rtl/AESTop.v
+1619998273 rtl/AESTop.v
 1619841186 testbench/AESTopTb.sv
 1599016237 /cad/synopsys/vcs/Q-2020.03-SP2/linux64/lib/vcsdp_lite.tab
 4
@@ -113,5 +112,5 @@ AMSHOME=/cad/cadence/XCELIUMMAIN_20.09.007_lnx86
 1599016702 /cad/synopsys/vcs/Q-2020.03-SP2/linux64/lib/liberrorinf.so
 1599016660 /cad/synopsys/vcs/Q-2020.03-SP2/linux64/lib/libsnpsmalloc.so
 1599016699 /cad/synopsys/vcs/Q-2020.03-SP2/linux64/lib/libvfs.so
-1619902956 simv.daidir
+1619998438 simv.daidir
 -1 partitionlib

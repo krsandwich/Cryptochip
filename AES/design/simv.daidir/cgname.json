@@ -11,35 +11,11 @@
         "module",
         19
     ],
-    "DecryptRound": [
-        "DecryptRound",
-        "L1LgV",
-        "module",
-        9
-    ],
-    "EncryptRound": [
-        "EncryptRound",
-        "ghLpQ",
-        "module",
-        6
-    ],
-    "ExpandKeyEvenHelper": [
-        "ExpandKeyEvenHelper",
-        "DsNK9",
-        "module",
-        17
-    ],
-    "ExpandKeyOddHelper": [
-        "ExpandKeyOddHelper",
-        "ExQpf",
-        "module",
-        18
-    ],
     "xtimes": [
         "xtimes",
         "pTNHn",
         "module",
-        10
+        12
     ],
     "MUL3": [
         "MUL3",
@@ -51,13 +27,13 @@
         "InvByteMixColumns",
         "U65gK",
         "module",
-        20
+        10
     ],
     "InvWordMixColumns": [
         "InvWordMixColumns",
         "JSt5H",
         "module",
-        21
+        5
     ],
     "InvShiftRows": [
         "InvShiftRows",
