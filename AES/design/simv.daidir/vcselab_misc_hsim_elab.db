@@ -1,6 +1,6 @@
 psSimBaseName                      	simv
 psLogFileName                      	NULL
-pDaiDir                            	/home/users/krzanich/EE272B/AES/design/simv.daidir
+pDaiDir                            	/tmp/kylee/EE272B/AES/design/simv.daidir
 destPath                           	csrc/
 fSharedMaster                      	0
 fHsimPCSharedLibSpecified          	0
