@@ -140,7 +140,6 @@ module AESEncrypt
   reg [ 127: 0] temp_data  [5:0];
   reg [   0: 0] temp_ready;
   reg [   0: 0] valid_final;
-  reg [ 127: 0] data_final;
   reg [ 127: 0] temp_key;
   reg [   0: 0] state;
   reg [   3: 0] counter;
@@ -166,7 +165,6 @@ module AESEncrypt
 
   always_ff @(posedge clk or posedge rst) begin
     if (rst) begin
-      data_final <= 128'd0;
       valid_final <= 1'b0; 
       state <= WAIT;
     end
@@ -227,10 +225,9 @@ module AESDecrypt
   // INPUT OUTPUT 
   // - this is for storing input and output data 
   //---------
-  reg [ 127: 0] temp_data  [30:0];
+  reg [ 127: 0] temp_data  [5:0];
   reg [   0: 0] temp_ready;
   reg [   0: 0] valid_final;
-  reg [ 127: 0] data_final;
   reg [ 127: 0] temp_key;
   reg [   0: 0] state;
   reg [   3: 0] counter;
@@ -442,15 +439,14 @@ module ExpandKey
   output wire [    0:0] valid
 );
 
-  wire [127:0] temp_key [14:0];
+  wire [127:0] temp_key [1:0];
 
   reg  [127:0] temp_out [14:0];
-  reg  [255:0] next_key [4:0]; 
+  reg  [255:0] next_key [3:0]; 
   reg  [  0:0] temp_ready;
   reg  [  0:0] valid_final;
   reg  [  0:0] state;
   reg  [  3:0] counter;
-  reg  [  5:0] index;
   reg  [  7:0] temp_rcon;
   localparam WAIT = 2'd0, EXPAND = 2'd1, FINAL = 2'd2;
   //---------
@@ -474,26 +470,21 @@ module ExpandKey
             temp_out[0] <= key_in[255:128];
             temp_out[1] <= key_in[127:0]; 
             next_key[0] <= key_in;
-            index = 6'd2;
+            temp_rcon <= 8'h1;
           end 
           valid_final <= 1'd0;
-          counter <= 4'd1;
+          counter <= 4'd2;
         end
         EXPAND: begin
           counter <= counter + 4'd1;
-          // if(counter == 4'd1) begin
-          //   next_key[2] <= next_key[1];
-          //   temp_out[2] <= temp_key[2];
-          // end else 
-          if(counter < 4'd14) begin
-            if(counter[0]) begin
-              temp_out[counter + 4'd1] <= temp_key[3];
-              next_key[0] <= next_key[3];
-            end else begin 
-              temp_out[counter + 4'd1] <= temp_key[2];
-              next_key[2] <= next_key[1];
-            end
-          end else if(counter == 4'd14) begin
+          if(counter[0]) begin
+            temp_out[counter + 4'd0] <= temp_key[1];
+            next_key[0] <= next_key[3];
+          end else begin 
+            temp_out[counter + 4'd0] <= temp_key[0];
+            next_key[2] <= next_key[1];
+          end
+          if(counter == 4'd14) begin
             state <= FINAL;
             valid_final <= 1'd1;
           end
@@ -522,22 +513,9 @@ module ExpandKey
     end
   end
 
-  // assign temp_out[0] = key_in[255:128];
-  // assign temp_out[1] = key_in[127:0]; 
 
-  ExpandKeyEvenHelper round2  (.in(next_key[0]), .rcon(temp_rcon), .next(next_key[1]), .out(temp_key[2]));
-  ExpandKeyOddHelper  round3  (.in(next_key[2]), .next(next_key[3]), .out(temp_key[3]));
-  // ExpandKeyEvenHelper round4  (.in(next_key[4]), .rcon(8'h2), .next(next_key[5]), .out(temp_key[4]));
-  // ExpandKeyOddHelper  round5  (.in(next_key[6]), .next(next_key[7]), .out(temp_key[5]));
-  // ExpandKeyEvenHelper round6  (.in(next_key[8]), .rcon(8'h4), .next(next_key[9]), .out(temp_key[6]));
-  // ExpandKeyOddHelper  round7  (.in(next_key[10]), .next(next_key[11]), .out(temp_key[7]));
-  // ExpandKeyEvenHelper round8  (.in(next_key[12]), .rcon(8'h8), .next(next_key[13]), .out(temp_key[8]));
-  // ExpandKeyOddHelper  round9  (.in(next_key[14]), .next(next_key[15]), .out(temp_key[9]));
-  // ExpandKeyEvenHelper round10 (.in(next_key[16]), .rcon(8'h10), .next(next_key[17]), .out(temp_key[10]));
-  // ExpandKeyOddHelper  round11 (.in(next_key[18]), .next(next_key[19]), .out(temp_key[11]));
-  // ExpandKeyEvenHelper round12 (.in(next_key[20]), .rcon(8'h20), .next(next_key[21]), .out(temp_key[12]));
-  // ExpandKeyOddHelper  round13 (.in(next_key[22]), .next(next_key[23]), .out(temp_key[13]));
-  // ExpandKeyEvenHelper round14 (.in(next_key[24]), .rcon(8'h40), .next( ), .out(temp_key[14]));
+  ExpandKeyEvenHelper round2  (.in(next_key[0]), .rcon(temp_rcon), .next(next_key[1]), .out(temp_key[0]));
+  ExpandKeyOddHelper  round3  (.in(next_key[2]), .next(next_key[3]), .out(temp_key[1]));
 
 endmodule
 
