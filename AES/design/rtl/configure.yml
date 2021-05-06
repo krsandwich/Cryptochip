@@ -5,5 +5,5 @@ outputs:
   - design.vcs.v
 
 commands: 
-  - cat AESTop.v > outputs/design.v
+  - cat AESTopTest.v > outputs/design.v
   - cp outputs/design.v outputs/design.vcs.v
