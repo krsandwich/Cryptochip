@@ -53,13 +53,13 @@ def construct():
   # # different because of li layer, the default assumes metal 1 is the lowest
   # # layer
   
-  # power           = Step( this_dir + '/cadence-innovus-power'           ) 
+  power           = Step( this_dir + '/cadence-innovus-power'           ) 
 
   # # Signoff is custom because it has to output def that the default step does
   # # not do. This is because we use the def instead of gds for generating spice
   # # from layout for LVS
   
-  # signoff         = Step( this_dir + '/cadence-innovus-signoff'         ) 
+  signoff         = Step( this_dir + '/cadence-innovus-signoff'         ) 
   
   # pt_power_rtl    = Step( this_dir + '/synopsys-ptpx-rtl'               )
 
@@ -83,15 +83,22 @@ def construct():
   # rtl_sim.set_name( 'rtl-sim' )
   # gl_sim.set_name( 'gl-sim' )
   
-  # iflow           = Step( 'cadence-innovus-flowsetup',     default=True )
-  # init            = Step( 'cadence-innovus-init',          default=True )
-  # place           = Step( 'cadence-innovus-place',         default=True )
-  # cts             = Step( 'cadence-innovus-cts',           default=True )
-  # postcts_hold    = Step( 'cadence-innovus-postcts_hold',  default=True )
-  # route           = Step( 'cadence-innovus-route',         default=True )
-  # postroute       = Step( 'cadence-innovus-postroute',     default=True )
+  iflow           = Step( 'cadence-innovus-flowsetup',     default=True )
+  init            = Step( 'cadence-innovus-init',          default=True )
+  place           = Step( 'cadence-innovus-place',         default=True )
+  cts             = Step( 'cadence-innovus-cts',           default=True )
+  postcts_hold    = Step( 'cadence-innovus-postcts_hold',  default=True )
+  route           = Step( 'cadence-innovus-route',         default=True )
+  postroute       = Step( 'cadence-innovus-postroute',     default=True )
+  postroute_hold   = Step( 'cadence-innovus-postroute_hold', default=True)
   # gdsmerge        = Step( 'mentor-calibre-gdsmerge',       default=True )
-  # pt_timing       = Step( 'synopsys-pt-timing-signoff',    default=True )
+  synopsys_pt_eco = Step( 'synopsys-pt-eco', default=True)
+  open_icc2innovus = Step('open-icc2innovus', default=True)
+  cadence_innovus_eco = Step('cadence-innovus-eco', default=True)
+  pt_timing       = Step( 'synopsys-pt-timing-signoff',    default=True)
+
+  signoff_posteco = signoff.clone()
+  signoff_posteco.set_name("signoff_posteco")
   
   # gen_saif        = Step( 'synopsys-vcd2saif-convert',     default=True )
   # gen_saif_rtl    = gen_saif.clone()
@@ -112,17 +119,22 @@ def construct():
   # g.add_step( rtl_sim         )
   g.add_step( constraints     )
   g.add_step( dc              )
-  # g.add_step( iflow           )
-  # g.add_step( init            )
-  # g.add_step( power           )
-  # g.add_step( place           )
-  # g.add_step( cts             )
-  # g.add_step( postcts_hold    )
-  # g.add_step( route           )
-  # g.add_step( postroute       )
-  # g.add_step( signoff         )
+  g.add_step( iflow           )
+  g.add_step( init            )
+  g.add_step( power           )
+  g.add_step( place           )
+  g.add_step( cts             )
+  g.add_step( postcts_hold    )
+  g.add_step( route           )
+  g.add_step( postroute       )
+  g.add_step( postroute_hold  )
+  g.add_step( signoff         )
+  g.add_step( synopsys_pt_eco )
+  g.add_step( open_icc2innovus)
+  g.add_step( cadence_innovus_eco)
+  g.add_step( signoff_posteco)
   # g.add_step( gdsmerge        )
-  # g.add_step( pt_timing       )
+  g.add_step( pt_timing       )
   # g.add_step( gen_saif_rtl    )
   # g.add_step( pt_power_rtl    )
   # g.add_step( gl_sim          )
@@ -142,24 +154,34 @@ def construct():
   # rtl_sim.extend_inputs(['test_vectors.txt'])
   # gl_sim.extend_inputs(['test_vectors.txt'])
 
-  # # Connect by name
+  # Connect by name
 
-  # g.connect_by_name( adk,             dc              )
+  g.connect_by_name( adk,             dc              )
   # g.connect_by_name( adk,             testbench       )
-  # g.connect_by_name( adk,             iflow           )
-  # g.connect_by_name( adk,             init            )
-  # g.connect_by_name( adk,             power           )
-  # g.connect_by_name( adk,             place           )
-  # g.connect_by_name( adk,             cts             )
-  # g.connect_by_name( adk,             postcts_hold    )
-  # g.connect_by_name( adk,             route           )
-  # g.connect_by_name( adk,             postroute       )
-  # g.connect_by_name( adk,             signoff         )
+  g.connect_by_name( adk,             iflow           )
+  g.connect_by_name( adk,             init            )
+  g.connect_by_name( adk,             power           )
+  g.connect_by_name( adk,             place           )
+  g.connect_by_name( adk,             cts             )
+  g.connect_by_name( adk,             postcts_hold    )
+  g.connect_by_name( adk,             postroute_hold  )
+  g.connect_by_name( adk,             route           )
+  g.connect_by_name( adk,             postroute       )
+  g.connect_by_name( adk,             signoff         )
+  g.connect_by_name( adk,             synopsys_pt_eco )
+  g.connect_by_name( adk,             open_icc2innovus) 
+  g.connect_by_name( adk,             cadence_innovus_eco) 
+  g.connect_by_name( adk,             signoff_posteco) 
+
+  g.connect_by_name( signoff,         synopsys_pt_eco )
+  g.connect_by_name(synopsys_pt_eco,  open_icc2innovus)
+  g.connect_by_name(open_icc2innovus, cadence_innovus_eco)
+  g.connect_by_name(cadence_innovus_eco, signoff_posteco)
   # g.connect_by_name( adk,             gdsmerge        )
   # g.connect_by_name( adk,             magic_drc       )
   # g.connect_by_name( adk,             magic_def2spice )
   # g.connect_by_name( adk,             netgen_lvs      )
-  # g.connect_by_name( adk,             pt_timing       )
+  g.connect_by_name( adk,             pt_timing       )
   # g.connect_by_name( adk,             pt_power_rtl    )
   # g.connect_by_name( adk,             pt_power_gl     )
 
@@ -172,30 +194,36 @@ def construct():
   g.connect_by_name( constraints,     dc              )
   # g.connect_by_name( gen_saif_rtl,    dc              ) # run.saif
   
-  # g.connect_by_name( dc,              iflow           )
-  # g.connect_by_name( dc,              init            )
-  # g.connect_by_name( dc,              power           )
-  # g.connect_by_name( dc,              place           )
-  # g.connect_by_name( dc,              cts             )
+  g.connect_by_name( dc,              iflow           )
+  g.connect_by_name( dc,              init            )
+  g.connect_by_name( dc,              power           )
+  g.connect_by_name( dc,              place           )
+  g.connect_by_name( dc,              cts             )
   # g.connect_by_name( dc,              pt_power_rtl    ) # design.namemap
 
-  # g.connect_by_name( iflow,           init            )
-  # g.connect_by_name( iflow,           power           )
-  # g.connect_by_name( iflow,           place           )
-  # g.connect_by_name( iflow,           cts             )
-  # g.connect_by_name( iflow,           postcts_hold    )
-  # g.connect_by_name( iflow,           route           )
-  # g.connect_by_name( iflow,           postroute       )
-  # g.connect_by_name( iflow,           signoff         )
+  g.connect_by_name( iflow,           init            )
+  g.connect_by_name( iflow,           power           )
+  g.connect_by_name( iflow,           place           )
+  g.connect_by_name( iflow,           cts             )
+  g.connect_by_name( iflow,           postcts_hold    )
+  g.connect_by_name( iflow,           route           )
+  g.connect_by_name( iflow,           postroute       )
+  g.connect_by_name( iflow,           postroute_hold  )
+  g.connect_by_name( iflow,           signoff         )
+  #g.connect_by_name( iflow,             synopsys_pt_eco )
+ # g.connect_by_name( iflow,             open_icc2innovus) 
+  g.connect_by_name( iflow,             cadence_innovus_eco) 
+ # g.connect_by_name( iflow,             signoff_posteco) 
   
   # # Core place and route flow
-  # g.connect_by_name( init,            power           )
-  # g.connect_by_name( power,           place           )
-  # g.connect_by_name( place,           cts             )
-  # g.connect_by_name( cts,             postcts_hold    )
-  # g.connect_by_name( postcts_hold,    route           )
-  # g.connect_by_name( route,           postroute       )
-  # g.connect_by_name( postroute,       signoff         )
+  g.connect_by_name( init,            power           )
+  g.connect_by_name( power,           place           )
+  g.connect_by_name( place,           cts             )
+  g.connect_by_name( cts,             postcts_hold    )
+  g.connect_by_name( postcts_hold,    route           )
+  g.connect_by_name( route,           postroute       )
+  g.connect_by_name( postroute,       postroute_hold  )
+  g.connect_by_name( postroute_hold,  signoff         )
   # g.connect_by_name( signoff,         gdsmerge        )
   
   # # DRC, LVS, timing signoff and power signoff
@@ -203,7 +231,7 @@ def construct():
   # g.connect_by_name( signoff,         magic_def2spice )
   # g.connect_by_name( signoff,         netgen_lvs      )
   # g.connect_by_name( magic_def2spice, netgen_lvs      )
-  # g.connect_by_name( signoff,         pt_timing       )
+  g.connect_by_name( signoff_posteco,         pt_timing       )
   # g.connect_by_name( signoff,         pt_power_rtl    )
   # g.connect_by_name( gen_saif_rtl,    pt_power_rtl    ) # run.saif
   # g.connect_by_name( signoff,         pt_power_gl     )
@@ -226,6 +254,9 @@ def construct():
   #-----------------------------------------------------------------------
 
   g.update_params( parameters )
+
+  postroute_hold.set_param('hold_target_slack', 0.2)
+  synopsys_pt_eco.set_param('eco_types', ['timing'])
 
   return g
 

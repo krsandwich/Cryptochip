@@ -616,19 +616,6 @@ assign out[0]   = in[7];
 
 endmodule
 
-module MUL3 (
-  input  wire [7:0] in,
-  output wire [7:0] out
-);
- 
-wire [7:0] xt;
-
-xtimes xt_u (.in(in), .out(xt));
-
-assign out = xt ^ in;
-
-endmodule
-
 module MULE (
   input wire [7:0] in,
   output wire [7:0] out

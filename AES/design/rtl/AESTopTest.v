@@ -137,11 +137,11 @@ module AESEncrypt
   // INPUT OUTPUT 
   // - this is for storing input and output data 
   //---------
-  reg [ 127: 0] temp_data  [30:0];
+  reg [ 127: 0] temp_data  [5:0];
   reg [   0: 0] temp_ready;
   reg [   0: 0] valid_final;
-  reg [ 127: 0] data_final;
-  reg [   0: 0] state;
+  reg [ 127: 0] temp_key;
+  reg [   1: 0] state;
   reg [   3: 0] counter;
   localparam WAIT = 2'd0, ENCRYPT = 2'd1, FINAL = 2'd2;
 
@@ -149,28 +149,22 @@ module AESEncrypt
   EncryptInitRound  Round0 (.data_in(temp_data[0]), .key(key[0]),
                             .data_out(temp_data[1]));
 
-  genvar i; 
-  generate
-    for (i=0; i<13; i+=1) begin : EncryptRounds 
-      EncryptRound  EncryptRound (.data_in(temp_data[(i<<1) + 2]), .key(key[i+1]),
-                                  .data_out(temp_data[(i<<1) + 3]));
+  EncryptRound      EncryptRound (.data_in(temp_data[2]), .key(temp_key),
+                                  .data_out(temp_data[3]));
 
-  end 
-  endgenerate
 
-  EncryptLastRound  Round14 (.data_in(temp_data[28]), .key(key[14]),
-                             .data_out(temp_data[29]));
+  EncryptLastRound  Round14 (.data_in(temp_data[4]), .key(key[14]),
+                             .data_out(temp_data[5]));
 
 
   //---------
   // FSM
   //---------
-  assign data_out = temp_data[29];
+  assign data_out = temp_data[5];
   assign valid = valid_final;
 
   always_ff @(posedge clk or posedge rst) begin
     if (rst) begin
-      data_final <= 128'd0;
       valid_final <= 1'b0; 
       state <= WAIT;
     end
@@ -186,23 +180,14 @@ module AESEncrypt
         end
         ENCRYPT: begin
           counter <= counter + 4'd1;
-          case(counter)
-            4'd1: temp_data[2] <= temp_data[1];
-            4'd2: temp_data[4] <= temp_data[3];
-            4'd3: temp_data[6] <= temp_data[5];
-            4'd4: temp_data[8] <= temp_data[7];
-            4'd5: temp_data[10] <= temp_data[9];
-            4'd6: temp_data[12] <= temp_data[11];
-            4'd7: temp_data[14] <= temp_data[13];
-            4'd8: temp_data[16] <= temp_data[15];
-            4'd9: temp_data[18] <= temp_data[17];
-            4'd10: temp_data[20] <= temp_data[19];
-            4'd11: temp_data[22] <= temp_data[21];
-            4'd12: temp_data[24] <= temp_data[23];
-            4'd13: temp_data[26] <= temp_data[25];
-            4'd14: temp_data[28] <= temp_data[27];
-          endcase
-          if(counter == 4'd14) begin
+          if(counter == 4'd1) begin
+            temp_data[2] <= temp_data[1];
+            temp_key <= key[1];
+          end else if(counter < 4'd14) begin
+            temp_data[2] <= temp_data[3];
+            temp_key <= key[counter];
+          end else if(counter == 4'd14) begin
+            temp_data[4] <= temp_data[3];
             state <= FINAL;
             valid_final <= 1'd1;
           end
@@ -240,34 +225,29 @@ module AESDecrypt
   // INPUT OUTPUT 
   // - this is for storing input and output data 
   //---------
-  reg [ 127: 0] temp_data  [30:0];
+  reg [ 127: 0] temp_data  [5:0];
   reg [   0: 0] temp_ready;
   reg [   0: 0] valid_final;
-  reg [ 127: 0] data_final;
-  reg [   0: 0] state;
+  reg [ 127: 0] temp_key;
+  reg [   1: 0] state;
   reg [   3: 0] counter;
   localparam WAIT = 2'd0, DECRYPT = 2'd1, FINAL = 2'd2;
 
   DecryptInitRound  Round0 (.data_in(temp_data[0]), .key(key[14]),
                             .data_out(temp_data[1]));
 
-  genvar i;
-  generate
-    for (i=0; i<13; i+=1) begin : DecryptRounds 
-      DecryptRound  DecryptRound (.data_in(temp_data[(i<<1) + 2]), .key(key[13-i]),
-                                  .data_out(temp_data[(i<<1) + 3]));
-    end 
-  endgenerate
+  DecryptRound  DecryptRound (.data_in(temp_data[2]), .key(temp_key),
+                              .data_out(temp_data[3]));
 
-  DecryptLastRound  Round14 (.data_in(temp_data[28]), .key(key[0]),
-                             .data_out(temp_data[29]));
+  DecryptLastRound  Round14 (.data_in(temp_data[4]), .key(key[0]),
+                             .data_out(temp_data[5]));
 
 
 
   //---------
   // FSM
   //---------
-  assign data_out = temp_data[29];
+  assign data_out = temp_data[5];
   assign valid = valid_final;
 
     always_ff @(posedge clk or posedge rst) begin
@@ -287,23 +267,14 @@ module AESDecrypt
         end
         DECRYPT: begin
           counter <= counter + 4'd1;
-          case(counter)
-            4'd1: temp_data[2] <= temp_data[1];
-            4'd2: temp_data[4] <= temp_data[3];
-            4'd3: temp_data[6] <= temp_data[5];
-            4'd4: temp_data[8] <= temp_data[7];
-            4'd5: temp_data[10] <= temp_data[9];
-            4'd6: temp_data[12] <= temp_data[11];
-            4'd7: temp_data[14] <= temp_data[13];
-            4'd8: temp_data[16] <= temp_data[15];
-            4'd9: temp_data[18] <= temp_data[17];
-            4'd10: temp_data[20] <= temp_data[19];
-            4'd11: temp_data[22] <= temp_data[21];
-            4'd12: temp_data[24] <= temp_data[23];
-            4'd13: temp_data[26] <= temp_data[25];
-            4'd14: temp_data[28] <= temp_data[27];
-          endcase
-          if(counter == 4'd14) begin
+          if(counter == 4'd1) begin
+            temp_data[2] <= temp_data[1];
+            temp_key <= key[4'd13];
+          end else if(counter < 4'd14) begin
+            temp_data[2] <= temp_data[3];
+            temp_key <= key[4'd14 - counter];
+          end else if(counter == 4'd14) begin
+            temp_data[4] <= temp_data[3];
             state <= FINAL;
             valid_final <= 1'd1;
           end
@@ -468,19 +439,20 @@ module ExpandKey
   output wire [    0:0] valid
 );
 
-  wire [127:0] temp_key [14:0];
+  wire [127:0] temp_key [1:0];
+
   reg  [127:0] temp_out [14:0];
-  reg  [255:0] next_key [25:0]; 
+  reg  [255:0] next_key [3:0]; 
   reg  [  0:0] temp_ready;
   reg  [  0:0] valid_final;
-  reg  [  0:0] state;
+  reg  [  1:0] state;
   reg  [  3:0] counter;
-  reg  [  5:0] index;
+  reg  [  7:0] temp_rcon;
   localparam WAIT = 2'd0, EXPAND = 2'd1, FINAL = 2'd2;
   //---------
   // FSM
   //---------
-  assign key_out = temp_key;
+  assign key_out = temp_out;
   assign valid = valid_final;
 
   always_ff @(posedge clk or posedge rst) begin
@@ -495,32 +467,43 @@ module ExpandKey
         WAIT: begin
           if (ready) begin
             state <= EXPAND;
+            temp_out[0] <= key_in[255:128];
+            temp_out[1] <= key_in[127:0]; 
             next_key[0] <= key_in;
-            index = 6'd2;
+            temp_rcon <= 8'h1;
           end 
           valid_final <= 1'd0;
-          counter <= 4'd1;
+          counter <= 4'd2;
         end
         EXPAND: begin
           counter <= counter + 4'd1;
-          case(counter)
-            4'd1: next_key[2] <= next_key[1];
-            4'd2: next_key[4] <= next_key[3];
-            4'd3: next_key[6] <= next_key[5];
-            4'd4: next_key[8] <= next_key[7];
-            4'd5: next_key[10] <= next_key[9];
-            4'd6: next_key[12] <= next_key[11];
-            4'd7: next_key[14] <= next_key[13];
-            4'd8: next_key[16] <= next_key[15];
-            4'd9: next_key[18] <= next_key[17];
-            4'd10: next_key[20] <= next_key[19];
-            4'd11: next_key[22] <= next_key[21];
-            4'd12: next_key[24] <= next_key[23];
-          endcase
-          if(counter == 4'd12) begin
+          if(counter[0]) begin
+            temp_out[counter + 4'd0] <= temp_key[1];
+            next_key[0] <= next_key[3];
+          end else begin 
+            temp_out[counter + 4'd0] <= temp_key[0];
+            next_key[2] <= next_key[1];
+          end
+          if(counter == 4'd14) begin
             state <= FINAL;
             valid_final <= 1'd1;
           end
+          case(counter)
+            4'd1: temp_rcon <= 8'h1;
+            4'd2: temp_rcon <= 8'h1;
+            4'd3: temp_rcon <= 8'h2;
+            4'd4: temp_rcon <= 8'h2;
+            4'd5: temp_rcon <= 8'h4;
+            4'd6: temp_rcon <= 8'h4;
+            4'd7: temp_rcon <= 8'h8;
+            4'd8: temp_rcon <= 8'h8;
+            4'd9: temp_rcon <= 8'h10;
+            4'd10: temp_rcon <= 8'h10;
+            4'd11: temp_rcon <= 8'h20;
+            4'd12: temp_rcon <= 8'h20;
+            4'd13: temp_rcon <= 8'h40;
+            4'd14: temp_rcon <= 8'h40;
+          endcase
         end
         FINAL: begin
           valid_final <= 1'd0;
@@ -530,22 +513,9 @@ module ExpandKey
     end
   end
 
-  assign temp_key[0] = key_in[255:128];
-  assign temp_key[1] = key_in[127:0]; 
 
-  ExpandKeyEvenHelper round2  (.in(next_key[0]), .rcon(8'h1), .next(next_key[1]), .out(temp_key[2]));
-  ExpandKeyOddHelper  round3  (.in(next_key[2]), .next(next_key[3]), .out(temp_key[3]));
-  ExpandKeyEvenHelper round4  (.in(next_key[4]), .rcon(8'h2), .next(next_key[5]), .out(temp_key[4]));
-  ExpandKeyOddHelper  round5  (.in(next_key[6]), .next(next_key[7]), .out(temp_key[5]));
-  ExpandKeyEvenHelper round6  (.in(next_key[8]), .rcon(8'h4), .next(next_key[9]), .out(temp_key[6]));
-  ExpandKeyOddHelper  round7  (.in(next_key[10]), .next(next_key[11]), .out(temp_key[7]));
-  ExpandKeyEvenHelper round8  (.in(next_key[12]), .rcon(8'h8), .next(next_key[13]), .out(temp_key[8]));
-  ExpandKeyOddHelper  round9  (.in(next_key[14]), .next(next_key[15]), .out(temp_key[9]));
-  ExpandKeyEvenHelper round10 (.in(next_key[16]), .rcon(8'h10), .next(next_key[17]), .out(temp_key[10]));
-  ExpandKeyOddHelper  round11 (.in(next_key[18]), .next(next_key[19]), .out(temp_key[11]));
-  ExpandKeyEvenHelper round12 (.in(next_key[20]), .rcon(8'h20), .next(next_key[21]), .out(temp_key[12]));
-  ExpandKeyOddHelper  round13 (.in(next_key[22]), .next(next_key[23]), .out(temp_key[13]));
-  ExpandKeyEvenHelper round14 (.in(next_key[24]), .rcon(8'h40), .next( ), .out(temp_key[14]));
+  ExpandKeyEvenHelper round2  (.in(next_key[0]), .rcon(temp_rcon), .next(next_key[1]), .out(temp_key[0]));
+  ExpandKeyOddHelper  round3  (.in(next_key[2]), .next(next_key[3]), .out(temp_key[1]));
 
 endmodule
 
@@ -646,19 +616,6 @@ assign out[0]   = in[7];
 
 endmodule
 
-module MUL3 (
-  input  wire [7:0] in,
-  output wire [7:0] out
-);
- 
-wire [7:0] xt;
-
-xtimes xt_u (.in(in), .out(xt));
-
-assign out = xt ^ in;
-
-endmodule
-// 10 = a, 11 = b, 12 = c, 13 = d, 14 = e
 
 module MULE (
   input wire [7:0] in,
