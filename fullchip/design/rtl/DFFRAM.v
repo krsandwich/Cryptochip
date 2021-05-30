@@ -15,18 +15,18 @@
 
 `default_nettype none
 
-`ifndef USE_CUSTOM_DFFRAM
+`ifndef SYNTHESIS
 module DFFRAM#( parameter COLS=1)(
 `ifdef USE_POWER_PINS
-    input  wire VPWR,
-    input  wire VGND,
+    input VPWR,
+    input VGND,
 `endif
-    input  wire CLK,
-    input  wire [3:0] WE,
-    input  wire EN,
-    input  wire [31:0] Di,
+    input CLK,
+    input [3:0] WE,
+    input EN,
+    input [31:0] Di,
     output reg [31:0] Do,
-    input  wire [7+$clog2(COLS):0] A
+    input [7+$clog2(COLS):0] A
 );
 
 
@@ -58,16 +58,16 @@ module DFFRAM #( parameter COLS=1)
     A
 );
 
-    input  wire           CLK;
-    input  wire   [3:0]   WE;
-    input  wire           EN;
-    input  wire   [31:0]  Di;
-    output wire   [31:0]  Do;
-    input  wire   [7+$clog2(COLS):0]   A;
+    input           CLK;
+    input   [3:0]   WE;
+    input           EN;
+    input   [31:0]  Di;
+    output  [31:0]  Do;
+    input   [7+$clog2(COLS):0]   A;
 
 `ifdef USE_POWER_PINS
-    input  wire VPWR;
-    input.  wire VGND;
+    input VPWR;
+    input VGND;
 `endif
 
     wire [31:0]     DOUT [COLS-1:0];

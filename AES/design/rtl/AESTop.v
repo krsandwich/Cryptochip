@@ -1478,8 +1478,3 @@ module SubWord
   SBox SBox3 (in[15:8],  out[15:8] );
   SBox SBox4 (in[7:0],   out[7:0]  );
 endmodule 
-
-
-
-
-
