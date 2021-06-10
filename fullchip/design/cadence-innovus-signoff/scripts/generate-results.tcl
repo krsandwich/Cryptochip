@@ -9,7 +9,7 @@
 write_sdf $vars(results_dir)/$vars(design).sdf
 
 # Write out updated SDC for timing signoff
-
+reset_path_group -all
 writeTimingCon $vars(results_dir)/$vars(design).pt.sdc
 
 # Remove Synopsys-incompatible SDC commands
@@ -30,14 +30,15 @@ foreach x $ADK_LVS_EXCLUDE_CELL_LIST {
   append lvs_exclude_list [dbGet -u -e top.insts.cell.name $x] " "
 }
 
-#saveNetlist -excludeLeafCell                   \
-#            -phys                              \
-#            -excludeCellInst $lvs_exclude_list \
-#            $vars(results_dir)/$vars(design).lvs.v
-
 saveNetlist -excludeLeafCell                   \
+            -flat                              \
             -phys                              \
+            -excludeCellInst $lvs_exclude_list \
             $vars(results_dir)/$vars(design).lvs.v
+
+# saveNetlist -excludeLeafCell                   \
+#             -phys                              \
+#             $vars(results_dir)/$vars(design).lvs.v
 
 # Write netlist for Virtuoso simulation
 #

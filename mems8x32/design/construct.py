@@ -22,8 +22,8 @@ def construct():
 
   parameters = {
     'construct_path' : __file__,
-    'design_name'    : 'RAM8x32',
-    'clock_period'   : 10.0,
+    'design_name'    : 'RAM8',
+    'clock_period'   : 20.0,
     'adk'            : adk_name,
     'adk_view'       : adk_view,
     'topographical'  : True,

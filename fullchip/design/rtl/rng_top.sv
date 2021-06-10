@@ -242,14 +242,14 @@ module ring_oscillator#(
     endgenerate
 endmodule
 
-`default_nettype wire
+
 module rng_top #(
 		 parameter NUM_INV = 32
 )(
-  input wire	       clk,
-  input wire 	       rst,
-  input wire	       en_i,
-  output wire [NUM_INV-1:0] out_random_num
+  input 	       clk,
+  input 	       rst,
+  input 	       en_i,
+  output [NUM_INV-1:0] out_random_num
 );
 
    genvar i;

@@ -595,5 +595,5 @@ if [file exists inputs/setup.tcl] {
   source inputs/setup.tcl
 }
 
-set vars(dont_use_list) "*probe*"
+set vars(dont_use_list) "*probe* sky130_fd_sc_hd__buf_16"
 

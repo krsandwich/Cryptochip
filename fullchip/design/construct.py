@@ -67,13 +67,14 @@ def construct():
   # # from layout for LVS
   
   signoff         = Step( this_dir + '/cadence-innovus-signoff'         ) 
-  
-  # pt_power_rtl    = Step( this_dir + '/synopsys-ptpx-rtl'               )
+  gdsmerge        = Step( this_dir + '/mentor-calibre-gdsmerge'         )
+  plugin_pt_eco   = Step( this_dir + '/plugin-pt-eco'       )
+  pt_timing       = Step( this_dir + '/synopsys-pt-timing-signoff'      )
 
   magic_drc       = Step( this_dir + '/open-magic-drc'                  )
-  magic_def2spice = Step( this_dir + '/open-magic-def2spice'            )
   netgen_lvs      = Step( this_dir + '/open-netgen-lvs'                 )
-  gdsmerge        = Step( this_dir + '/mentor-calibre-gdsmerge'          )
+  magic_gds2spice = Step( this_dir + '/open-magic-gds2spice'            )
+  magic_antenna   = Step( this_dir + '/open-magic-antenna'              )
 
 
   # Default steps
@@ -103,17 +104,16 @@ def construct():
   synopsys_pt_eco = Step( 'synopsys-pt-eco', default=True)
   open_icc2innovus = Step('open-icc2innovus', default=True)
   cadence_innovus_eco = Step('cadence-innovus-eco', default=True)
-  pt_timing       = Step( 'synopsys-pt-timing-signoff',    default=True)
+  # pt_timing       = Step( 'synopsys-pt-timing-signoff',    default=True)
 
   signoff_posteco = signoff.clone()
   signoff_posteco.set_name("signoff_posteco")
   
-  # gen_saif        = Step( 'synopsys-vcd2saif-convert',     default=True )
-  # gen_saif_rtl    = gen_saif.clone()
-  # gen_saif_gl     = gen_saif.clone()
-  # gen_saif_rtl.set_name( 'gen-saif-rtl' )
-  # gen_saif_gl.set_name( 'gen-saif-gl' )
-  
+  # netgen_lvs_def  = netgen_lvs.clone()
+  # netgen_lvs_def.set_name('netgen-lvs-def')
+  # netgen_lvs_gds  = netgen_lvs.clone()
+  # netgen_lvs_gds.set_name('netgen-lvs-gds')
+
   pt_power_gl     = Step( 'synopsys-ptpx-gl',              default=True )
   
 
@@ -148,14 +148,18 @@ def construct():
   g.add_step( signoff_posteco)
   g.add_step( gdsmerge        )
   g.add_step( pt_timing       )
+  g.add_step( plugin_pt_eco   )
   # g.add_step( gen_saif_rtl    )
   # g.add_step( pt_power_rtl    )
   # g.add_step( gl_sim          )
   # g.add_step( gen_saif_gl     )
   # g.add_step( pt_power_gl     )
   g.add_step( magic_drc       )
-  g.add_step( magic_def2spice )
   g.add_step( netgen_lvs      )
+  g.add_step( magic_gds2spice )
+  g.add_step( magic_antenna   )
+
+  # g.add_step( magic_def2spice )
 
   # #-----------------------------------------------------------------------
   # # Graph -- Add edges
@@ -184,11 +188,13 @@ def construct():
   g.connect_by_name( adk,             open_icc2innovus) 
   g.connect_by_name( adk,             cadence_innovus_eco) 
   g.connect_by_name( adk,             signoff_posteco) 
+  g.connect_by_name( adk,             pt_timing       )
   g.connect_by_name( adk,             gdsmerge        )
   g.connect_by_name( adk,             magic_drc       )
-  g.connect_by_name( adk,             magic_def2spice )
+  g.connect_by_name( adk,             magic_gds2spice )
   g.connect_by_name( adk,             netgen_lvs      )
-  g.connect_by_name( adk,             pt_timing       )
+  g.connect_by_name( adk,             magic_antenna   )
+  # g.connect_by_name( adk,             magic_def2spice )
   # g.connect_by_name( adk,             pt_power_rtl    )
   # g.connect_by_name( adk,             pt_power_gl     )
 
@@ -197,17 +203,23 @@ def construct():
   # g.connect( rtl_sim.o( 'design.vpd' ), gen_saif_rtl.i( 'run.vcd' ) ) # TODO: FIX
   # # FIXME: VCS sim node generates a VCD file but gives it a VPD extension
   dc.extend_inputs(macros.all_outputs())
-  gdsmerge.extend_inputs(macros.all_outputs())
-  iflow.extend_inputs(macros.all_outputs())
-  init.extend_inputs(macros.all_outputs())
-
   dc.extend_inputs(plugin_dc.all_outputs())
   dc.extend_inputs(plugin_dc_retime.all_outputs())
+  iflow.extend_inputs(macros.all_outputs())
+  init.extend_inputs(macros.all_outputs())
+  pt_timing.extend_inputs(macros.all_outputs())
+  synopsys_pt_eco.extend_inputs(macros.all_outputs())
+  synopsys_pt_eco.extend_inputs(plugin_pt_eco.all_outputs())
   init.extend_inputs(['floorplan.tcl', 'pin-assignments.tcl'])
   # magic_def2spice.extend_inputs(macros.all_outputs())
 
-  
+  gdsmerge.extend_inputs(macros.all_outputs())
   g.connect_by_name(macros, gdsmerge)
+
+  g.connect_by_name( macros,          pt_timing       )
+  g.connect_by_name( macros,          synopsys_pt_eco )
+  g.connect_by_name( macros,          magic_gds2spice )
+  g.connect_by_name( plugin_pt_eco,   synopsys_pt_eco )
 
   g.connect_by_name( plugin_dc       ,dc              )
   g.connect_by_name( macros          ,dc              )
@@ -252,35 +264,22 @@ def construct():
   g.connect_by_name( postroute_hold,  signoff         )
   g.connect_by_name( signoff,         gdsmerge        )
   g.connect_by_name( postroute_hold,  cadence_innovus_eco    )
-  
+
+  # LVS using GDS
+  g.connect_by_name( gdsmerge,        magic_gds2spice )
   # # DRC, LVS, timing signoff and power signoff
   g.connect_by_name( gdsmerge,        magic_drc       )
-  g.connect_by_name( macros,          magic_def2spice )
-  g.connect_by_name( signoff,         magic_def2spice )
   g.connect_by_name( signoff,         netgen_lvs      )
-  g.connect_by_name( magic_def2spice, netgen_lvs      )
-  g.connect_by_name( signoff_posteco, pt_timing       )
+  g.connect_by_name( magic_gds2spice, netgen_lvs )
+  g.connect_by_name( signoff,         magic_antenna   )
+  g.connect_by_name( signoff,         pt_timing       )
 
   g.connect_by_name( signoff,         synopsys_pt_eco )
   g.connect_by_name(synopsys_pt_eco,  open_icc2innovus)
   g.connect_by_name(open_icc2innovus, cadence_innovus_eco)
   g.connect_by_name(cadence_innovus_eco, signoff_posteco)
 
-  # g.connect_by_name( signoff,         pt_power_rtl    )
-  # g.connect_by_name( gen_saif_rtl,    pt_power_rtl    ) # run.saif
-  # g.connect_by_name( signoff,         pt_power_gl     )
-  # g.connect_by_name( gen_saif_gl,     pt_power_gl     ) # run.saif
 
-  # # Gate level simulation
-  # g.connect_by_name( adk,             gl_sim          )
-  # g.connect( signoff.o(   'design.vcs.pg.v'  ), gl_sim.i( 'design.vcs.v'     ) )
-  # g.connect( pt_timing.o( 'design.sdf'       ), gl_sim.i( 'design.sdf'       ) )
-  # g.connect( testbench.o( 'testbench.sv'     ), gl_sim.i( 'testbench.sv'     ) )
-  # g.connect( testbench.o( 'design.args.gls'  ), gl_sim.i( 'design.args'      ) )
-  # # g.connect( testbench.o( 'test_vectors.txt' ), gl_sim.i( 'test_vectors.txt' ) )
-
-  # g.connect( gl_sim.o( 'design.vpd' ), gen_saif_gl.i( 'run.vcd' ) ) # TODO: FIX
-  # FIXME: VCS sim node generates a VCD file but gives it a VPD extension
 
 
   #-----------------------------------------------------------------------
