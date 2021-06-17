@@ -12,11 +12,12 @@ module load dc_shell
 module load xcelium
 module load genus
 module load innovus
-module load calibre
+module load calibre/2021.2_18
 module load pts
 module load prime
 module load magic/latest
 module load netgen/latest
+module load calibre/2021.2_18
 
 # Autocomplete for make
 complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' ?akefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
