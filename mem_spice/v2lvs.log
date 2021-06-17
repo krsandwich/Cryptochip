@@ -1,0 +1,7 @@
+Running /cad/mentor/2013.2/ixl_cal_2013.2_18.13/pkgs/icv/pvt/v2lvs -i -v RAM32x32.nl.v -o RAM32.spi
+
+Info: Creating Design Database ...
+Info: Converting Design ...
+Error: No module declaration for module sky130_fd_sc_hd__clkbuf_2 first encountered in module RAM32x32.
+       (-i switch requires Verilog declarations for all modules.)
+Info: Exiting v2lvs.
