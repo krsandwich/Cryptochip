@@ -1,6 +1,0 @@
-name: floorplan
-
-outputs:
-  - floorplan.tcl
-# commands: 
-#   - cat floorplan.tcl > outputs/floorplan.tcl

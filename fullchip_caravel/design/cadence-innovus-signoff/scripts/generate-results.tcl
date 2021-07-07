@@ -37,10 +37,18 @@ saveNetlist -excludeLeafCell                   \
            $vars(results_dir)/$vars(design).lvs.v
 
 saveNetlist -excludeLeafCell                   \
+            -excludeCellInst $lvs_exclude_list  \
             -flat                              \
             -flattenBus                        \
             -phys                              \
             $vars(results_dir)/$vars(design).flatbuslvs.v
+
+# saveNetlist -excludeLeafCell                    \
+#             -excludeCellInst $lvs_exclude_list  \
+#             -flat                               \
+#             -flattenBus                         \
+#             -phys                               \
+#             $vars(results_dir)/$vars(design).flatbuslvs.abstracted.v
 
 
 # Write netlist for Virtuoso simulation

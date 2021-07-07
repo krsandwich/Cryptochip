@@ -47,6 +47,7 @@ def construct():
   macros     = Step( this_dir + '/macros'                     )
   genlibdb            = Step( 'synopsys-ptpx-genlibdb',          default=True )
 
+  genlibdb_pt            = Step( this_dir+'/synopsys-ptpx-genlibdb-pt' )
 
   #-----------------------------------------------------------------------
   # Graph -- Add nodes
@@ -57,6 +58,7 @@ def construct():
   g.add_step( macros     )
   g.add_step( genlibdb)
 
+  g.add_step( genlibdb_pt)
   # #-----------------------------------------------------------------------
   # # Graph -- Add edges
   # #-----------------------------------------------------------------------
@@ -70,6 +72,11 @@ def construct():
   g.connect_by_name( macros,              genlibdb           )
 
 
+  g.connect_by_name( adk,             genlibdb_pt) 
+  g.connect(constraints.o("constraints.tcl"),      genlibdb_pt.i("design.pt.sdc"))
+  g.connect(macros.o("design.spef"),      genlibdb_pt.i("design.spef.gz"))
+  
+  g.connect_by_name( macros,              genlibdb_pt           )
   #-----------------------------------------------------------------------
   # Parameterize
   #-----------------------------------------------------------------------

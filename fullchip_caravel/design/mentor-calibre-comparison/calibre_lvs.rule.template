@@ -17,8 +17,7 @@ LAYOUT CASE YES
 SOURCE CASE YES
 
 // Black box all std cells if Magic is also black boxing
-LVS BOX "sky130_*"
-LVS BOX "RAM*"
+// LVS BOX "RAM*"
 
 // Very important! Magic uses slashes as part of the name 
 LVS SPICE SLASH IS SPACE               NO
