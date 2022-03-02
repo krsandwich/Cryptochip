@@ -79,8 +79,9 @@ module user_proj_example #(
     output [2:0] irq
 );
 
-    assign io_oeb[8:0] = {9{1'b1}};
-    assign io_oeb[23:9] = {15{1'b0}};
+    assign io_oeb[7:0] = {8{1'b1}}; //input
+    assign io_oeb[23:8] = {16{1'b0}}; //output
+    assign io_oeb[34] = 1'b0; // outout
 
     wire [3:0] empty_gpios; 
     ChipTop chiptop(
@@ -103,7 +104,7 @@ module user_proj_example #(
         .i2c_0_sda_in(io_in[25]),
         .i2c_0_sda_out(io_out[25]),
         .i2c_0_sda_oe(!io_oeb[25]),
-        .qspi_0_sck(io_out[26]),
+        .qspi_0_sck(io_out[34]),
         .qspi_0_dq_0_i(io_in[26]),
         .qspi_0_dq_0_ie(io_oeb[26]),
         .qspi_0_dq_0_oe(),
@@ -116,9 +117,9 @@ module user_proj_example #(
         .qspi_0_dq_3_i(io_in[29]),
         .qspi_0_dq_3_ie(io_oeb[29]),
         .qspi_0_dq_3_oe(),
-        .qspi_0_cs_0(io_in[7]),
+        .qspi_0_cs_0(io_out[8]),
         .uart_0_txd(io_out[18]),
-        .uart_0_rxd(io_in[8]),
+        .uart_0_rxd(io_in[7]),
         .spi_0_sck(io_out[19]),    
         .spi_0_dq_0_i(io_in[30]),
         .spi_0_dq_0_o(io_out[30]),
